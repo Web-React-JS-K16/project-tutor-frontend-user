@@ -1,0 +1,41 @@
+$color-main: #faad14;
+$color-light: #fffbe6;
+$color-dark: #001529;
+// sub color
+$color-7: #d48806;
+$color-8: #ad6800;
+$color-9: #874d00;
+$color-10: #613400;
+
+$font-size-large: 2rem;
+
+html {
+  font-size: 62.5%; // 10px
+}
+// re-custom from ant design
+button {
+  background-color: $color-main !important;
+  border: none !important;
+}
+
+a {
+  color: $color-main !important;
+  &:hover {
+    color: $color-7 !important;
+  }
+}
+// checkbox
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: $color-main !important;
+  border-color: $color-main !important;
+}
+// input
+input {
+  &:hover {
+    border: 1px solid $color-main !important;
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px #faad1446 !important;
+    border: 1px solid $color-main !important;
+  }
+}

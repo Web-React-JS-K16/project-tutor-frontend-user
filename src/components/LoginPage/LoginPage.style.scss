@@ -1,0 +1,33 @@
+@import '../../common/common.style.scss';
+
+.login-page {
+  margin: auto;
+  &__title {
+    text-transform: uppercase;
+    font-size: $font-size-large;
+    text-align: center;
+    margin-top: 5rem;
+    color: $color-main;
+  }
+  .login-form {
+    margin: 7rem auto;
+    max-width: 400px;
+    &__bottom {
+      display: flex;
+      flex-direction: column;
+      .login-form-forgot {
+        text-align: right;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .btn-login {
+        width: fit-content;
+        margin: auto;
+      }
+      .register {
+        text-align: center;
+        margin-top: 5px;
+      }
+    }
+  }
+}

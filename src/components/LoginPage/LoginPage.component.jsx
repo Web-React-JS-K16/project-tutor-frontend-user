@@ -20,6 +20,15 @@ const LoginPage = ({ form }) => {
   return (
     <div className="login-page">
       <h1 className="login-page__title">Đăng nhập</h1>
+      <div className="login-page__social">
+        <div className="btn-social btn--google">
+          <i className="fab fa-google" />
+        </div>
+        hoặc
+        <div className="btn-social btn--facebook">
+          <i className="fab fa-facebook-f" />
+        </div>
+      </div>
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('email', {

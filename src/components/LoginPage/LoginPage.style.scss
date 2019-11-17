@@ -30,4 +30,12 @@
       }
     }
   }
+  &__social {
+    display: flex;
+    justify-content: center;
+    .btn-social {
+      padding: 1rem 2rem;
+      border-radius: 20px;
+    }
+  }
 }

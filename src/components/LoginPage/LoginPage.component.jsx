@@ -4,6 +4,8 @@ import React from 'react'
 // import PropTypes from 'prop-types'
 import { Form, Icon, Input, Button } from 'antd'
 import './LoginPage.style.scss'
+import LoginWithFacebook from './components/LoginWithFacebook/LoginWithFacebook.component'
+import LoginWithGoogle from './components/LoginWithGoogle/LoginWithGoogle.component'
 
 const LoginPage = ({ form }) => {
   const handleSubmit = e => {
@@ -20,6 +22,15 @@ const LoginPage = ({ form }) => {
   return (
     <div className="login-page">
       <h1 className="login-page__title">Đăng nhập</h1>
+      <div className="login-page__social">
+        <div className="btn-social btn--google">
+          <LoginWithGoogle />
+        </div>
+        hoặc
+        <div className="btn-social btn--facebook">
+          <LoginWithFacebook />
+        </div>
+      </div>
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('email', {

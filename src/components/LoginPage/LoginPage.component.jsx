@@ -7,12 +7,14 @@ import './LoginPage.style.scss'
 import LoginWithFacebook from './components/LoginWithFacebook/LoginWithFacebook.component'
 import LoginWithGoogle from './components/LoginWithGoogle/LoginWithGoogle.component'
 
-const LoginPage = ({ form }) => {
+const LoginPage = ({ form, login }) => {
   const handleSubmit = e => {
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
+        const { email, password } = values
+        login(email, password)
       }
     })
   }
@@ -26,11 +28,11 @@ const LoginPage = ({ form }) => {
         <div className="btn-social btn--google">
           <LoginWithGoogle />
         </div>
-        hoặc
         <div className="btn-social btn--facebook">
           <LoginWithFacebook />
         </div>
       </div>
+      <div className="text-alternative">hoặc</div>
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('email', {
@@ -39,7 +41,7 @@ const LoginPage = ({ form }) => {
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Email"
-              type="mail"
+              type="email"
             />
           )}
         </Form.Item>

@@ -13,10 +13,25 @@ export function* login({ payload: { email, password } }) {
   }
 }
 
-export function* loginStart() {
+export function* loginGoogle() {
+  try {
+    const user = yield UserService.loginGoogle()
+    yield put(loginSuccess(user))
+  } catch (err) {
+    console.log('ERR')
+    yield put(loginFailure(err.message))
+  }
+}
+
+export function* loginStartSagas() {
   yield takeLatest(UserTypes.LOGIN_START, login)
 }
 
+export function* loginGoogleStartSagas() {
+  console.log('on start')
+  yield takeLatest(UserTypes.LOGIN_GOOGLE_START, loginGoogle)
+}
+
 export function* userSaga() {
-  yield all([call(loginStart)])
+  yield all([call(loginStartSagas), call(loginGoogleStartSagas)])
 }

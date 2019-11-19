@@ -14,3 +14,7 @@ export const loginFailure = error => ({
   type: UserTypes.LOGIN_FAILURE,
   payload: error,
 })
+
+export const loginGoogleStart = () => ({
+  type: UserTypes.LOGIN_GOOGLE_START,
+})

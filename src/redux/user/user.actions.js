@@ -1,6 +1,6 @@
 import UserTypes from './user.types'
 
-export const loginStart = (email, password) => ({
+export const loginStart = ({ email, password }) => ({
   type: UserTypes.LOGIN_START,
   payload: { email, password },
 })
@@ -15,6 +15,12 @@ export const loginFailure = error => ({
   payload: error,
 })
 
-export const loginGoogleStart = () => ({
+export const loginGoogleStart = ({ email, googleId, displayName, avatar }) => ({
   type: UserTypes.LOGIN_GOOGLE_START,
+  payload: { email, googleId, displayName, avatar },
+})
+
+export const loginFacebookStart = ({ email, facebookId, displayName, avatar }) => ({
+  type: UserTypes.LOGIN_FACEBOOK_START,
+  payload: { email, facebookId, displayName, avatar },
 })

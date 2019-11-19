@@ -2,6 +2,7 @@
 /* eslint-disable react/no-string-refs */
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './LoginWithGoogle.style.scss'
 
 class LoginWithGoogle extends Component {
@@ -16,12 +17,19 @@ class LoginWithGoogle extends Component {
       {},
       googleUser => {
         const profile = googleUser.getBasicProfile()
-        console.log(`Token || ${googleUser.getAuthResponse().id_token}`)
-        console.log(`ID: ${profile.getId()}`)
-        console.log(`Name: ${profile.getName()}`)
-        console.log(`Image URL: ${profile.getImageUrl()}`)
-        console.log(`Email: ${profile.getEmail()}`)
-        // YOUR CODE HERE
+        // console.log(`Token || ${googleUser.getAuthResponse().id_token}`)
+        // console.log(`ID: ${profile.getId()}`)
+        // console.log(`Name: ${profile.getName()}`)
+        // console.log(`Image URL: ${profile.getImageUrl()}`)
+        // console.log(`Email: ${profile.getEmail()}`)
+
+        // const token = googleUser.getAuthResponse().id_token
+        const email = profile.getEmail()
+        const googleId = profile.getId()
+        const displayName = profile.getName()
+        const avatar = profile.getImageUrl()
+        const { loginGoogleStart } = this.props
+        loginGoogleStart({ email, googleId, displayName, avatar })
       },
       error => {
         console.error(error)
@@ -63,6 +71,10 @@ class LoginWithGoogle extends Component {
       </div>
     )
   }
+}
+
+LoginWithGoogle.propTypes = {
+  loginGoogleStart: PropTypes.func.isRequired,
 }
 
 export default LoginWithGoogle

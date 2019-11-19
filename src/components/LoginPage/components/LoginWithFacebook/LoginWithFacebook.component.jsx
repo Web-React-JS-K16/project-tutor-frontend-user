@@ -1,9 +1,10 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-undef */
 import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import './LoginWithFacebook.style.scss'
 
-export default function LoginWithFacebook() {
+const LoginWithFacebook = ({ loginFacebookStart }) => {
   const fbLibrary = () => {
     window.fbAsyncInit = () => {
       window.FB.init({
@@ -31,10 +32,12 @@ export default function LoginWithFacebook() {
   useEffect(() => {
     fbLibrary()
   }, [])
-  const login = () => {
-    window.FB.login(
+  const login = async () => {
+    await window.FB.login(
       response => {
-        console.log('login response', response)
+        // const token = response.authResponse.accessToken
+        // console.log('token', token)
+
         if (response.authResponse) {
           window.FB.api(
             '/me',
@@ -44,6 +47,11 @@ export default function LoginWithFacebook() {
             userInfo => {
               console.log('user information')
               console.log(userInfo)
+              const { email } = userInfo
+              const facebookId = userInfo.id
+              const displayName = userInfo.firstName + userInfo.lastName
+              const avatar = userInfo.picture.data.url
+              loginFacebookStart({ email, facebookId, displayName, avatar })
             }
           )
         } else {
@@ -61,3 +69,9 @@ export default function LoginWithFacebook() {
     </div>
   )
 }
+
+LoginWithFacebook.propTypes = {
+  loginFacebookStart: PropTypes.func.isRequired,
+}
+
+export default LoginWithFacebook

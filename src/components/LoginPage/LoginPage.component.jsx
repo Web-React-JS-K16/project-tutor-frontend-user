@@ -7,14 +7,14 @@ import './LoginPage.style.scss'
 import LoginWithFacebook from './components/LoginWithFacebook/LoginWithFacebook.component'
 import LoginWithGoogle from './components/LoginWithGoogle/LoginWithGoogle.component'
 
-const LoginPage = ({ form, login }) => {
+const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
   const handleSubmit = e => {
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
         const { email, password } = values
-        login(email, password)
+        login({ email, password })
       }
     })
   }
@@ -26,10 +26,10 @@ const LoginPage = ({ form, login }) => {
       <h1 className="login-page__title">Đăng nhập</h1>
       <div className="login-page__social">
         <div className="btn-social btn--google">
-          <LoginWithGoogle />
+          <LoginWithGoogle loginGoogleStart={loginGoogleStart} />
         </div>
         <div className="btn-social btn--facebook">
-          <LoginWithFacebook />
+          <LoginWithFacebook loginFacebookStart={loginFacebookStart} />
         </div>
       </div>
       <div className="text-alternative">hoặc</div>

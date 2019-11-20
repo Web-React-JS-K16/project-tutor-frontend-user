@@ -30,18 +30,72 @@ export default class UserService {
       .catch(err => {
         throw new Error(err)
       })
+  }
 
-    // switch (type.toLowercase()) {
-    //   case 'google':
-    //     console.log('google')
-    //     break
-    //   case 'facebook':
-    //     console.log('fb')
-    //     break
-    //   default: {
+  static loginGoogle = ({ email, googleId, displayName, avatar }) => {
+    const api = `${apiUrl}/user/login-google`
 
-    //   }
-    // }
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        googleId,
+        displayName,
+        avatar,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Xảy ra lỗi')
+        }
+        return response.json()
+      })
+      .then(result => {
+        if (!result.user) {
+          throw new Error(result.message)
+        }
+        return result.user
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
+  static loginFacebook = ({ email, facebookId, displayName, avatar }) => {
+    const api = `${apiUrl}/user/login-facebook`
+
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        facebookId,
+        displayName,
+        avatar,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Xảy ra lỗi')
+        }
+        return response.json()
+      })
+      .then(result => {
+        if (!result.user) {
+          throw new Error(result.message)
+        }
+        return result.user
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
   }
 
   static register = ({ email, displayName, phone, birthdate, password }) => {

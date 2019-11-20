@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import LoginPageContainer from './components/LoginPage/LoginPage.container'
 import RegisterPageContainer from './components/RegisterPage/RegisterPage.container'
 import 'antd/dist/antd.css'
+// import test from './components/LoginPage/components/test/test'
 
 const App = () => {
   return (

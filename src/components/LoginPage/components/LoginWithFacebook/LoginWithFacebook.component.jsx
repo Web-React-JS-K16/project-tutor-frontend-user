@@ -17,7 +17,6 @@ export default function LoginWithFacebook() {
       <i className="fab fa-facebook-f" />
       <FacebookLogin
         appId="1203647879830191"
-        autoLoad
         fields="name,email,picture"
         callback={responseFacebook}
         textButton="Facebook"

@@ -1,6 +1,6 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects'
 import UserTypes from './user.types'
-import { loginSuccess, loginFailure } from './user.actions'
+import { loginSuccess, loginFailure, registerSuccess, registerFailure } from './user.actions'
 import UserService from '../../services/user.service'
 
 export function* login({ payload: { email, password } }) {
@@ -47,6 +47,26 @@ export function* loginStartSagas() {
   yield takeLatest(UserTypes.LOGIN_START, login)
 }
 
+export function* register({ payload: { email, displayName, phone, birthdate, password } }) {
+  try {
+    const user = yield UserService.register({
+      email,
+      displayName,
+      phone,
+      birthdate,
+      password,
+    })
+    yield put(registerSuccess(user))
+  } catch (err) {
+    console.log('ERR')
+    yield put(registerFailure(err.message))
+  }
+}
+
+export function* registerStart() {
+  yield takeLatest(UserTypes.REGISTER_START, register)
+}
+
 export function* loginGoogleStartSagas() {
   console.log('on start')
   yield takeLatest(UserTypes.LOGIN_GOOGLE_START, loginGoogle)
@@ -58,5 +78,5 @@ export function* loginFacebookStartSagas() {
 }
 
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(loginGoogleStartSagas), call(loginFacebookStartSagas)])
+  yield all([call(loginStartSagas), call(loginGoogleStartSagas), call(loginFacebookStartSagas), call(registerStart)])
 }

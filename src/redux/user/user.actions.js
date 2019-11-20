@@ -15,6 +15,21 @@ export const loginFailure = error => ({
   payload: error,
 })
 
+export const registerStart = (email, displayName, phone, birthdate, password) => ({
+  type: UserTypes.REGISTER_START,
+  payload: { email, displayName, phone, birthdate, password },
+})
+
+export const registerSuccess = user => ({
+  type: UserTypes.REGISTER_SUCCESS,
+  payload: user,
+})
+
+export const registerFailure = error => ({
+  type: UserTypes.REGISTER_FAILURE,
+  payload: error,
+})
+
 export const loginGoogleStart = ({ email, googleId, displayName, avatar }) => ({
   type: UserTypes.LOGIN_GOOGLE_START,
   payload: { email, googleId, displayName, avatar },

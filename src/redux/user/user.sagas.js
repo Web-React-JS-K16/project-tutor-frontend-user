@@ -13,11 +13,11 @@ export function* login({ payload: { email, password } }) {
   }
 }
 
-export function* loginGoogle({ payload: { email, googleId, displayName, avatar } }) {
+export function* loginGoogle({ payload: { email, googleID, displayName, avatar } }) {
   try {
-    const user = yield UserService.loginGoogle({
+    const user = yield UserService.loginWithSocial({
       email,
-      googleId,
+      googleID,
       displayName,
       avatar,
     })
@@ -28,11 +28,11 @@ export function* loginGoogle({ payload: { email, googleId, displayName, avatar }
   }
 }
 
-export function* loginFacebook({ payload: { email, facebookId, displayName, avatar } }) {
+export function* loginFacebook({ payload: { email, facebookID, displayName, avatar } }) {
   try {
-    const user = yield UserService.loginFacebook({
+    const user = yield UserService.loginWithSocial({
       email,
-      facebookId,
+      facebookID,
       displayName,
       avatar,
     })
@@ -78,5 +78,10 @@ export function* loginFacebookStartSagas() {
 }
 
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(loginGoogleStartSagas), call(loginFacebookStartSagas), call(registerStart)])
+  yield all([
+    call(loginStartSagas),
+    call(loginGoogleStartSagas),
+    call(loginFacebookStartSagas),
+    call(registerStart),
+  ])
 }

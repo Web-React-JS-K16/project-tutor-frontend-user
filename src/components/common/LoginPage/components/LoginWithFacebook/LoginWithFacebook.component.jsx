@@ -48,10 +48,10 @@ const LoginWithFacebook = ({ loginFacebookStart }) => {
               console.log('user information')
               console.log(userInfo)
               const { email } = userInfo
-              const facebookId = userInfo.id
+              const facebookID = userInfo.id
               const displayName = userInfo.firstName + userInfo.lastName
               const avatar = userInfo.picture.data.url
-              loginFacebookStart({ email, facebookId, displayName, avatar })
+              loginFacebookStart({ email, facebookID, displayName, avatar })
             }
           )
         } else {

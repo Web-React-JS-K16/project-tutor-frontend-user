@@ -35,12 +35,12 @@ export const registerFailure = error => ({
   payload: error,
 })
 
-export const loginGoogleStart = ({ email, googleId, displayName, avatar }) => ({
+export const loginGoogleStart = ({ email, googleID, displayName, avatar }) => ({
   type: UserTypes.LOGIN_GOOGLE_START,
-  payload: { email, googleId, displayName, avatar },
+  payload: { email, googleID, displayName, avatar },
 })
 
-export const loginFacebookStart = ({ email, facebookId, displayName, avatar }) => ({
+export const loginFacebookStart = ({ email, facebookID, displayName, avatar }) => ({
   type: UserTypes.LOGIN_FACEBOOK_START,
-  payload: { email, facebookId, displayName, avatar },
+  payload: { email, facebookID, displayName, avatar },
 })

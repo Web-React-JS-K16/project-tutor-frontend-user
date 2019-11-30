@@ -25,11 +25,11 @@ class LoginWithGoogle extends Component {
 
         // const token = googleUser.getAuthResponse().id_token
         const email = profile.getEmail()
-        const googleId = profile.getId()
+        const googleID = profile.getId()
         const displayName = profile.getName()
         const avatar = profile.getImageUrl()
         const { loginGoogleStart } = this.props
-        loginGoogleStart({ email, googleId, displayName, avatar })
+        loginGoogleStart({ email, googleID, displayName, avatar })
       },
       error => {
         console.error(error)

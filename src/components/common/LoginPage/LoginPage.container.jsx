@@ -13,10 +13,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispath => ({
   login: ({ email, password }) => dispath(loginStart({ email, password })),
-  loginGoogleStart: ({ email, googleId, displayName, avatar }) =>
-    dispath(loginGoogleStart({ email, googleId, displayName, avatar })),
-  loginFacebookStart: ({ email, facebookId, displayName, avatar }) =>
-    dispath(loginFacebookStart({ email, facebookId, displayName, avatar })),
+  loginGoogleStart: ({ email, googleID, displayName, avatar }) =>
+    dispath(loginGoogleStart({ email, googleID, displayName, avatar })),
+  loginFacebookStart: ({ email, facebookID, displayName, avatar }) =>
+    dispath(loginFacebookStart({ email, facebookID, displayName, avatar })),
   onClearUserState: () => dispath(onClearUserState()),
 })
 

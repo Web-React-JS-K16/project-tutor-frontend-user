@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { registerStart } from '../../redux/user/user.actions'
+import { registerStart } from '../../../redux/user/user.actions'
 import RegisterPage from './RegisterPage.component'
 
 const mapStateToProps = state => ({

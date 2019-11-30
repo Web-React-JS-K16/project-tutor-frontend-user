@@ -1,13 +1,25 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { useEffect } from 'react'
 // import PropTypes from 'prop-types'
 import { Form, Icon, Input, Button } from 'antd'
-import './LoginPage.style.scss'
+import { Link, Redirect } from 'react-router-dom'
 import LoginWithFacebook from './components/LoginWithFacebook/LoginWithFacebook.component'
 import LoginWithGoogle from './components/LoginWithGoogle/LoginWithGoogle.component'
+import './LoginPage.style.scss'
 
-const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
+const LoginPage = ({
+  user,
+  form,
+  login,
+  loginGoogleStart,
+  loginFacebookStart,
+  onClearUserState,
+}) => {
+  useEffect(() => {
+    onClearUserState()
+  }, [onClearUserState])
+
   const handleSubmit = e => {
     e.preventDefault()
     form.validateFields((err, values) => {
@@ -21,6 +33,9 @@ const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
 
   const { getFieldDecorator } = form
 
+  if (user.currentUser) {
+    return <Redirect to="/" />
+  }
   return (
     <div className="login-page">
       <h1 className="login-page__title">Đăng nhập</h1>
@@ -34,7 +49,7 @@ const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
       </div>
       <div className="text-alternative">hoặc</div>
       <Form onSubmit={handleSubmit} className="login-form">
-        <Form.Item>
+        <Form.Item hasFeedback>
           {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Vui lòng nhập email!' }],
           })(
@@ -45,7 +60,7 @@ const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
             />
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item hasFeedback>
           {getFieldDecorator('password', {
             rules: [
               {
@@ -71,10 +86,16 @@ const LoginPage = ({ form, login, loginGoogleStart, loginFacebookStart }) => {
             Đăng nhập
           </Button>
           <div className="register">
-            Hoặc <a href="">Đăng ký</a>
+            Hoặc{' '}
+            <Link to="/register" href="">
+              Đăng ký
+            </Link>
           </div>
         </div>
       </Form>
+      <div className="message-error">
+        {!user.isLoading && user.errorMessage ? user.errorMessage : ''}
+      </div>
     </div>
   )
 }

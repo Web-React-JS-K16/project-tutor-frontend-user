@@ -1,5 +1,10 @@
 import UserTypes from './user.types'
 
+// clear isLoading, error msg, user when user start login/ register
+export const onClearUserState = () => ({
+  type: UserTypes.CLEAR_USER_STATE,
+})
+
 export const loginStart = ({ email, password }) => ({
   type: UserTypes.LOGIN_START,
   payload: { email, password },

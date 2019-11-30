@@ -9,6 +9,10 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case UserTypes.CLEAR_USER_STATE:
+      return {
+        ...INITIAL_STATE,
+      }
     case UserTypes.LOGIN_SUCCESS:
       return {
         ...state,

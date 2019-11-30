@@ -1,6 +1,11 @@
 import { connect } from 'react-redux'
-import { loginStart, loginGoogleStart, loginFacebookStart } from '../../redux/user/user.actions'
 import LoginPage from './LoginPage.component'
+import {
+  loginStart,
+  loginGoogleStart,
+  loginFacebookStart,
+  onClearUserState,
+} from '../../../redux/user/user.actions'
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -12,6 +17,7 @@ const mapDispatchToProps = dispath => ({
     dispath(loginGoogleStart({ email, googleId, displayName, avatar })),
   loginFacebookStart: ({ email, facebookId, displayName, avatar }) =>
     dispath(loginFacebookStart({ email, facebookId, displayName, avatar })),
+  onClearUserState: () => dispath(onClearUserState()),
 })
 
 const LoginPageContainer = connect(mapStateToProps, mapDispatchToProps)(LoginPage)

@@ -5,9 +5,9 @@ export const onClearUserState = () => ({
   type: UserTypes.CLEAR_USER_STATE,
 })
 
-export const loginStart = ({ email, password }) => ({
+export const loginStart = ({ email, password, typeID }) => ({
   type: UserTypes.LOGIN_START,
-  payload: { email, password },
+  payload: { email, password, typeID },
 })
 
 export const loginSuccess = user => ({
@@ -35,12 +35,8 @@ export const registerFailure = error => ({
   payload: error,
 })
 
-export const loginGoogleStart = ({ email, googleID, displayName, avatar }) => ({
-  type: UserTypes.LOGIN_GOOGLE_START,
-  payload: { email, googleID, displayName, avatar },
-})
-
-export const loginFacebookStart = ({ email, facebookID, displayName, avatar }) => ({
-  type: UserTypes.LOGIN_FACEBOOK_START,
-  payload: { email, facebookID, displayName, avatar },
+// LOGIN or REGISTER using fb/gg account
+export const authenWithSocial = user => ({
+  type: UserTypes.AUTHEN_WITH_SOCIAL,
+  payload: user,
 })

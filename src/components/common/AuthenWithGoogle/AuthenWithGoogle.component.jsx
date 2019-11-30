@@ -3,9 +3,9 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './LoginWithGoogle.style.scss'
+import './AuthenWithGoogle.style.scss'
 
-class LoginWithGoogle extends Component {
+class AuthenWithGoogleComponent extends Component {
   componentDidMount() {
     this.googleSDK()
     console.log('did mount')
@@ -28,8 +28,8 @@ class LoginWithGoogle extends Component {
         const googleID = profile.getId()
         const displayName = profile.getName()
         const avatar = profile.getImageUrl()
-        const { loginGoogleStart } = this.props
-        loginGoogleStart({ email, googleID, displayName, avatar })
+        const { authenWithSocial, typeID } = this.props
+        authenWithSocial({ email, googleID, displayName, avatar, typeID })
       },
       error => {
         console.error(error)
@@ -73,8 +73,9 @@ class LoginWithGoogle extends Component {
   }
 }
 
-LoginWithGoogle.propTypes = {
-  loginGoogleStart: PropTypes.func.isRequired,
+AuthenWithGoogleComponent.propTypes = {
+  authenWithSocial: PropTypes.func.isRequired,
+  typeID: PropTypes.number.isRequired,
 }
 
-export default LoginWithGoogle
+export default AuthenWithGoogleComponent

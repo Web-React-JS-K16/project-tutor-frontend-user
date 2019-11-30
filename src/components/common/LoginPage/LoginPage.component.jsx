@@ -4,18 +4,11 @@ import React, { useEffect } from 'react'
 // import PropTypes from 'prop-types'
 import { Form, Icon, Input, Button } from 'antd'
 import { Link, Redirect } from 'react-router-dom'
-import LoginWithFacebook from './components/LoginWithFacebook/LoginWithFacebook.component'
-import LoginWithGoogle from './components/LoginWithGoogle/LoginWithGoogle.component'
 import './LoginPage.style.scss'
+import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
+import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.container'
 
-const LoginPage = ({
-  user,
-  form,
-  login,
-  loginGoogleStart,
-  loginFacebookStart,
-  onClearUserState,
-}) => {
+const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
   useEffect(() => {
     onClearUserState()
   }, [onClearUserState])
@@ -26,7 +19,7 @@ const LoginPage = ({
       if (!err) {
         console.log('Received values of form: ', values)
         const { email, password } = values
-        login({ email, password })
+        login({ email, password, typeID })
       }
     })
   }
@@ -38,13 +31,16 @@ const LoginPage = ({
   }
   return (
     <div className="login-page">
-      <h1 className="login-page__title">Đăng nhập</h1>
+      <h1 className="login-page__title">
+        Đăng nhập
+        <div>{title}</div>
+      </h1>
       <div className="login-page__social">
         <div className="btn-social btn--google">
-          <LoginWithGoogle loginGoogleStart={loginGoogleStart} />
+          <AuthenWithFacebookContainer typeID={typeID} />
         </div>
         <div className="btn-social btn--facebook">
-          <LoginWithFacebook loginFacebookStart={loginFacebookStart} />
+          <AuthenWithGoogleContainer typeID={typeID} />
         </div>
       </div>
       <div className="text-alternative">hoặc</div>
@@ -82,7 +78,12 @@ const LoginPage = ({
               Quên mật khẩu
             </a>
           </div>
-          <Button type="primary" htmlType="submit" className="login-form-button btn-login">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button btn-login"
+            loading={user.isLoading}
+          >
             Đăng nhập
           </Button>
           <div className="register">

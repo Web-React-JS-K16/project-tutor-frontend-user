@@ -1,6 +1,13 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects'
 import UserTypes from './user.types'
-import { loginSuccess, loginFailure, registerSuccess, registerFailure } from './user.actions'
+import {
+  loginSuccess,
+  loginFailure,
+  registerSuccess,
+  registerFailure,
+  onClearUserState,
+  updateCurrentUser,
+} from './user.actions'
 import UserService from '../../services/user.service'
 
 export function* login({ payload: { email, password, typeID } }) {
@@ -47,6 +54,21 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
   }
 }
 
+export function* logout() {
+  // eslint-disable-next-line no-undef
+  localStorage.removeItem('jwtToken')
+  yield put(onClearUserState())
+}
+
+export function* authenticate({ payload: token }) {
+  try {
+    const user = yield UserService.authenticate(token)
+    yield put(updateCurrentUser(user))
+  } catch (err) {
+    console.log('ERR AUTHENTICATE ', err)
+  }
+}
+
 export function* registerStartSaga() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
@@ -55,6 +77,20 @@ export function* authenWithSocialSaga() {
   yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
 }
 
+export function* logoutSaga() {
+  yield takeLatest(UserTypes.LOGOUT, logout)
+}
+
+export function* authenticateSaga() {
+  yield takeLatest(UserTypes.AUTHENTICATE, authenticate)
+}
+
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(authenWithSocialSaga), call(registerStartSaga)])
+  yield all([
+    call(loginStartSagas),
+    call(authenWithSocialSaga),
+    call(registerStartSaga),
+    call(logoutSaga),
+    call(authenticateSaga),
+  ])
 }

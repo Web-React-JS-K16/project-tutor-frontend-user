@@ -24,6 +24,8 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('jwtToken', result.user.token)
         return result.user
       })
       .catch(err => {
@@ -52,6 +54,8 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('jwtToken', result.user.token)
         return result.user
       })
       .catch(err => {
@@ -86,6 +90,27 @@ export default class UserService {
           throw new Error(result.message)
         }
         return result.user
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
+  static authenticate = token => {
+    const api = `${apiUrl}/user/authenticate`
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        return response.json()
+      })
+      .then(user => {
+        return user
       })
       .catch(err => {
         throw new Error(err)

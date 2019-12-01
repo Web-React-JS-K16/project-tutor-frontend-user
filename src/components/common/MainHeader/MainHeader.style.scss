@@ -1,0 +1,35 @@
+@import '../../../default.style.scss';
+
+.main-header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  background-color: #fff !important;
+  &__logo {
+    background: rgba(255, 255, 255, 0.2);
+    float: left;
+    img {
+      width: 120px;
+      height: 31px;
+    }
+  }
+  &__search {
+    float: right;
+    margin-right: 2em;
+  }
+  &__user {
+    float: right;
+    &__menu {
+      position: fixed;
+      z-index: 1;
+    }
+    a {
+      font-size: 14px;
+      margin-right: 10px;
+      text-decoration: none;
+      &:nth-last-child(1) {
+        margin-right: 0px;
+      }
+    }
+  }
+}

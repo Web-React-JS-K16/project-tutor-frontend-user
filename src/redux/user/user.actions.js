@@ -40,3 +40,17 @@ export const authenWithSocial = user => ({
   type: UserTypes.AUTHEN_WITH_SOCIAL,
   payload: user,
 })
+
+export const logout = () => ({
+  type: UserTypes.LOGOUT,
+})
+
+export const authenticate = token => ({
+  type: UserTypes.AUTHENTICATE,
+  payload: token,
+})
+
+export const updateCurrentUser = user => ({
+  type: UserTypes.UPDATE_CURRENT_USER,
+  payload: user,
+})

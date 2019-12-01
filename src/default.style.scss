@@ -46,11 +46,37 @@ input {
 // select
 .ant-select-selection {
   &:hover {
-    border-color: $color-main;
+    border-color: $color-main !important;
   }
   &:focus {
     box-shadow: 0 0 0 2px #faad1446 !important;
     border: 1px solid $color-main !important;
+  }
+}
+
+// menu
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-item-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-submenu-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover,
+.ant-menu-submenu:hover {
+  color: $color-main !important;
+}
+.ant-menu-submenu-title:hover {
+  .ant-menu-submenu-arrow::before,
+  .ant-menu-submenu-arrow::after {
+    background: $color-main !important;
   }
 }
 

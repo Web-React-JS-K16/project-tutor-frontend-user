@@ -30,7 +30,7 @@ export function* loginStartSagas() {
   yield takeLatest(UserTypes.LOGIN_START, login)
 }
 
-export function* register({ payload: { email, displayName, phone, birthdate, password } }) {
+export function* register({ payload: { email, displayName, phone, birthdate, password, typeID } }) {
   try {
     const user = yield UserService.register({
       email,
@@ -38,15 +38,16 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
       phone,
       birthdate,
       password,
+      typeID,
     })
     yield put(registerSuccess(user))
   } catch (err) {
-    console.log('ERR')
+    console.log('ERR REGISTER')
     yield put(registerFailure(err.message))
   }
 }
 
-export function* registerStart() {
+export function* registerStartSaga() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
 
@@ -55,5 +56,5 @@ export function* authenWithSocialSaga() {
 }
 
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(authenWithSocialSaga), call(registerStart)])
+  yield all([call(loginStartSagas), call(authenWithSocialSaga), call(registerStartSaga)])
 }

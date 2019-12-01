@@ -59,9 +59,9 @@ export default class UserService {
       })
   }
 
-  static register = ({ email, displayName, phone, birthdate, password }) => {
+  static register = ({ email, displayName, phone, birthdate, password, typeID }) => {
     const api = `${apiUrl}/user/register`
-
+    let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
@@ -71,22 +71,21 @@ export default class UserService {
         phone,
         birthdate,
         password,
+        typeID,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Xảy ra lỗi')
-        }
+        status = response.status
         return response.json()
       })
       .then(result => {
-        if (!result.data) {
+        if (status !== 200) {
           throw new Error(result.message)
         }
-        return result.data
+        return result.user
       })
       .catch(err => {
         throw new Error(err)

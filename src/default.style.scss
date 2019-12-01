@@ -12,6 +12,7 @@ $font-size-large: 2rem;
 html {
   font-size: 62.5%; // 10px
 }
+
 // re-custom from ant design
 button {
   background-color: $color-main !important;
@@ -24,11 +25,13 @@ a {
     color: $color-7 !important;
   }
 }
+
 // checkbox
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: $color-main !important;
   border-color: $color-main !important;
 }
+
 // input
 input {
   &:hover {
@@ -40,15 +43,24 @@ input {
   }
 }
 
+// select
+.ant-select-selection {
+  &:hover {
+    border-color: $color-main;
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px #faad1446 !important;
+    border: 1px solid $color-main !important;
+  }
+}
 
 .message-error {
   color: red;
   text-align: center;
 }
 
-
 .heading-primary {
-  background-image: linear-gradient( to right, #ffd666, #faad14);
+  background-image: linear-gradient(to right, #ffd666, #faad14);
   font-size: 4rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -63,7 +75,6 @@ input {
   margin-top: 4rem;
   color: #8c8989;
 }
-
 
 @keyframes item-bottom-top {
   0% {

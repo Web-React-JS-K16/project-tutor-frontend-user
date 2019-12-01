@@ -1,28 +1,27 @@
 import apiUrl from './api-url'
 
 export default class UserService {
-  static login = ({ email, password }) => {
+  static login = ({ email, password, typeID }) => {
     const api = `${apiUrl}/user/login`
-
+    let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
       body: JSON.stringify({
         email,
         password,
+        typeID,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Xảy ra lỗi')
-        }
+        status = response.status
         return response.json()
       })
       .then(result => {
-        if (!result.user) {
+        if (status !== 200) {
           throw new Error(result.message)
         }
         return result.user
@@ -32,63 +31,25 @@ export default class UserService {
       })
   }
 
-  static loginGoogle = ({ email, googleId, displayName, avatar }) => {
-    const api = `${apiUrl}/user/login-google`
-
+  static authenWithSocial = user => {
+    const api = `${apiUrl}/user/authen-with-social`
+    let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
       body: JSON.stringify({
-        email,
-        googleId,
-        displayName,
-        avatar,
+        ...user,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Xảy ra lỗi')
-        }
+        status = response.status
         return response.json()
       })
       .then(result => {
-        if (!result.user) {
-          throw new Error(result.message)
-        }
-        return result.user
-      })
-      .catch(err => {
-        throw new Error(err)
-      })
-  }
-
-  static loginFacebook = ({ email, facebookId, displayName, avatar }) => {
-    const api = `${apiUrl}/user/login-facebook`
-
-    // eslint-disable-next-line no-undef
-    return fetch(api, {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        facebookId,
-        displayName,
-        avatar,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Xảy ra lỗi')
-        }
-        return response.json()
-      })
-      .then(result => {
-        if (!result.user) {
+        if (status !== 200) {
           throw new Error(result.message)
         }
         return result.user

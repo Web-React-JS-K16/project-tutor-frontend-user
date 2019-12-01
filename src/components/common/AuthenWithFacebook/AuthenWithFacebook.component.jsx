@@ -2,9 +2,9 @@
 /* eslint-disable no-undef */
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import './LoginWithFacebook.style.scss'
+import './AuthenWithFacebook.style.scss'
 
-const LoginWithFacebook = ({ loginFacebookStart }) => {
+const AuthenWithFacebookComponent = ({ authenWithSocial, typeID }) => {
   const fbLibrary = () => {
     window.fbAsyncInit = () => {
       window.FB.init({
@@ -48,10 +48,10 @@ const LoginWithFacebook = ({ loginFacebookStart }) => {
               console.log('user information')
               console.log(userInfo)
               const { email } = userInfo
-              const facebookId = userInfo.id
+              const facebookID = userInfo.id
               const displayName = userInfo.firstName + userInfo.lastName
               const avatar = userInfo.picture.data.url
-              loginFacebookStart({ email, facebookId, displayName, avatar })
+              authenWithSocial({ email, facebookID, displayName, avatar, typeID })
             }
           )
         } else {
@@ -70,8 +70,9 @@ const LoginWithFacebook = ({ loginFacebookStart }) => {
   )
 }
 
-LoginWithFacebook.propTypes = {
-  loginFacebookStart: PropTypes.func.isRequired,
+AuthenWithFacebookComponent.propTypes = {
+  authenWithSocial: PropTypes.func.isRequired,
+  typeID: PropTypes.number.isRequired,
 }
 
-export default LoginWithFacebook
+export default AuthenWithFacebookComponent

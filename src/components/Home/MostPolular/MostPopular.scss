@@ -1,0 +1,49 @@
+.popular {
+  height: 700px;
+  text-align: center;
+  margin: 5rem auto;
+  background-image: linear-gradient(to bottom right, #000, #434343);
+  position: relative;
+  clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+  padding: 10rem;
+  animation-name: item-left-right;
+  animation-duration: 3s;
+
+  .ant-row {
+    padding-top: 7rem;
+    height: 350px;
+
+    .gutter-box {
+      backface-visibility: hidden;
+      background: #fff;
+      padding: 3rem;
+      height: 300px;
+      border-radius: 4px;
+      box-shadow: 0 1rem 0.5rem rgba(#000, 0.15);
+      transition: 0.3s;
+
+      .icon {
+        background-image: linear-gradient(to right, #ffd666, #faad14);
+        font-size: 6rem;
+        text-transform: uppercase;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      &:hover {
+        transform: translateY(-15px);
+      }
+    }
+  }
+
+  &__heading {
+    font-size: 2.3rem !important;
+  }
+
+  &__sub {
+    font-size: 1.7rem !important;
+    margin-top: 1rem !important;
+    color: rgba(#000, 0.8) !important;
+  }
+}

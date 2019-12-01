@@ -45,3 +45,78 @@ input {
   color: red;
   text-align: center;
 }
+
+
+.heading-primary {
+  background-image: linear-gradient( to right, #ffd666, #faad14);
+  font-size: 4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.sub-content {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-top: 4rem;
+  color: #8c8989;
+}
+
+
+@keyframes item-bottom-top {
+  0% {
+    transform: translateY(25rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-top-bottom {
+  0% {
+    transform: translateY(-5rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-right-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateX(-5rem);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-left-right {
+  0% {
+    transform: translateX(-5rem);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateX(25rem);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0rem);
+    opacity: 1;
+  }
+}

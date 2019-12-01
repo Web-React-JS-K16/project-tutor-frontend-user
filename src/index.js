@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import './index.css'
+import './assets/icon-font.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

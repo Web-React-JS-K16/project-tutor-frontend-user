@@ -9,16 +9,19 @@ const items = [
   {
     src: imgbanner1,
     altText: 'banner 1',
+    caption: '',
     key: '1',
   },
   {
     src: imgbanner2,
     altText: 'banner 2',
+    caption: '',
     key: '2',
   },
   {
     src: imgbanner3,
     altText: 'banner 3',
+    caption: '',
     key: '3',
   },
 ]

@@ -1,11 +1,12 @@
 .carousel {
+  animation-name: item-top-bottom;
+  animation-duration: 3s;
+
   .carousel-item {
     height: 400px;
     background-size: cover;
 
     .carousel-caption {
-        animation-name: banner-home;
-        animation-duration: 3s;
         backface-visibility: hidden;
         margin-left: -10rem;
 
@@ -39,20 +40,3 @@
     }
   }
 }
-
-@keyframes banner-home {
-    0% {
-      transform: translateY(25rem);
-      opacity: 0;
-    }
-
-    50% {
-      transform: translateY(-5rem);
-      opacity: 1;
-    }
-
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }

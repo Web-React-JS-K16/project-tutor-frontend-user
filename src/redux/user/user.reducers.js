@@ -5,6 +5,11 @@ const INITIAL_STATE = {
   errorMessage: null,
   registerUser: null,
   isLoading: false,
+  activeEmail: {
+    isSuccess: null,
+    isLoading: null,
+    message: null,
+  },
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -44,6 +49,36 @@ const userReducer = (state = INITIAL_STATE, action) => {
         registerUser: null,
         isLoading: false,
       }
+    // ACTIVE EMAIL
+    case UserTypes.ACTIVE_EMAIL:
+      return {
+        ...state,
+        activeEmail: {
+          ...state.activeEmail,
+          isLoading: true,
+        },
+      }
+    case UserTypes.ACTIVE_EMAIL_SUCCESS:
+      return {
+        ...state,
+        activeEmail: {
+          ...state.activeEmail,
+          isLoading: false,
+          isSuccess: true,
+          message: null,
+        },
+      }
+    case UserTypes.ACTIVE_EMAIL_FAILURE:
+      return {
+        ...state,
+        activeEmail: {
+          ...state.activeEmail,
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+
     default:
       return state
   }

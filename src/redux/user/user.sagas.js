@@ -1,8 +1,16 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects'
 import UserTypes from './user.types'
-import { loginSuccess, loginFailure, registerSuccess, registerFailure } from './user.actions'
+import {
+  loginSuccess,
+  loginFailure,
+  registerSuccess,
+  registerFailure,
+  activeEmailSuccess,
+  activeEmailFailure,
+} from './user.actions'
 import UserService from '../../services/user.service'
 
+// ==== login
 export function* login({ payload: { email, password, typeID } }) {
   try {
     const user = yield UserService.login({ email, password, typeID })
@@ -13,6 +21,11 @@ export function* login({ payload: { email, password, typeID } }) {
   }
 }
 
+export function* loginStartSagas() {
+  yield takeLatest(UserTypes.LOGIN_START, login)
+}
+
+// ===authen with social
 /**
  *
  * @param {Object} payload is user
@@ -26,10 +39,10 @@ export function* authenWithSocial({ payload }) {
   }
 }
 
-export function* loginStartSagas() {
-  yield takeLatest(UserTypes.LOGIN_START, login)
+export function* authenWithSocialSaga() {
+  yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
 }
-
+// === register
 export function* register({ payload: { email, displayName, phone, birthdate, password } }) {
   try {
     const user = yield UserService.register({
@@ -50,10 +63,25 @@ export function* registerStart() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
 
-export function* authenWithSocialSaga() {
-  yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
+// === active account by email
+function* activeEmail({ payload }) {
+  try {
+    yield UserService.activeEmail(payload)
+    yield put(activeEmailSuccess())
+  } catch (err) {
+    yield put(activeEmailFailure(err.message))
+  }
+}
+
+function* activeEmailSaga() {
+  yield takeLatest(UserTypes.ACTIVE_EMAIL, activeEmail)
 }
 
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(authenWithSocialSaga), call(registerStart)])
+  yield all([
+    call(loginStartSagas),
+    call(authenWithSocialSaga),
+    call(registerStart),
+    call(activeEmailSaga),
+  ])
 }

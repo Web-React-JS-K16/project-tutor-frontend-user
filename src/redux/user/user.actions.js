@@ -40,3 +40,18 @@ export const authenWithSocial = user => ({
   type: UserTypes.AUTHEN_WITH_SOCIAL,
   payload: user,
 })
+
+// Active email
+export const activeEmail = token => ({
+  type: UserTypes.ACTIVE_EMAIL,
+  payload: token,
+})
+
+export const activeEmailSuccess = () => ({
+  type: UserTypes.ACTIVE_EMAIL_SUCCESS,
+})
+
+export const activeEmailFailure = message => ({
+  type: UserTypes.ACTIVE_EMAIL_FAILURE,
+  payload: message,
+})

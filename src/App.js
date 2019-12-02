@@ -5,6 +5,7 @@ import 'antd/dist/antd.css'
 import test from './components/test/test'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
+import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
 // import test from './components/LoginPage/components/test/test'
 
 const teacherPath = '/teacher'
@@ -35,6 +36,7 @@ const App = () => {
         <Route path={studentPath} component={RouteStudent} />
 
         <Route path="/register" component={RegisterPageContainer} />
+        <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
       </Switch>
     </div>
   )

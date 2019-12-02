@@ -1,6 +1,13 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects'
 import UserTypes from './user.types'
-import { loginSuccess, loginFailure, registerSuccess, registerFailure } from './user.actions'
+import {
+  loginSuccess,
+  loginFailure,
+  registerSuccess,
+  registerFailure,
+  onClearUserState,
+  updateCurrentUser,
+} from './user.actions'
 import UserService from '../../services/user.service'
 
 export function* login({ payload: { email, password, typeID } }) {
@@ -30,7 +37,7 @@ export function* loginStartSagas() {
   yield takeLatest(UserTypes.LOGIN_START, login)
 }
 
-export function* register({ payload: { email, displayName, phone, birthdate, password } }) {
+export function* register({ payload: { email, displayName, phone, birthdate, password, typeID } }) {
   try {
     const user = yield UserService.register({
       email,
@@ -38,15 +45,31 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
       phone,
       birthdate,
       password,
+      typeID,
     })
     yield put(registerSuccess(user))
   } catch (err) {
-    console.log('ERR')
+    console.log('ERR REGISTER')
     yield put(registerFailure(err.message))
   }
 }
 
-export function* registerStart() {
+export function* logout() {
+  // eslint-disable-next-line no-undef
+  localStorage.removeItem('jwtToken')
+  yield put(onClearUserState())
+}
+
+export function* authenticate({ payload: token }) {
+  try {
+    const user = yield UserService.authenticate(token)
+    yield put(updateCurrentUser(user))
+  } catch (err) {
+    console.log('ERR AUTHENTICATE ', err)
+  }
+}
+
+export function* registerStartSaga() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
 
@@ -54,6 +77,20 @@ export function* authenWithSocialSaga() {
   yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
 }
 
+export function* logoutSaga() {
+  yield takeLatest(UserTypes.LOGOUT, logout)
+}
+
+export function* authenticateSaga() {
+  yield takeLatest(UserTypes.AUTHENTICATE, authenticate)
+}
+
 export function* userSaga() {
-  yield all([call(loginStartSagas), call(authenWithSocialSaga), call(registerStart)])
+  yield all([
+    call(loginStartSagas),
+    call(authenWithSocialSaga),
+    call(registerStartSaga),
+    call(logoutSaga),
+    call(authenticateSaga),
+  ])
 }

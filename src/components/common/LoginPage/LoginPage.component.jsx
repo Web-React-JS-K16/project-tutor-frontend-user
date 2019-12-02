@@ -37,10 +37,10 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
       </h1>
       <div className="login-page__social">
         <div className="btn-social btn--google">
-          <AuthenWithFacebookContainer typeID={typeID} />
+          <AuthenWithFacebookContainer typeID={typeID} isDisabled="false" />
         </div>
         <div className="btn-social btn--facebook">
-          <AuthenWithGoogleContainer typeID={typeID} />
+          <AuthenWithGoogleContainer typeID={typeID} isDisabled="false" />
         </div>
       </div>
       <div className="text-alternative">hoặc</div>
@@ -88,7 +88,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
           </Button>
           <div className="register">
             Hoặc{' '}
-            <Link to="/register" href="">
+            <Link to="/student/register" href="">
               Đăng ký
             </Link>
           </div>

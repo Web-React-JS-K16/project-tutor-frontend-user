@@ -12,6 +12,7 @@ $font-size-large: 2rem;
 html {
   font-size: 62.5%; // 10px
 }
+
 // re-custom from ant design
 button {
   background-color: $color-main !important;
@@ -24,11 +25,13 @@ a {
     color: $color-7 !important;
   }
 }
+
 // checkbox
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: $color-main !important;
   border-color: $color-main !important;
 }
+
 // input
 input {
   &:hover {
@@ -40,15 +43,50 @@ input {
   }
 }
 
+// select
+.ant-select-selection {
+  &:hover {
+    border-color: $color-main !important;
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px #faad1446 !important;
+    border: 1px solid $color-main !important;
+  }
+}
+
+// menu
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-item-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-submenu-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover,
+.ant-menu-submenu:hover {
+  color: $color-main !important;
+}
+.ant-menu-submenu-title:hover {
+  .ant-menu-submenu-arrow::before,
+  .ant-menu-submenu-arrow::after {
+    background: $color-main !important;
+  }
+}
 
 .message-error {
   color: red;
   text-align: center;
 }
 
-
 .heading-primary {
-  background-image: linear-gradient( to right, #ffd666, #faad14);
+  background-image: linear-gradient(to right, #ffd666, #faad14);
   font-size: 4rem;
   font-weight: 600;
   text-transform: uppercase;

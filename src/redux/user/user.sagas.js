@@ -5,11 +5,20 @@ import {
   loginFailure,
   registerSuccess,
   registerFailure,
+  activeEmailSuccess,
+  activeEmailFailure,
+  sendEmailResetPasswordSuccess,
+  sendEmailResetPasswordFailure,
+  verifyTokenResetPasswordSuccess,
+  verifyTokenResetPasswordFailure,
+  resetPasswordSuccess,
+  resetPasswordFailure,
   onClearUserState,
   updateCurrentUser,
 } from './user.actions'
 import UserService from '../../services/user.service'
 
+// ==== login
 export function* login({ payload: { email, password, typeID } }) {
   try {
     const user = yield UserService.login({ email, password, typeID })
@@ -20,6 +29,11 @@ export function* login({ payload: { email, password, typeID } }) {
   }
 }
 
+export function* loginStartSagas() {
+  yield takeLatest(UserTypes.LOGIN_START, login)
+}
+
+// ===authen with social
 /**
  *
  * @param {Object} payload is user
@@ -33,8 +47,8 @@ export function* authenWithSocial({ payload }) {
   }
 }
 
-export function* loginStartSagas() {
-  yield takeLatest(UserTypes.LOGIN_START, login)
+export function* authenWithSocialSaga() {
+  yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
 }
 
 export function* register({ payload: { email, displayName, phone, birthdate, password, typeID } }) {
@@ -73,9 +87,68 @@ export function* registerStartSaga() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
 
-export function* authenWithSocialSaga() {
-  yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
+// === active account by email
+function* activeEmail({ payload }) {
+  try {
+    yield UserService.activeEmail(payload)
+    yield put(activeEmailSuccess())
+  } catch (err) {
+    yield put(activeEmailFailure(err.message))
+  }
 }
+
+function* activeEmailSaga() {
+  yield takeLatest(UserTypes.ACTIVE_EMAIL, activeEmail)
+}
+
+// send email reset password
+// payload is email
+function* sendEmailResetPassword({ payload }) {
+  try {
+    yield UserService.sendEmailResetPassword(payload)
+    yield put(sendEmailResetPasswordSuccess())
+  } catch (err) {
+    yield put(sendEmailResetPasswordFailure(err.message))
+  }
+}
+
+function* sendEmailResetPasswordSaga() {
+  yield takeLatest(UserTypes.SEND_EMAIL_RESET_PASSWORD, sendEmailResetPassword)
+}
+
+// verifyTokenResetPassword
+// payload is token
+function* verifyTokenResetPassword({ payload }) {
+  try {
+    const result = yield UserService.verifyTokenResetPassword(payload)
+    yield put(verifyTokenResetPasswordSuccess(result))
+  } catch (err) {
+    yield put(verifyTokenResetPasswordFailure(err.message))
+  }
+}
+
+function* verifyTokenResetPasswordSaga() {
+  yield takeLatest(UserTypes.VERIFY_TOKEN_RESET_PASSWORD, verifyTokenResetPassword)
+}
+
+/**
+ * Reset password
+ * payload: {token, userId}
+ */
+function* resetPassword({ payload }) {
+  try {
+    yield UserService.resetPassword(payload)
+    yield put(resetPasswordSuccess())
+  } catch (err) {
+    yield put(resetPasswordFailure(err.message))
+  }
+}
+
+function* resetPasswordSaga() {
+  yield takeLatest(UserTypes.RESET_PASSWORD, resetPassword)
+}
+
+// =================================
 
 export function* logoutSaga() {
   yield takeLatest(UserTypes.LOGOUT, logout)
@@ -89,6 +162,10 @@ export function* userSaga() {
   yield all([
     call(loginStartSagas),
     call(authenWithSocialSaga),
+    call(activeEmailSaga),
+    call(sendEmailResetPasswordSaga),
+    call(verifyTokenResetPasswordSaga),
+    call(resetPasswordSaga),
     call(registerStartSaga),
     call(logoutSaga),
     call(authenticateSaga),

@@ -80,9 +80,15 @@ input {
   }
 }
 
-.message-error {
-  color: red;
-  text-align: center;
+.message {
+  &--error{
+    color: red;
+    text-align: center;
+  }
+  &--success {
+    text-align: center;
+    color: #52C41A;
+  }
 }
 
 .heading-primary {

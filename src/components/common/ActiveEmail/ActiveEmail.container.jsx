@@ -2,14 +2,14 @@ import { connect } from 'react-redux'
 import { activeEmail } from '../../../redux/user/user.actions'
 import ActiveEmailComponent from './ActiveEmail.component'
 
-// const mapDispatchToProps = dispath => ({
-//     authenWithSocial: user => dispath(authenWithSocial(user)),
-// })
-
-const mapDispatchToProps = dispath => ({
-  activeEmail: token => dispath(activeEmail(token)),
+const mapStateToProps = state => ({
+  activeEmail: state.user.activeEmail,
 })
 
-const ActiveEmailContainer = connect(null, mapDispatchToProps)(ActiveEmailComponent)
+const mapDispatchToProps = dispath => ({
+  activeEmailStart: token => dispath(activeEmail(token)),
+})
+
+const ActiveEmailContainer = connect(mapStateToProps, mapDispatchToProps)(ActiveEmailComponent)
 
 export default ActiveEmailContainer

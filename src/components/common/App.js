@@ -6,8 +6,6 @@ import test from './components/test/test'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
-import ForgetPasswordContainer from './components/common/ForgetPassword/ForgetPassword.container'
-import ResetPasswordContainer from './components/common/ResetPassword/ResetPassword.container'
 // import test from './components/LoginPage/components/test/test'
 
 const teacherPath = '/teacher'
@@ -39,8 +37,6 @@ const App = () => {
 
         <Route path="/register" component={RegisterPageContainer} />
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
-        <Route path="/foget-password" component={ForgetPasswordContainer} />
-        <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
       </Switch>
     </div>
   )

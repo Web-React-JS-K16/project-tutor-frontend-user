@@ -1,6 +1,7 @@
 @import '../../../default.style.scss';
 
 .login-page {
+  font-size: 16px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@
     text-align: center;
     margin-top: 5rem;
     color: $color-main;
-    div{
+    div {
       color: #8c8989;
     }
   }

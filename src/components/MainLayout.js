@@ -4,14 +4,16 @@ import React from 'react'
 import { Layout } from 'antd'
 import MainHeader from './common/MainHeader/MainHeader.container'
 import MainFooter from './common/MainFooter/MainFooter.container'
+import MainBackTop from './common/MainBackTop/MainBackTop.component'
 
 const { Content } = Layout
 
 const MainLayout = ({ children }) => {
   return (
     <Layout>
+      <MainBackTop />
       <MainHeader />
-      <Content style={{ padding: '0 50px', marginTop: 64 }}>{children}</Content>
+      <Content style={{ marginTop: 64 }}>{children}</Content>
       <MainFooter />
     </Layout>
   )

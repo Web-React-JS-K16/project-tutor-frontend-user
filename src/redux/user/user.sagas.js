@@ -17,6 +17,7 @@ import {
   updateCurrentUser,
 } from './user.actions'
 import UserService from '../../services/user.service'
+import { jwtToken } from '../../utils/constant'
 
 // ==== login
 export function* login({ payload: { email, password, typeID } }) {
@@ -69,8 +70,7 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
 }
 
 export function* logout() {
-  // eslint-disable-next-line no-undef
-  localStorage.removeItem('jwtToken')
+  UserService.removePreferences(jwtToken)
   yield put(onClearUserState())
 }
 
@@ -80,6 +80,7 @@ export function* authenticate({ payload: token }) {
     yield put(updateCurrentUser(user))
   } catch (err) {
     console.log('ERR AUTHENTICATE ', err)
+    yield put(updateCurrentUser(null))
   }
 }
 

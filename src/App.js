@@ -3,8 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import UserService from './services/user.service'
+import { jwtToken } from './utils/constant'
 import MainLayout from './components/MainLayout'
 import Home from './components/Home/Home.component'
+import TeacherInfoPage from './components/TeacherInfoPage/TeacherInfoPage.component'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
@@ -19,8 +22,7 @@ const teacherPath = '/teacher'
 const studentPath = '/student'
 
 const RouteTeacher = () => {
-  // eslint-disable-next-line no-undef
-  const token = localStorage.getItem('jwtToken')
+  const token = UserService.getPreferences(jwtToken)
 
   return (
     <Switch>
@@ -32,11 +34,27 @@ const RouteTeacher = () => {
           <Route path={`${teacherPath}/register`}>
             <Redirect to="/" />;
           </Route>
+          <Route
+            path={`${teacherPath}/info`}
+            render={() => (
+              <MainLayout>
+                <TeacherInfoPage />
+              </MainLayout>
+            )}
+          />
         </>
       ) : (
         <>
           <Route path={`${teacherPath}/login`} component={TeacherLoginComponent} />
           <Route path={`${teacherPath}/register`} component={TeacherRegisterComponent} />
+          <Route
+            path={`${teacherPath}/info`}
+            render={() => (
+              <MainLayout>
+                <Home />
+              </MainLayout>
+            )}
+          />
         </>
       )}
     </Switch>
@@ -44,8 +62,7 @@ const RouteTeacher = () => {
 }
 
 const RouteStudent = () => {
-  // eslint-disable-next-line no-undef
-  const token = localStorage.getItem('jwtToken')
+  const token = UserService.getPreferences(jwtToken)
 
   return (
     <Switch>

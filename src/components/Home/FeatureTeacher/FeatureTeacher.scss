@@ -3,7 +3,7 @@
   background-image: linear-gradient(to bottom right, #000, #434343);
   position: relative;
   clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
-  padding: 15rem;
+  padding: 10rem;
   margin: 15rem 0;
   text-align: center;
   animation-name: item-bottom-top;
@@ -11,13 +11,19 @@
 
   .info-teacher {
     margin-top: 5rem !important;
+    // overflow-x: auto;
+    li {
+      width: 250px !important;
+      margin: 0 2rem;
+    }
     .gutter-box {
       background: lighten($color: #000000, $amount: 20%);
-      height: 430px;
       border-radius: 4px;
       box-shadow: 0 1rem 0.5rem rgba(#000, 0.15);
       transition: 0.3s;
       padding: 3rem;
+      margin: 3rem 3rem;
+      width: 250px;
 
       &:hover {
         transform: translateY(-15px);
@@ -51,7 +57,26 @@
       p {
         font-size: 1.5rem;
         margin-top: 1rem;
+        text-align: left;
       }
+
+      .ant-btn {
+        transition: .3s;
+        margin-top: .5rem;
+
+        span {
+          color: #fff;
+        }
+
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 2px #faad1446 !important;
+      }
+      }
+    }
+
+    button:focus {
+      outline: none;
     }
   }
 }

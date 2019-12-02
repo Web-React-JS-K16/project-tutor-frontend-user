@@ -64,6 +64,9 @@ input {
   color: #8c8989;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 @keyframes item-bottom-top {
   0% {
@@ -93,11 +96,6 @@ input {
     opacity: 0;
   }
 
-  50% {
-    transform: translateX(-5rem);
-    opacity: 1;
-  }
-
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -108,11 +106,6 @@ input {
   0% {
     transform: translateX(-5rem);
     opacity: 0;
-  }
-
-  50% {
-    transform: translateX(25rem);
-    opacity: 1;
   }
 
   100% {

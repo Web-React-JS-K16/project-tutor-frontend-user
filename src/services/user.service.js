@@ -24,6 +24,8 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('jwtToken', result.user.token)
         return result.user
       })
       .catch(err => {
@@ -52,6 +54,8 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('jwtToken', result.user.token)
         return result.user
       })
       .catch(err => {
@@ -59,9 +63,9 @@ export default class UserService {
       })
   }
 
-  static register = ({ email, displayName, phone, birthdate, password }) => {
+  static register = ({ email, displayName, phone, birthdate, password, typeID }) => {
     const api = `${apiUrl}/user/register`
-
+    let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
@@ -71,22 +75,42 @@ export default class UserService {
         phone,
         birthdate,
         password,
+        typeID,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Xảy ra lỗi')
-        }
+        status = response.status
         return response.json()
       })
       .then(result => {
-        if (!result.data) {
+        if (status !== 200) {
           throw new Error(result.message)
         }
-        return result.data
+        return result.user
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
+  static authenticate = token => {
+    const api = `${apiUrl}/user/authenticate`
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        return response.json()
+      })
+      .then(user => {
+        return user
       })
       .catch(err => {
         throw new Error(err)

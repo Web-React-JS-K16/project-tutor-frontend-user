@@ -51,7 +51,13 @@ const AuthenWithFacebookComponent = ({ authenWithSocial, typeID }) => {
               const facebookID = userInfo.id
               const displayName = userInfo.firstName + userInfo.lastName
               const avatar = userInfo.picture.data.url
-              authenWithSocial({ email, facebookID, displayName, avatar, typeID })
+              authenWithSocial({
+                email,
+                facebookID,
+                displayName,
+                avatar,
+                typeID,
+              })
             }
           )
         } else {

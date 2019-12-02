@@ -1,0 +1,41 @@
+.carousel {
+  animation-name: item-top-bottom;
+  animation-duration: 3s;
+
+  .carousel-item {
+    background-size: cover;
+
+    .carousel-caption {
+        backface-visibility: hidden;
+        margin-left: -10rem;
+
+      h3 {
+        font-size: 4rem;
+        font-weight: 700;
+      }
+
+      p {
+        font-size: 3rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  [class ^= "carousel-control"]{
+    height: 5rem;
+    width: 5rem;
+    margin: auto 10px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 50%;
+
+    span {
+        background-color: transparent !important;
+        width: 15px;
+        height: 30px;
+    }
+
+    &:hover {
+        background-color: rgba(0,0,0,0.5);
+    }
+  }
+}

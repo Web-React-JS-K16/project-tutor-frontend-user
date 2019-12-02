@@ -12,6 +12,7 @@ $font-size-large: 2rem;
 html {
   font-size: 62.5%; // 10px
 }
+
 // re-custom from ant design
 button {
   background-color: $color-main !important;
@@ -24,11 +25,13 @@ a {
     color: $color-7 !important;
   }
 }
+
 // checkbox
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: $color-main !important;
   border-color: $color-main !important;
 }
+
 // input
 input {
   &:hover {
@@ -40,6 +43,42 @@ input {
   }
 }
 
+// select
+.ant-select-selection {
+  &:hover {
+    border-color: $color-main !important;
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px #faad1446 !important;
+    border: 1px solid $color-main !important;
+  }
+}
+
+// menu
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-item-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-submenu-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover,
+.ant-menu-submenu:hover {
+  color: $color-main !important;
+}
+.ant-menu-submenu-title:hover {
+  .ant-menu-submenu-arrow::before,
+  .ant-menu-submenu-arrow::after {
+    background: $color-main !important;
+  }
+}
 
 .message {
   &--error{
@@ -49,5 +88,72 @@ input {
   &--success {
     text-align: center;
     color: #52C41A;
+  }
+}
+
+.heading-primary {
+  background-image: linear-gradient(to right, #ffd666, #faad14);
+  font-size: 4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.sub-content {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-top: 4rem;
+  color: #8c8989;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes item-bottom-top {
+  0% {
+    transform: translateY(25rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-top-bottom {
+  0% {
+    transform: translateY(-5rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-right-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-left-right {
+  0% {
+    transform: translateX(-5rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0rem);
+    opacity: 1;
   }
 }

@@ -13,6 +13,8 @@ import {
   verifyTokenResetPasswordFailure,
   resetPasswordSuccess,
   resetPasswordFailure,
+  onClearUserState,
+  updateCurrentUser,
 } from './user.actions'
 import UserService from '../../services/user.service'
 
@@ -48,8 +50,8 @@ export function* authenWithSocial({ payload }) {
 export function* authenWithSocialSaga() {
   yield takeLatest(UserTypes.AUTHEN_WITH_SOCIAL, authenWithSocial)
 }
-// === register
-export function* register({ payload: { email, displayName, phone, birthdate, password } }) {
+
+export function* register({ payload: { email, displayName, phone, birthdate, password, typeID } }) {
   try {
     const user = yield UserService.register({
       email,
@@ -57,15 +59,31 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
       phone,
       birthdate,
       password,
+      typeID,
     })
     yield put(registerSuccess(user))
   } catch (err) {
-    console.log('ERR')
+    console.log('ERR REGISTER')
     yield put(registerFailure(err.message))
   }
 }
 
-export function* registerStart() {
+export function* logout() {
+  // eslint-disable-next-line no-undef
+  localStorage.removeItem('jwtToken')
+  yield put(onClearUserState())
+}
+
+export function* authenticate({ payload: token }) {
+  try {
+    const user = yield UserService.authenticate(token)
+    yield put(updateCurrentUser(user))
+  } catch (err) {
+    console.log('ERR AUTHENTICATE ', err)
+  }
+}
+
+export function* registerStartSaga() {
   yield takeLatest(UserTypes.REGISTER_START, register)
 }
 
@@ -132,14 +150,24 @@ function* resetPasswordSaga() {
 
 // =================================
 
+export function* logoutSaga() {
+  yield takeLatest(UserTypes.LOGOUT, logout)
+}
+
+export function* authenticateSaga() {
+  yield takeLatest(UserTypes.AUTHENTICATE, authenticate)
+}
+
 export function* userSaga() {
   yield all([
     call(loginStartSagas),
     call(authenWithSocialSaga),
-    call(registerStart),
     call(activeEmailSaga),
     call(sendEmailResetPasswordSaga),
     call(verifyTokenResetPasswordSaga),
     call(resetPasswordSaga),
+    call(registerStartSaga),
+    call(logoutSaga),
+    call(authenticateSaga),
   ])
 }

@@ -76,9 +76,9 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
         </Form.Item>
         <div className="login-form__bottom">
           <div>
-            <a className="login-form-forgot" href="">
+            <Link className="login-form-forgot" to="/foget-password">
               Quên mật khẩu
-            </a>
+            </Link>
           </div>
           <Button
             type="primary"
@@ -94,7 +94,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
           </div>
         </div>
       </Form>
-      <div className="message-error">
+      <div className="message--error">
         {!user.isLoading && user.errorMessage ? user.errorMessage : ''}
       </div>
     </div>

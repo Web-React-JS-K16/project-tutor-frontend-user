@@ -10,8 +10,12 @@ import Home from './components/Home/Home.component'
 import TeacherInfoPage from './components/TeacherInfoPage/TeacherInfoPage.component'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
+import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
+import ForgetPasswordContainer from './components/common/ForgetPassword/ForgetPassword.container'
+import ResetPasswordContainer from './components/common/ResetPassword/ResetPassword.container'
 import TeacherRegisterComponent from './components/teacher/TeacherRegister/TeacherRegister.component'
 import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
+import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
 // import test from './components/LoginPage/components/test/test'
 
 const teacherPath = '/teacher'
@@ -96,6 +100,11 @@ const App = () => {
         />
         <Route path={teacherPath} component={RouteTeacher} />
         <Route path={studentPath} component={RouteStudent} />
+
+        <Route path="/register" component={RegisterPageContainer} />
+        <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
+        <Route path="/foget-password" component={ForgetPasswordContainer} />
+        <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
       </Switch>
     </div>
   )

@@ -1,4 +1,5 @@
 import apiUrl from './api-url'
+import { jwtToken } from '../utils/constant'
 
 export default class UserService {
   static login = ({ email, password, typeID }) => {
@@ -24,8 +25,7 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        // eslint-disable-next-line no-undef
-        localStorage.setItem('jwtToken', result.user.token)
+        this.setPreferences(jwtToken, result.user.token)
         return result.user
       })
       .catch(err => {
@@ -54,8 +54,7 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        // eslint-disable-next-line no-undef
-        localStorage.setItem('jwtToken', result.user.token)
+        this.setPreferences(jwtToken, result.user.token)
         return result.user
       })
       .catch(err => {
@@ -113,7 +112,23 @@ export default class UserService {
         return user
       })
       .catch(err => {
+        this.removePreferences(jwtToken)
         throw new Error(err)
       })
+  }
+
+  static setPreferences = (key, value) => {
+    // eslint-disable-next-line no-undef
+    localStorage.setItem(key, value)
+  }
+
+  static getPreferences = key => {
+    // eslint-disable-next-line no-undef
+    return localStorage.getItem(key)
+  }
+
+  static removePreferences = key => {
+    // eslint-disable-next-line no-undef
+    localStorage.removeItem(key)
   }
 }

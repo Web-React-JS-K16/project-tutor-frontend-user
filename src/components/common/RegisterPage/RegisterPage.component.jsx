@@ -8,6 +8,7 @@ import './RegisterPage.style.scss'
 import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
 import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.container'
+import { STUDENT, TEACHER } from '../../../utils/constant'
 
 const RegisterPage = ({ user, form, register, onClearUserState, typeID, title }) => {
   useEffect(() => {
@@ -177,7 +178,8 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
             Đăng ký
           </Button>
           <div className="login">
-            Đã có tài khoản? <Link to="/student/login">Đăng nhập</Link>
+            Đã có tài khoản? {typeID === STUDENT && <Link to="/student/login">Đăng nhập</Link>}
+            {typeID === TEACHER && <Link to="/teacher/login">Đăng nhập</Link>}
           </div>
         </Form>
       </div>

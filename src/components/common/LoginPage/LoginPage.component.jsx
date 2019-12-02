@@ -7,6 +7,7 @@ import { Link, Redirect } from 'react-router-dom'
 import './LoginPage.style.scss'
 import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
 import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.container'
+import { STUDENT, TEACHER } from '../../../utils/constant'
 
 const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
   useEffect(() => {
@@ -27,7 +28,8 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
   const { getFieldDecorator } = form
 
   if (user.currentUser) {
-    return <Redirect to="/" />
+    if (typeID === STUDENT) return <Redirect to="/" />
+    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
   }
   return (
     <div className="login-page">
@@ -87,10 +89,8 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
             Đăng nhập
           </Button>
           <div className="register">
-            Hoặc{' '}
-            <Link to="/student/register" href="">
-              Đăng ký
-            </Link>
+            Hoặc {typeID === STUDENT && <Link to="/student/register">Đăng ký</Link>}
+            {typeID === TEACHER && <Link to="/teacher/register">Đăng ký</Link>}
           </div>
         </div>
       </Form>

@@ -1,0 +1,40 @@
+@import '../../../default.style.scss';
+
+.work-history-item {
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    &__left {
+      .job-title {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        line-height: 1.2;
+        font-size: 18px;
+      }
+      .work-date {
+        margin-right: 20px;
+        font-size: 14px;
+        color: $color-grey-1;
+      }
+      .ratings {
+        .ant-rate {
+          font-size: 18px;
+        }
+      }
+    }
+    &__right {
+      text-align: right;
+      font-size: 15px;
+      .cost {
+        font-weight: 500;
+      }
+      .work-hour {
+        color: $color-grey-1;
+      }
+    }
+  }
+  &__content {
+    margin: 15px 0;
+  }
+}

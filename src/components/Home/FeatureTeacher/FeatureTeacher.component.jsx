@@ -1,66 +1,130 @@
 import './FeatureTeacher.scss'
+import 'react-multi-carousel/lib/styles.css'
 
 import React from 'react'
-import { Row, Col } from 'antd'
+import Carousel from 'react-multi-carousel'
+import { Button, Tag, Icon } from 'antd'
 import ava from '../../../assets/images/avatar_mau.jpg'
+
+const data = [
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+  {
+    avatar: ava,
+    displayName: 'Hồ Hoàng Yến',
+    salary: '220.000',
+    qualification: 'Giảng viên đại học',
+    tags: ['Toán', 'Lý', 'Hóa'],
+    phone: '0129948934',
+    ward: 'Quận 12',
+    City: 'Hồ Chí Minh',
+  },
+]
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+}
 
 const FeatureTeacher = () => (
   <div className="feature-teacher">
-    <h3 className="heading-primary">Giáo viên nổi bậc</h3>
-    <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 20]} className="info-teacher">
-      <Col className="gutter-row" span={6}>
+    <h3 className="heading-primary">Giáo viên nổi bật</h3>
+    <Carousel responsive={responsive} className="info-teacher">
+      {data.map(item => (
         <div className="gutter-box">
           <figure className="info-teacher__avatar">
-            <img src={ava} alt="" />
+            <img src={item.avatar} alt="" />
           </figure>
           <div className="info-teacher__content">
-            <h4>Hồ Hoàng Yến</h4>
-            <p>Trình độ: Giảng viên Đại Học Sài Gòn</p>
-            <p>Chuyên môn: Toán, Lý, Hóa</p>
-            <p>Số điện thoại: 0123435959</p>
+            <h4>{item.displayName}</h4>
+            <hr />
+            <p>
+              {' '}
+              <Icon type="tags" />{' '}
+              {item.tags.map(tag => (
+                <Tag color="orange">{tag}</Tag>
+              ))}{' '}
+            </p>
+            <hr />
+            <p>
+              <Icon type="pay-circle" /> {item.salary}VND/h
+            </p>
+            <p>
+              <Icon type="phone" /> {item.phone}
+            </p>
+            <p>
+              <Icon type="environment" /> {item.ward}, {item.City}
+            </p>
+            <hr />
+
+            <Button>Xem chi tiết</Button>
           </div>
         </div>
-      </Col>
-      <Col className="gutter-row" span={6}>
-        <div className="gutter-box">
-          <figure className="info-teacher__avatar">
-            <img src={ava} alt="" />
-          </figure>
-          <div className="info-teacher__content">
-            <h4>Hồ Hoàng Yến</h4>
-            <p>Trình độ: Giảng viên Đại Học Sài Gòn</p>
-            <p>Chuyên môn: Toán, Lý, Hóa</p>
-            <p>Số điện thoại: 0123435959</p>
-          </div>
-        </div>
-      </Col>
-      <Col className="gutter-row" span={6}>
-        <div className="gutter-box">
-          <figure className="info-teacher__avatar">
-            <img src={ava} alt="" />
-          </figure>
-          <div className="info-teacher__content">
-            <h4>Hồ Hoàng Yến</h4>
-            <p>Trình độ: Giảng viên Đại Học Sài Gòn</p>
-            <p>Chuyên môn: Toán, Lý, Hóa</p>
-            <p>Số điện thoại: 0123435959</p>
-          </div>
-        </div>
-      </Col>
-      <Col className="gutter-row" span={6}>
-        <div className="gutter-box">
-          <figure className="info-teacher__avatar">
-            <img src={ava} alt="" />
-          </figure>
-          <div className="info-teacher__content">
-            <h4> Hồ Hoàng Yến</h4>
-            <p>Trình độ: Giảng viên Đại Học Sài Gòn</p>
-            <p>Chuyên môn: Toán, Lý, Hóa</p>
-            <p>Số điện thoại: 0123435959</p>
-          </div>
-        </div>
-      </Col>
-    </Row>
+      ))}
+    </Carousel>
   </div>
 )
 

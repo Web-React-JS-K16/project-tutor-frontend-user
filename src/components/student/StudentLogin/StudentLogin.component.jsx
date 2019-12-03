@@ -5,7 +5,7 @@ import { STUDENT } from '../../../utils/constant'
 
 const StudentLoginComponent = () => {
   return (
-    <div className="teacher-login">
+    <div className="student-login">
       <LoginPageContainer typeID={STUDENT} title="Học sinh" />
     </div>
   )

@@ -1,0 +1,44 @@
+@import '../../../default.style.scss';
+
+.main-header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: fit-content;
+  background-color: #fff !important;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0 10%;
+  &__logo {
+    background: rgba(255, 255, 255, 0.2);
+    float: left;
+    img {
+      width: 120px;
+      height: 31px;
+    }
+  }
+  &__search {
+    float: right;
+    margin-right: 2em;
+  }
+  &__user {
+    float: right;
+    // &__menu {
+    //   position: fixed;
+    //   z-index: 1;
+    // }
+    .ant-avatar {
+      border: 2px solid $color-5;
+    }
+    a {
+      font-size: 14px;
+      margin-right: 10px;
+      text-decoration: none;
+      &:nth-last-child(1) {
+        margin-right: 0px;
+      }
+    }
+  }
+  .ant-menu {
+    border-bottom: none;
+  }
+}

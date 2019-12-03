@@ -1,7 +1,11 @@
 $color-main: #faad14;
 $color-light: #fffbe6;
 $color-dark: #001529;
+$color-grey-1: #656565;
+$color-grey-2: rgba(0, 0, 0, 0.45);
+
 // sub color
+$color-5: #ffc53d;
 $color-7: #d48806;
 $color-8: #ad6800;
 $color-9: #874d00;
@@ -9,9 +13,12 @@ $color-10: #613400;
 
 $font-size-large: 2rem;
 
+body,
 html {
   font-size: 62.5%; // 10px
+  background-color: #f2f2f2;
 }
+
 // re-custom from ant design
 button {
   background-color: $color-main !important;
@@ -24,11 +31,13 @@ a {
     color: $color-7 !important;
   }
 }
+
 // checkbox
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: $color-main !important;
   border-color: $color-main !important;
 }
+
 // input
 input {
   &:hover {
@@ -40,16 +49,57 @@ input {
   }
 }
 
-
-.message-error {
-  color: red;
-  text-align: center;
+// select
+.ant-select-selection {
+  &:hover {
+    border-color: $color-main !important;
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px #faad1446 !important;
+    border: 1px solid $color-main !important;
+  }
 }
 
+// menu
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-item-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-submenu-selected {
+  color: $color-main !important;
+  border-bottom: 2px solid $color-main !important;
+}
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover,
+.ant-menu-submenu:hover {
+  color: $color-main !important;
+}
+.ant-menu-submenu-title:hover {
+  .ant-menu-submenu-arrow::before,
+  .ant-menu-submenu-arrow::after {
+    background: $color-main !important;
+  }
+}
+
+.message {
+  &--error{
+    color: red;
+    text-align: center;
+  }
+  &--success {
+    text-align: center;
+    color: #52C41A;
+  }
+}
 
 .heading-primary {
-  background-image: linear-gradient( to right, #ffd666, #faad14);
-  font-size: 4rem;
+  background-image: linear-gradient(to right, #ffd666, #faad14);
+  font-size: 2.5rem;
   font-weight: 600;
   text-transform: uppercase;
   color: transparent;
@@ -58,12 +108,15 @@ input {
 }
 
 .sub-content {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 400;
   margin-top: 4rem;
   color: #8c8989;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 @keyframes item-bottom-top {
   0% {
@@ -93,11 +146,6 @@ input {
     opacity: 0;
   }
 
-  50% {
-    transform: translateX(-5rem);
-    opacity: 1;
-  }
-
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -108,11 +156,6 @@ input {
   0% {
     transform: translateX(-5rem);
     opacity: 0;
-  }
-
-  50% {
-    transform: translateX(25rem);
-    opacity: 1;
   }
 
   100% {

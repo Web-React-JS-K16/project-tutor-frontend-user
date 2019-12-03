@@ -7,6 +7,7 @@ import { Link, Redirect } from 'react-router-dom'
 import './LoginPage.style.scss'
 import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
 import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.container'
+import { STUDENT, TEACHER } from '../../../utils/constant'
 
 const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
   useEffect(() => {
@@ -27,7 +28,8 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
   const { getFieldDecorator } = form
 
   if (user.currentUser) {
-    return <Redirect to="/" />
+    if (typeID === STUDENT) return <Redirect to="/" />
+    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
   }
   return (
     <div className="login-page">
@@ -37,10 +39,10 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
       </h1>
       <div className="login-page__social">
         <div className="btn-social btn--google">
-          <AuthenWithFacebookContainer typeID={typeID} />
+          <AuthenWithFacebookContainer typeID={typeID} isDisabled="false" />
         </div>
         <div className="btn-social btn--facebook">
-          <AuthenWithGoogleContainer typeID={typeID} />
+          <AuthenWithGoogleContainer typeID={typeID} isDisabled="false" />
         </div>
       </div>
       <div className="text-alternative">hoặc</div>
@@ -74,9 +76,9 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
         </Form.Item>
         <div className="login-form__bottom">
           <div>
-            <a className="login-form-forgot" href="">
+            <Link className="login-form-forgot" to="/foget-password">
               Quên mật khẩu
-            </a>
+            </Link>
           </div>
           <Button
             type="primary"
@@ -87,14 +89,12 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
             Đăng nhập
           </Button>
           <div className="register">
-            Hoặc{' '}
-            <Link to="/register" href="">
-              Đăng ký
-            </Link>
+            Hoặc {typeID === STUDENT && <Link to="/student/register">Đăng ký</Link>}
+            {typeID === TEACHER && <Link to="/teacher/register">Đăng ký</Link>}
           </div>
         </div>
       </Form>
-      <div className="message-error">
+      <div className="message--error">
         {!user.isLoading && user.errorMessage ? user.errorMessage : ''}
       </div>
     </div>

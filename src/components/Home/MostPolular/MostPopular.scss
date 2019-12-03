@@ -1,7 +1,6 @@
 .popular {
-  height: 700px;
   text-align: center;
-  margin: 5rem auto;
+  margin: 3rem auto;
   background-image: linear-gradient(to bottom right, #000, #434343);
   position: relative;
   clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
@@ -30,7 +29,7 @@
 
       .icon {
         background-image: linear-gradient(to right, #ffd666, #faad14);
-        font-size: 5rem;
+        font-size: 4rem;
         text-transform: uppercase;
         color: transparent;
         -webkit-background-clip: text;

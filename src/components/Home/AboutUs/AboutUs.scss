@@ -1,19 +1,18 @@
 .about-us-home {
-    height: 300px;
-    margin: 5rem auto;
+    margin: 4rem auto;
     text-align: center;
     max-width: 700px;
     animation-name: item-bottom-top;
     animation-duration: 3s;
 
     .button-more {
-        margin-top: 4rem;
-        height: 4rem;
+        margin-top: 3rem;
+        height: 3rem;
         transition: .3s;
 
          span {
              color: #fff;
-             font-size: 2rem;
+             font-size: 1.6rem;
              font-weight: 600;
          }
 

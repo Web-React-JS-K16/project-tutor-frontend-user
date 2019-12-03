@@ -19,7 +19,6 @@
         rgba(#faad14, 0.8),
         rgba(#ffd200, 1)
       );
-      height: 200px;
       border-radius: 4px;
       box-shadow: 0 1rem 0.5rem rgba(#ffd200, 0.15);
       transition: 0.3s;
@@ -28,13 +27,13 @@
       color: #fff;
       padding: 2rem;
       margin: 0 2rem;
-      width: 250px;
-      min-width: 250px;
+      width: 200px;
+      min-width: 200px;
 
       .icon {
         background-image: linear-gradient(to right, #fff, #fff);
-        font-size: 6rem;
-        font-weight: 700;
+        font-size: 5rem;
+        font-weight: 600;
         text-transform: uppercase;
         color: transparent;
         -webkit-background-clip: text;
@@ -42,15 +41,13 @@
       }
 
       .count {
-        font-size: 5rem;
-        font-weight: 700;
-        margin-top: -3rem;
+        font-size: 3rem;
+        font-weight: 600;
       }
 
       .sub {
         font-size: 2rem;
         font-weight: 500;
-        margin-top: -1.2rem;
       }
 
       &:hover {

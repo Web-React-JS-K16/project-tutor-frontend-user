@@ -2,7 +2,8 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Input, Button, Radio } from 'antd'
+import Swal from 'sweetalert2'
 import UserService from '../../../services/user.service'
 import { jwtToken } from '../../../utils/constant'
 import './MainHeader.style.scss'
@@ -13,10 +14,103 @@ const { SubMenu } = Menu
 const { Search } = Input
 
 const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
+  // const [userType, setUserType] = useState(STUDENT)
+
   useEffect(() => {
     const token = UserService.getPreferences(jwtToken)
     if (!currentUser && token) onAuthenticate(token)
   })
+
+  const userOptions = {
+    viSignin: 'đăng nhập',
+    viSignup: 'đăng ký',
+    viStudent: 'Học sinh',
+    viTeacher: 'Giáo viên',
+    enSignin: 'login',
+    enSignup: 'register',
+    enStudent: 'student',
+    enTeacher: 'teacher',
+  }
+
+  /* inputOptions can be an object or Promise */
+  const inputOptions = new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        0: userOptions.viStudent,
+        1: userOptions.viTeacher,
+      })
+    }, 1000)
+  })
+
+  const radioStyle = {
+    display: 'block',
+    height: '30px',
+    lineHeight: '30px',
+  }
+
+  // const handleOnChange = e => {
+  //   setUserType(e.target.value)
+  // }
+
+  // const showConfirm = confirmAction => {
+  //   Modal.confirm({
+  //     centered: true,
+  //     title: `Bạn muốn ${confirmAction} với tư cách là`,
+  //     content: (
+  //       <Radio.Group onChange={handleOnChange} defaultValue={STUDENT}>
+  //         <Radio style={radioStyle} value={STUDENT}>
+  //           Học sinh
+  //         </Radio>
+  //         <Radio style={radioStyle} value={TEACHER}>
+  //           Giáo viên
+  //         </Radio>
+  //       </Radio.Group>
+  //     ),
+  //     okText: 'Đồng ý',
+  //     cancelText: 'Hủy bỏ',
+  //     onOk() {
+  //       if (confirmAction === 'đăng nhập') {
+  //         return userType == 0
+  //           ? (window.location.href = 'student/login')
+  //           : (window.location.href = 'teacher/login')
+  //       } else {
+  //         return userType == 0
+  //           ? (window.location.href = 'student/register')
+  //           : (window.location.href = 'teacher/register')
+  //       }
+  //     },
+  //     onCancel() {
+  //       console.log('Cancel')
+  //     },
+  //   })
+  // }
+
+  const showConfirm = confirmAction => {
+    Swal.fire({
+      title: `Bạn muốn ${confirmAction} với tư cách là`,
+      icon: 'info',
+      input: 'radio',
+      inputOptions,
+      inputValue: 0,
+      confirmButtonText: 'OK',
+      inputValidator: value => {
+        if (!value) {
+          return 'Bạn chưa chọn vai trò!'
+        }
+        let userType = userOptions.enStudent
+        let action = userOptions.enSignin
+        if (confirmAction === userOptions.viSignup) {
+          action = userOptions.enSignup
+        }
+        if (value === '1') {
+          userType = userOptions.enTeacher
+        }
+        // eslint-disable-next-line no-undef
+        window.location.href = `${userType}/${action}`
+        return null
+      },
+    })
+  }
 
   const UserMenu = (
     <Menu>
@@ -46,7 +140,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           />
         </Link>
       </div>
-
+      <Radio style={radioStyle}>Học sinh</Radio>
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown
@@ -58,8 +152,12 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           </Dropdown>
         ) : (
           <>
-            <Link to="/student/login">Đăng nhập</Link>
-            <Link to="/student/register">Đăng ký</Link>
+            <Button type="link" onClick={() => showConfirm(userOptions.viSignin)}>
+              Đăng nhập
+            </Button>
+            <Button type="link" onClick={() => showConfirm(userOptions.viSignup)}>
+              Đăng ký
+            </Button>
           </>
         )}
       </div>
@@ -71,6 +169,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           style={{ width: 200 }}
         />
       </div>
+
       <Menu
         getPopupContainer={node => node.parentNode}
         theme="light"

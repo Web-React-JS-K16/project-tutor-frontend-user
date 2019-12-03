@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button, DatePicker, Alert, Row, Col } from 'antd'
 import { Redirect, Link } from 'react-router-dom'
 import './RegisterPage.style.scss'
 import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
+import NumericInput from '../NumericInput/NumericInput.component'
 import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
 import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.container'
 import { STUDENT, TEACHER } from '../../../utils/constant'
@@ -16,6 +17,7 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
   }, [onClearUserState])
 
   const [confirmDirty, setConfirmDirty] = useState(0)
+  const [phoneNumber, setPhoneNumber] = useState(0)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -46,6 +48,10 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
       form.validateFields(['confirmedPassword'], { force: true })
     }
     callback()
+  }
+
+  const onChangePhoneNumber = value => {
+    setPhoneNumber(value)
   }
 
   const { getFieldDecorator } = form
@@ -106,10 +112,11 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
                 {getFieldDecorator('phone', {
                   rules: [{ required: true, message: 'Vui lòng nhập số điện thoại.' }],
                 })(
-                  <Input
-                    prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="097xxxxxxx"
-                    type="text"
+                  <NumericInput
+                    iconType="phone"
+                    placeholder="Số điện thoại"
+                    value={phoneNumber}
+                    onChange={onChangePhoneNumber}
                   />
                 )}
               </Form.Item>

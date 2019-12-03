@@ -3,6 +3,7 @@ $color-light: #fffbe6;
 $color-dark: #001529;
 $color-grey-1: #656565;
 $color-grey-2: rgba(0, 0, 0, 0.45);
+$color-background: #fff295;
 
 // sub color
 $color-5: #ffc53d;
@@ -23,6 +24,26 @@ html {
 button {
   background-color: $color-main !important;
   border: none !important;
+  &:hover {
+    color: #fff !important;
+  }
+}
+
+.ant-btn-link {
+  color: $color-main;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  &:hover {
+    color: $color-7 !important;
+  }
+  &:active {
+    color: $color-7 !important;
+  }
+  &:focus {
+    color: $color-7 !important;
+  }
 }
 
 a {
@@ -47,6 +68,19 @@ input {
     box-shadow: 0 0 0 2px #faad1446 !important;
     border: 1px solid $color-main !important;
   }
+}
+
+// radio
+.ant-radio-checked .ant-radio-inner {
+  border-color: $color-main;
+}
+.ant-radio-inner::after {
+  background-color: $color-main;
+}
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio:hover .ant-radio-inner,
+.ant-radio-input:focus + .ant-radio-inner {
+  border-color: $color-main;
 }
 
 // select
@@ -86,14 +120,20 @@ input {
   }
 }
 
+// dropdown
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: $color-background;
+}
+
 .message {
-  &--error{
+  &--error {
     color: red;
     text-align: center;
   }
   &--success {
     text-align: center;
-    color: #52C41A;
+    color: #52c41a;
   }
 }
 

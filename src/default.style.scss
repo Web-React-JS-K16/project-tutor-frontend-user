@@ -88,10 +88,12 @@ input {
 
 .message {
   &--error{
+    font-size: 16px !important;
     color: red;
     text-align: center;
   }
   &--success {
+    font-size: 16px !important;
     text-align: center;
     color: #52C41A;
   }

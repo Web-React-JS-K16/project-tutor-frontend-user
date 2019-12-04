@@ -132,7 +132,6 @@ const ResetPasswordComponent = ({
           </Button>
         </div>
       </Form>
-      <div className="message--error">{!isLoading && message ? message : ''}</div>
       {!isLoading && isSuccess === false && <div className="message--error">{message}</div>}
     </div>
   )

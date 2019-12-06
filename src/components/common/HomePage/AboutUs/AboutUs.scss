@@ -1,0 +1,24 @@
+.about-us-home {
+    margin: 4rem auto;
+    text-align: center;
+    max-width: 700px;
+    animation-name: item-bottom-top;
+    animation-duration: 3s;
+
+    .button-more {
+        margin-top: 3rem;
+        height: 3rem;
+        transition: .3s;
+
+         span {
+             color: #fff;
+             font-size: 1.6rem;
+             font-weight: 600;
+         }
+
+         &:hover {
+             transform: translateY(-1rem);
+             box-shadow: 0 0 0 2px #faad1446 !important;
+         }
+    }
+}

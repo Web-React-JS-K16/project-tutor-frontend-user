@@ -1,8 +1,9 @@
+/* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Avatar, Dropdown, Input, Button, Radio } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
 import { jwtToken } from 'utils/constant'
@@ -42,11 +43,11 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
     }, 1000)
   })
 
-  const radioStyle = {
-    display: 'block',
-    height: '30px',
-    lineHeight: '30px',
-  }
+  // const radioStyle = {
+  //   display: 'block',
+  //   height: '30px',
+  //   lineHeight: '30px',
+  // }
 
   // const handleOnChange = e => {
   //   setUserType(e.target.value)
@@ -106,7 +107,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           userType = userOptions.enTeacher
         }
         // eslint-disable-next-line no-undef
-        window.location.href = `${userType}/${action}`
+        window.location.href = `/${userType}/${action}`
         return null
       },
     })
@@ -123,9 +124,9 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item>
-        <Button type="primary" onClick={handleLogout}>
+        <a href="javascript:;" onClick={handleLogout}>
           Đăng xuất
-        </Button>
+        </a>
       </Menu.Item>
     </Menu>
   )
@@ -140,7 +141,6 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           />
         </Link>
       </div>
-      <Radio style={radioStyle}>Học sinh</Radio>
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown
@@ -164,7 +164,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
 
       <div className="main-header__search">
         <Search
-          placeholder="input search text"
+          placeholder="Tìm kiếm"
           onSearch={value => console.log(value)}
           style={{ width: 200 }}
         />

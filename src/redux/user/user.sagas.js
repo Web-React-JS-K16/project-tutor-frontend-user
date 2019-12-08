@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { call, all, takeLatest, put } from 'redux-saga/effects'
 import UserTypes from './user.types'
 import {
@@ -16,9 +17,9 @@ import {
   onClearUserState,
   updateCurrentUser,
 } from './user.actions'
-import { onClearTeacherState } from '../teacher/teacher.actions'
+import { onClearTeacherState, getTeacherInfo } from '../teacher/teacher.actions'
 import UserService from '../../services/user.service'
-import { jwtToken } from '../../utils/constant'
+import { jwtToken, TEACHER, STUDENT } from '../../utils/constant'
 
 // ==== login
 export function* login({ payload: { email, password, typeID } }) {
@@ -79,7 +80,16 @@ export function* logout() {
 export function* authenticate({ payload: token }) {
   try {
     const user = yield UserService.authenticate(token)
-    yield put(updateCurrentUser(user))
+    if (user) {
+      yield put(updateCurrentUser(user))
+      if (user.typeID === TEACHER) {
+        yield put(getTeacherInfo(user._id))
+      } else if (user.typeID === STUDENT) {
+        // get student info
+      }
+    } else {
+      yield put(updateCurrentUser(null))
+    }
   } catch (err) {
     console.log('ERR AUTHENTICATE ', err)
     yield put(updateCurrentUser(null))

@@ -2,6 +2,8 @@ import TeacherTypes from './teacher.types'
 
 const INITIAL_STATE = {
   currentTeacher: null,
+  teacherList: [],
+  numberOfTeachers: 0,
 }
 
 const teacherReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +16,16 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentTeacher: action.payload,
+      }
+    case TeacherTypes.UPDATE_TEACHER_LIST:
+      return {
+        ...state,
+        teacherList: action.payload,
+      }
+    case TeacherTypes.UPDATE_NUMBER_OF_TEACHER:
+      return {
+        ...state,
+        numberOfTeachers: action.payload,
       }
     default:
       return state

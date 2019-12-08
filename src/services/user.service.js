@@ -131,7 +131,7 @@ export default class UserService {
     // eslint-disable-next-line no-undef
     localStorage.removeItem(key)
   }
-  
+
   static activeEmail = token => {
     const api = `${apiUrl}/user/active-email`
     let status = 400

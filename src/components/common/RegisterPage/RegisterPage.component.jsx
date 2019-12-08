@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
@@ -51,10 +52,14 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
     if (value) {
       const birthdate = new Date(value)
       const now = new Date(Date.now())
+      birthdate.setHours(0)
       birthdate.setMinutes(0)
       birthdate.setSeconds(0)
+      birthdate.setMilliseconds(0)
+      now.setHours(0)
       now.setMinutes(0)
       now.setSeconds(0)
+      now.setMilliseconds(0)
 
       if (birthdate >= now) {
         callback('Ngày sinh không hợp lệ.')
@@ -77,7 +82,7 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
 
   if (user.currentUser) {
     if (typeID === STUDENT) return <Redirect to="/" />
-    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
+    if (typeID === TEACHER) return <Redirect to={`/teacher/info?id=${user.currentUser._id}`} />
   }
   if (user.registerUser) {
     return <Redirect to="/teacher/login" />

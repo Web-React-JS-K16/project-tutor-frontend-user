@@ -8,6 +8,7 @@ import { jwtToken } from './utils/constant'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
+import TeacherListPageContainer from './components/teacher/TeacherListPage/TeacherListPage.container'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
@@ -35,10 +36,20 @@ const RouteTeacher = () => {
             <Redirect to="/" />
           </Route>
           <Route
+            exact
             path={`${teacherPath}/info`}
             render={() => (
               <MainLayout>
                 <TeacherInfoPageContainer />
+              </MainLayout>
+            )}
+          />
+          <Route
+            exact
+            path={`${teacherPath}`}
+            render={() => (
+              <MainLayout>
+                <TeacherListPageContainer />
               </MainLayout>
             )}
           />
@@ -47,9 +58,18 @@ const RouteTeacher = () => {
         <>
           <Route path={`${teacherPath}/login`} component={TeacherLoginComponent} />
           <Route path={`${teacherPath}/register`} component={TeacherRegisterComponent} />
-          <Route path={`${teacherPath}/info`}>
+          <Route exact path={`${teacherPath}/info`}>
             <Redirect to="/" />
           </Route>
+          <Route
+            exact
+            path={`${teacherPath}`}
+            render={() => (
+              <MainLayout>
+                <TeacherListPageContainer />
+              </MainLayout>
+            )}
+          />
         </>
       )}
     </Switch>

@@ -3,6 +3,8 @@ $color-light: #fffbe6;
 $color-dark: #001529;
 $color-grey-1: #656565;
 $color-grey-2: rgba(0, 0, 0, 0.45);
+$color-grey-3: #f9f9f9;
+$color-yellow-1: #feffe6;
 $color-background: #fff295;
 
 // sub color
@@ -17,7 +19,7 @@ $font-size-large: 2rem;
 body,
 html {
   font-size: 62.5%; // 10px
-  background-color: #f2f2f2;
+  background-color: $color-grey-3;
 }
 
 // re-custom from ant design
@@ -49,6 +51,7 @@ button {
 a {
   color: $color-main !important;
   &:hover {
+    text-decoration: none;
     color: $color-7 !important;
   }
 }

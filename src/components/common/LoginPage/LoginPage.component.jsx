@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
@@ -29,7 +30,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
 
   if (user.currentUser) {
     if (typeID === STUDENT) return <Redirect to="/" />
-    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
+    if (typeID === TEACHER) return <Redirect to={`/teacher/info?id=${user.currentUser._id}`} />
   }
   return (
     <div className="login-page">

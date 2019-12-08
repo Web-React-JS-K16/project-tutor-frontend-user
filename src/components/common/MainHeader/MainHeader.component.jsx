@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
@@ -6,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
-import { jwtToken } from 'utils/constant'
+import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
 import './MainHeader.style.scss'
 // import PropTypes from 'prop-types'
 
@@ -115,24 +118,31 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
 
   const UserMenu = (
     <Menu>
-      <Menu.Item>Xin chào, {currentUser && currentUser.displayName}</Menu.Item>
+      <Menu.Item style={{ cursor: 'default' }}>
+        Xin chào, {currentUser && currentUser.displayName}
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
-        <Link to="/">Trang cá nhân</Link>
+        {currentUser &&
+          (currentUser.typeID === TEACHER ? (
+            <Link to={`/teacher/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+          ) : (
+            <Link to={`/student/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+          ))}
       </Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item>
-        <a href="javascript:;" onClick={handleLogout}>
-          Đăng xuất
-        </a>
+        <Link to="/">
+          <div onClick={handleLogout}>Đăng xuất</div>
+        </Link>
       </Menu.Item>
     </Menu>
   )
 
   return (
-    <Header className="main-header" style={{}}>
+    <Header className="main-header">
       <div className="main-header__logo">
         <Link to="/">
           <img
@@ -177,8 +187,12 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
         defaultSelectedKeys={['2']}
         style={{ lineHeight: '64px' }}
       >
-        <Menu.Item key="1">Trang chủ</Menu.Item>
-        <Menu.Item key="2">Giáo viên</Menu.Item>
+        <Menu.Item key="1">
+          <Link to="/">Trang chủ</Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to={`/teacher?page=1&limit=${itemPerPage}`}>Gia sư</Link>
+        </Menu.Item>
         <SubMenu
           key="sub1"
           title={

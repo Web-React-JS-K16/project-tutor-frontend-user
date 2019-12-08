@@ -16,6 +16,7 @@ import {
   onClearUserState,
   updateCurrentUser,
 } from './user.actions'
+import { onClearTeacherState } from '../teacher/teacher.actions'
 import UserService from '../../services/user.service'
 import { jwtToken } from '../../utils/constant'
 
@@ -72,6 +73,7 @@ export function* register({ payload: { email, displayName, phone, birthdate, pas
 export function* logout() {
   UserService.removePreferences(jwtToken)
   yield put(onClearUserState())
+  yield put(onClearTeacherState())
 }
 
 export function* authenticate({ payload: token }) {

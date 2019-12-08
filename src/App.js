@@ -7,7 +7,7 @@ import UserService from './services/user.service'
 import { jwtToken } from './utils/constant'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
-import TeacherInfoPage from './components/teacher/TeacherInfoPage/TeacherInfoPage.component'
+import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
 import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
 import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
@@ -29,16 +29,16 @@ const RouteTeacher = () => {
       {token ? (
         <>
           <Route path={`${teacherPath}/login`}>
-            <Redirect to="/" />;
+            <Redirect to="/" />
           </Route>
           <Route path={`${teacherPath}/register`}>
-            <Redirect to="/" />;
+            <Redirect to="/" />
           </Route>
           <Route
             path={`${teacherPath}/info`}
             render={() => (
               <MainLayout>
-                <TeacherInfoPage />
+                <TeacherInfoPageContainer />
               </MainLayout>
             )}
           />
@@ -47,14 +47,9 @@ const RouteTeacher = () => {
         <>
           <Route path={`${teacherPath}/login`} component={TeacherLoginComponent} />
           <Route path={`${teacherPath}/register`} component={TeacherRegisterComponent} />
-          <Route
-            path={`${teacherPath}/info`}
-            render={() => (
-              <MainLayout>
-                <Home />
-              </MainLayout>
-            )}
-          />
+          <Route path={`${teacherPath}/info`}>
+            <Redirect to="/" />
+          </Route>
         </>
       )}
     </Switch>
@@ -69,10 +64,10 @@ const RouteStudent = () => {
       {token ? (
         <>
           <Route path={`${studentPath}/login`}>
-            <Redirect to="/" />;
+            <Redirect to="/" />
           </Route>
           <Route path={`${studentPath}/register`}>
-            <Redirect to="/" />;
+            <Redirect to="/" />
           </Route>
         </>
       ) : (

@@ -75,8 +75,12 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
 
   const { getFieldDecorator } = form
 
+  if (user.currentUser) {
+    if (typeID === STUDENT) return <Redirect to="/" />
+    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
+  }
   if (user.registerUser) {
-    return <Redirect to="/" />
+    return <Redirect to="/teacher/login" />
   }
 
   return (

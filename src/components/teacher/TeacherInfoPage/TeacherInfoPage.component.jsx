@@ -5,13 +5,17 @@ import React, { useEffect } from 'react'
 import { Icon, Rate, Progress, Divider, Tag, Statistic, Row, Col, Pagination } from 'antd'
 import './TeacherInfoPage.style.scss'
 import WorkHistoryItem from 'components/common/WorkHistoryItem/WorkHistoryItem.component'
+import TeacherService from '../../../services/teacher.service'
 
-const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo }) => {
+const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
+  const query = TeacherService.useQuery()
+  const userId = query.get('id')
+
   useEffect(() => {
-    if (currentUser) {
-      getTeacherInfo(currentUser._id)
+    if (userId) {
+      getTeacherInfo(userId)
     }
-  }, [currentUser, getTeacherInfo])
+  }, [userId, getTeacherInfo])
 
   return (
     <div className="teacher-info-page">
@@ -27,8 +31,8 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo }) => {
                     <div className="address">
                       <Icon type="environment" />
                       {teacher.city && <span>&ensp;{teacher.city}</span>}
-                      {teacher.district && <span>&nbsp;,{teacher.district}</span>}
-                      {teacher.ward && <span>&nbsp;,{teacher.city}</span>}
+                      {teacher.district && <span>,&nbsp;{teacher.district}</span>}
+                      {teacher.ward && <span>,&nbsp;{teacher.ward}</span>}
                     </div>
                   )}
                 </div>
@@ -91,6 +95,7 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo }) => {
                   const formatEndDate = `${endDate.getMonth()} ${endDate.getFullYear()}`
                   return (
                     <WorkHistoryItem
+                      key={contract.name}
                       name={contract.name}
                       startDate={formatStartDate}
                       endDate={formatEndDate}

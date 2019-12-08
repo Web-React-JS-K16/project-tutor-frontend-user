@@ -20,7 +20,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
   useEffect(() => {
     const token = UserService.getPreferences(jwtToken)
     if (!currentUser && token) onAuthenticate(token)
-  })
+  }, [currentUser, onAuthenticate])
 
   const userOptions = {
     viSignin: 'đăng nhập',

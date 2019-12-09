@@ -18,6 +18,11 @@ const INITIAL_STATE = {
     isTokenTrue: null,
     userId: null,
   },
+  changePassword: {
+    isSuccess: null,
+    isLoading: false,
+    message: null,
+  },
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -176,6 +181,42 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: action.payload,
+      }
+
+    // Change password
+    case UserTypes.CHANGE_PASSPWORD:
+      return {
+        ...state,
+        changePassword: {
+          ...state.changePassword,
+          isLoading: true,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_SUCCESS:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: true,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_FAILURE:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_CLEAR:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: null,
+          message: null,
+        },
       }
     default:
       return state

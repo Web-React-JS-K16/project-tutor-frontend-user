@@ -1,4 +1,4 @@
-@import '../../../default.style.scss';
+@import "../../../default.style.scss";
 
 .login-page {
   font-size: 16px;
@@ -6,6 +6,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 400px;
+  width: 35%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fffbe6;
+  padding: 0em 5em;
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
   &__title {
     text-transform: uppercase;
     font-size: $font-size-large;
@@ -21,7 +31,7 @@
   }
   .login-form {
     margin: 3rem auto;
-    width: 400px;
+    // width: 400px;
     &__bottom {
       display: flex;
       flex-direction: column;

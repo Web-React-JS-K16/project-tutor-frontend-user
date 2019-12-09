@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import ChangePasswordContainer from 'components/common/ChangePassword/ChangePassword.container'
 import UserService from './services/user.service'
 import { jwtToken } from './utils/constant'
 import MainLayout from './components/MainLayout'
@@ -17,8 +18,7 @@ import ResetPasswordContainer from './components/common/ResetPassword/ResetPassw
 import TeacherRegisterComponent from './components/teacher/TeacherRegister/TeacherRegister.component'
 import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
 import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
-import ChangePasswordComponent from './components/common/ChangePassword/ChangePassword.component'
-// import test from './components/LoginPage/components/test/test'
+import StudentUpdateInfoContainer from './components/student/StudentUpdateInfo/StudentUpdateInfo.container'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
@@ -90,6 +90,14 @@ const RouteStudent = () => {
           <Route path={`${studentPath}/register`}>
             <Redirect to="/" />
           </Route>
+          <Route
+            path={`${studentPath}/update-info`}
+            render={() => (
+              <MainLayout>
+                <StudentUpdateInfoContainer />
+              </MainLayout>
+            )}
+          />
         </>
       ) : (
         <>
@@ -121,7 +129,7 @@ const App = () => {
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
         <Route path="/foget-password" component={ForgetPasswordContainer} />
         <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
-        <Route path="/change-password" component={ChangePasswordComponent} />
+        <Route path="/change-password" component={ChangePasswordContainer} />
       </Switch>
     </div>
   )

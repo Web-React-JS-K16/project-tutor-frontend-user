@@ -244,4 +244,34 @@ export default class UserService {
         throw err
       })
   }
+
+  static changePassword = ({ password, oldPassword, token }) => {
+    const api = `${apiUrl}/user/change-password`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        password,
+        oldPassword,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw err
+      })
+  }
 }

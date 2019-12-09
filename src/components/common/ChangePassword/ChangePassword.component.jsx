@@ -1,17 +1,28 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState } from 'react'
-import { Form, Icon, Input, Button } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Form, Icon, Input, Button, Alert } from 'antd'
 import './ChangePassword.style.scss'
 
-const ChangePasswordForm = ({ form }) => {
+const ChangePasswordForm = ({
+  currentUser: { token },
+  form,
+  changePassword: { isLoading, isSuccess, message },
+  onChangePassword,
+  clearChangePassword,
+}) => {
+  useEffect(() => {
+    clearChangePassword()
+  }, [clearChangePassword])
+
   const handleSubmit = e => {
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
-        // const { oldPassword, password } = values
-        // login({ email, password, typeID })
+        const { oldPassword, password } = values
+        onChangePassword({ oldPassword, password, token })
+        form.resetFields()
       }
     })
   }
@@ -43,6 +54,11 @@ const ChangePasswordForm = ({ form }) => {
   return (
     <div className="change-password-component">
       <h1 className="change-password-component__title">Đổi mật khẩu</h1>
+
+      {!isLoading && isSuccess === false ? <Alert message={message} type="error" showIcon /> : null}
+      {!isLoading && isSuccess === true ? (
+        <Alert message="Đổi mật khẩu thành công" type="success" showIcon />
+      ) : null}
 
       <Form onSubmit={handleSubmit} className="change-password-form">
         <Form.Item hasFeedback>
@@ -122,7 +138,7 @@ const ChangePasswordForm = ({ form }) => {
             type="primary"
             htmlType="submit"
             className="change-password-form-button btn-login"
-            // loading={user.isLoading}
+            loading={isLoading}
           >
             Đổi mật khẩu
           </Button>

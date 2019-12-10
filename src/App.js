@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
+
 import 'antd/dist/antd.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import UserService from './services/user.service'
-import { jwtToken } from './utils/constant'
+import ChangePasswordContainer from 'components/common/ChangePassword/ChangePassword.container'
+import { connect } from 'react-redux'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
@@ -17,17 +19,17 @@ import ResetPasswordContainer from './components/common/ResetPassword/ResetPassw
 import TeacherRegisterComponent from './components/teacher/TeacherRegister/TeacherRegister.component'
 import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
 import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
-// import test from './components/LoginPage/components/test/test'
+import StudentUpdateInfoPageComponent from './components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
 
-const RouteTeacher = () => {
-  const token = UserService.getPreferences(jwtToken)
+const RouteTeacher = ({ currentUser }) => {
+  // const token = UserService.getPreferences(jwtToken)
 
   return (
     <Switch>
-      {token ? (
+      {currentUser ? (
         <>
           <Route path={`${teacherPath}/login`}>
             <Redirect to="/" />
@@ -44,15 +46,6 @@ const RouteTeacher = () => {
               </MainLayout>
             )}
           />
-          <Route
-            exact
-            path={`${teacherPath}`}
-            render={() => (
-              <MainLayout>
-                <TeacherListPageContainer />
-              </MainLayout>
-            )}
-          />
         </>
       ) : (
         <>
@@ -61,27 +54,29 @@ const RouteTeacher = () => {
           <Route exact path={`${teacherPath}/info`}>
             <Redirect to="/" />
           </Route>
-          <Route
-            exact
-            path={`${teacherPath}`}
-            render={() => (
-              <MainLayout>
-                <TeacherListPageContainer />
-              </MainLayout>
-            )}
-          />
         </>
       )}
+
+      {/* WITHOUT login, user can access those links */}
+      <Route
+        exact
+        path={`${teacherPath}`}
+        render={() => (
+          <MainLayout>
+            <TeacherListPageContainer />
+          </MainLayout>
+        )}
+      />
     </Switch>
   )
 }
 
-const RouteStudent = () => {
-  const token = UserService.getPreferences(jwtToken)
+const RouteStudent = ({ currentUser }) => {
+  // const token = UserService.getPreferences(jwtToken)
 
   return (
     <Switch>
-      {token ? (
+      {currentUser ? (
         <>
           <Route path={`${studentPath}/login`}>
             <Redirect to="/" />
@@ -89,6 +84,14 @@ const RouteStudent = () => {
           <Route path={`${studentPath}/register`}>
             <Redirect to="/" />
           </Route>
+          <Route
+            path={`${studentPath}/update-info`}
+            render={() => (
+              <MainLayout>
+                <StudentUpdateInfoPageComponent />
+              </MainLayout>
+            )}
+          />
         </>
       ) : (
         <>
@@ -96,11 +99,14 @@ const RouteStudent = () => {
           <Route path={`${studentPath}/register`} component={StudentRegisterComponent} />
         </>
       )}
+
+      {/* WITHOUT login, user can access those links */}
+      {/* <Route path={`${studentPath}/`} component={} /> */}
     </Switch>
   )
 }
 
-const App = () => {
+const App = ({ currentUser }) => {
   return (
     <div>
       <Switch>
@@ -113,16 +119,23 @@ const App = () => {
             </MainLayout>
           )}
         />
-        <Route path={teacherPath} component={RouteTeacher} />
-        <Route path={studentPath} component={RouteStudent} />
+        {/* <Route path={teacherPath} component={RouteTeacher} />
+        <Route path={studentPath} component={RouteStudent} /> */}
+        <Route path={teacherPath} render={() => <RouteTeacher currentUser={currentUser} />} />
+        <Route path={studentPath} render={() => <RouteStudent currentUser={currentUser} />} />
 
         <Route path="/register" component={RegisterPageContainer} />
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
         <Route path="/foget-password" component={ForgetPasswordContainer} />
         <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
+        <Route path="/change-password" component={ChangePasswordContainer} />
       </Switch>
     </div>
   )
 }
 
-export default App
+const mapStateToProps = state => ({
+  currentUser: state.user.currentUser,
+})
+
+export default connect(mapStateToProps)(App)

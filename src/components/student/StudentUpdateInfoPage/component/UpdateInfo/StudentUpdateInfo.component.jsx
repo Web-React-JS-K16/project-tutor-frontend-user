@@ -1,16 +1,26 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Form, Icon, Input, Button, Alert, Radio, DatePicker } from 'antd'
-
+import moment from 'moment'
+import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './StudentUpdateInfo.style.scss'
 
 const StudentUpdateInfoComponent = ({
-  currentUser: { token, displayName, phone, birthdate, gender, city, district, ward },
+  currentStudent,
+  currentUser: { token },
   form,
+  updateInfo: { isLoading, isSuccess, message },
+  getInfo,
   updateInfoAction,
   clearUpdateInfo,
-  updateInfo: { isLoading, isSuccess, message },
+  studentGetInfo,
 }) => {
+  useEffect(() => {
+    console.log('get info')
+    studentGetInfo(token)
+    console.log('get info after')
+  }, [studentGetInfo, token])
+
   useEffect(() => {
     clearUpdateInfo()
   }, [clearUpdateInfo])
@@ -57,124 +67,142 @@ const StudentUpdateInfoComponent = ({
   }
 
   const { getFieldDecorator } = form
+  console.log('getInfo: ', getInfo)
+  if (getInfo.isLoading) {
+    return <LoadingIcon />
+  }
+  if (getInfo.isSuccess === false) {
+    return (
+      <div className="student-update-info">
+        <Alert type="error" message={getInfo.message} />
+      </div>
+    )
+  }
 
-  return (
-    <div className="student-update-info-page">
-      {!isLoading && isSuccess === false ? <Alert message={message} type="error" showIcon /> : null}
-      {!isLoading && isSuccess === true ? (
-        <Alert message="Cập nhật thông tin thành công" type="success" showIcon />
-      ) : null}
+  if (currentStudent) {
+    const { displayName, phone, birthdate, gender, city, district, ward } = currentStudent
+    return (
+      <div className="student-update-info">
+        {!isLoading && isSuccess === false ? (
+          <Alert message={message} type="error" showIcon />
+        ) : null}
+        {!isLoading && isSuccess === true ? (
+          <Alert message="Cập nhật thông tin thành công" type="success" showIcon />
+        ) : null}
 
-      <Form onSubmit={handleSubmit} className="student-update-info-form">
-        <div className="content-form">
-          <div className="student-update-info-form__block">
-            <div className="student-update-info-form__block--title">Thông tin:</div>
+        <Form onSubmit={handleSubmit} className="student-update-info-form">
+          <div className="content-form">
+            <div className="student-update-info-form__block">
+              <div className="student-update-info-form__block--title">Thông tin:</div>
 
-            <Form.Item hasFeedback label="Tên hiển thị">
-              {getFieldDecorator('displayName', {
-                initialValue: displayName || '',
-                rules: [
-                  { required: true, message: 'Vui lòng nhập tên' },
-                  { min: 2, message: 'Tên phải từ 2 ký tự trở lên' },
-                  { max: 20, message: 'Tên không được quá 20 ký tự' },
-                ],
-              })(
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Tên hiển thị"
-                />
-              )}
-            </Form.Item>
-            <Form.Item hasFeedback label="Số điện thoại">
-              {getFieldDecorator('phone', {
-                initialValue: phone || '',
-                rules: [
-                  { required: true, message: 'Vui lòng nhập số điện thoại' },
-                  {
-                    validator: validatePhoneNumber,
-                  },
-                ],
-              })(
-                <Input
-                  prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Số điện thoại"
-                />
-              )}
-            </Form.Item>
-            <Form.Item hasFeedback label="Ngày sinh">
-              {getFieldDecorator('birthdate', {
-                initialValue: birthdate || '',
-                rules: [
-                  { required: true, message: 'Vui lòng nhập ngày sinh' },
-                  { validator: validateBirthdate },
-                ],
-              })(
-                <DatePicker
-                  style={{ width: '100%' }}
-                  placeholder="Chọn ngày sinh"
-                  format="DD/MM/YYYY"
-                />
-              )}
-            </Form.Item>
-            <Form.Item label="Giới tính">
-              {getFieldDecorator('gender', {
-                initialValue: gender || 'male',
-                rules: [{ required: true, message: 'Vui lòng chọn giới tính' }],
-              })(
-                <Radio.Group>
-                  <Radio value="male">Nam</Radio>
-                  <Radio value="female">Nữ</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
+              <Form.Item hasFeedback label="Tên hiển thị">
+                {getFieldDecorator('displayName', {
+                  initialValue: displayName || '',
+                  rules: [
+                    { required: true, message: 'Vui lòng nhập tên' },
+                    { min: 2, message: 'Tên phải từ 2 ký tự trở lên' },
+                    { max: 20, message: 'Tên không được quá 20 ký tự' },
+                  ],
+                })(
+                  <Input
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Tên hiển thị"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item hasFeedback label="Số điện thoại">
+                {getFieldDecorator('phone', {
+                  initialValue: phone || '',
+                  rules: [
+                    { required: true, message: 'Vui lòng nhập số điện thoại' },
+                    {
+                      validator: validatePhoneNumber,
+                    },
+                  ],
+                })(
+                  <Input
+                    prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Số điện thoại"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item hasFeedback label="Ngày sinh">
+                {getFieldDecorator('birthdate', {
+                  initialValue: moment(new Date(birthdate), 'DD/MM/YYYY') || '',
+                  rules: [
+                    { required: true, message: 'Vui lòng nhập ngày sinh' },
+                    { validator: validateBirthdate },
+                  ],
+                })(
+                  <DatePicker
+                    // value= '2019-12-02T10:24:52.738+00:00'
+                    style={{ width: '100%' }}
+                    placeholder="Chọn ngày sinh"
+                    format="DD/MM/YYYY"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item label="Giới tính">
+                {getFieldDecorator('gender', {
+                  initialValue: gender || 'male',
+                  rules: [{ required: true, message: 'Vui lòng chọn giới tính' }],
+                })(
+                  <Radio.Group>
+                    <Radio value="male">Nam</Radio>
+                    <Radio value="female">Nữ</Radio>
+                  </Radio.Group>
+                )}
+              </Form.Item>
+            </div>
+            <div className="student-update-info-form__block">
+              <div className="student-update-info-form__block--title">Địa chỉ:</div>
+              <Form.Item hasFeedback label="Thành phố/ tỉnh">
+                {getFieldDecorator('city', {
+                  initialValue: city || '',
+                })(
+                  <Input
+                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Thành phố/ tỉnh"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item hasFeedback label="Quận">
+                {getFieldDecorator('district', {
+                  initialValue: district || '',
+                })(
+                  <Input
+                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Quận"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item hasFeedback label="Phường">
+                {getFieldDecorator('ward', {
+                  initialValue: ward || '',
+                })(
+                  <Input
+                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Phường"
+                  />
+                )}
+              </Form.Item>
+            </div>
           </div>
-          <div className="student-update-info-form__block">
-            <div className="student-update-info-form__block--title">Địa chỉ:</div>
-            <Form.Item hasFeedback label="Thành phố/ tỉnh">
-              {getFieldDecorator('city', {
-                initialValue: city || '',
-              })(
-                <Input
-                  prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Thành phố/ tỉnh"
-                />
-              )}
-            </Form.Item>
-            <Form.Item hasFeedback label="Quận">
-              {getFieldDecorator('district', {
-                initialValue: district || '',
-              })(
-                <Input
-                  prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Quận"
-                />
-              )}
-            </Form.Item>
-            <Form.Item hasFeedback label="Phường">
-              {getFieldDecorator('ward', {
-                initialValue: ward || '',
-              })(
-                <Input
-                  prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Phường"
-                />
-              )}
-            </Form.Item>
+          <div className="student-update-info-form__bottom">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="btn-student-update-info"
+              loading={isLoading}
+            >
+              Cập nhật thông tin
+            </Button>
           </div>
-        </div>
-        <div className="student-update-info-form__bottom">
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="btn-student-update-info"
-            loading={isLoading}
-          >
-            Cập nhật thông tin
-          </Button>
-        </div>
-      </Form>
-    </div>
-  )
+        </Form>
+      </div>
+    )
+  }
+  return <div>nothing</div>
 }
 
 export default Form.create({ name: 'StudentUpdateInfoComponent' })(StudentUpdateInfoComponent)

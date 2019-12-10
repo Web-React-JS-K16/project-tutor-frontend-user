@@ -1,6 +1,12 @@
 import StudentTypes from './student.types'
 
 const INITIAL_STATE = {
+  currentStudent: null, // all student's info
+  getInfo: {
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
   updateInfo: {
     isLoading: false,
     isSuccess: null,
@@ -10,15 +16,46 @@ const INITIAL_STATE = {
 
 const studentReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case StudentTypes.UPDATE_INFO:
+    // GET INFO
+    case StudentTypes.STUDENT_GET_INFO:
       return {
         ...state,
-        updateInfo: {
-          ...state.UPDATE_INFO,
+        getInfo: {
+          ...state.getInfo,
           isLoading: true,
         },
       }
-    case StudentTypes.UPDATE_INFO_SUCCESS:
+    case StudentTypes.STUDENT_GET_INFO_SUCCESS:
+      return {
+        ...state,
+        currentStudent: {
+          ...state.currentStudent,
+          ...action.payload,
+        },
+        getInfo: {
+          isLoading: false,
+          isSuccess: true,
+        },
+      }
+    case StudentTypes.STUDENT_GET_INFO_FAILURE:
+      return {
+        ...state,
+        getInfo: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    // UPDATE INFO
+    case StudentTypes.STUDENT_UPDATE_INFO:
+      return {
+        ...state,
+        updateInfo: {
+          ...state.updateInfo,
+          isLoading: true,
+        },
+      }
+    case StudentTypes.STUDENT_UPDATE_INFO_SUCCESS:
       return {
         ...state,
         updateInfo: {
@@ -26,7 +63,7 @@ const studentReducer = (state = INITIAL_STATE, action) => {
           isSuccess: true,
         },
       }
-    case StudentTypes.UPDATE_INFO_FAILURE:
+    case StudentTypes.STUDENT_UPDATE_INFO_FAILURE:
       return {
         ...state,
         updateInfo: {
@@ -35,7 +72,7 @@ const studentReducer = (state = INITIAL_STATE, action) => {
           message: action.payload,
         },
       }
-    case StudentTypes.UPDATE_INFO_CLEAR:
+    case StudentTypes.STUDENT_UPDATE_INFO_CLEAR:
       return {
         ...state,
         UserTypes: {

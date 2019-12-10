@@ -1,12 +1,15 @@
 @import "../../../../../default.style.scss";
 
-.student-update-info-page {
+.student-update-info {
   font-size: 16px;
   font-size: 16px;
   margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  .ant-alert {
+    margin-bottom: 15px;
+  }
   .student-update-info-form {
     margin-bottom: 3rem;
     .content-form {

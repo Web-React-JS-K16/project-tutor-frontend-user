@@ -1,6 +1,6 @@
 @import "../../../../../default.style.scss";
 
-.student-update-info {
+.teacher-update-info {
   font-size: 16px;
   font-size: 16px;
   margin: auto;
@@ -10,24 +10,28 @@
   .ant-alert {
     margin-bottom: 15px;
   }
-  .student-update-info-form {
+  .teacher-update-info-form {
     margin-bottom: 3rem;
     .content-form {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      .student-update-info-form__block {
-        margin: 0px 10px;
-        &--title{
-          color: $color-main;
-          font-weight: bold;
+        &__info{
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            .content-form__info--block {
+              margin: 0px 7rem;
+            }
         }
-      }
+        &__about {
+            .about-input{
+                min-height: 150px;
+                margin-top: 20px;
+            }
+        }
     }
     &__bottom {
       display: flex;
       flex-direction: column;
-      .btn-student-update-info {
+      .btn-teacher-update-info {
         max-width: 200px;
         margin: auto;
       }
@@ -43,6 +47,10 @@
   }
 }
 
-.student-update-info-loading{
+.teacher-update-info-loading{
   text-align: center;
+}
+.teacher-update-form__title {
+    color: $color-main;
+    font-weight: bold;
 }

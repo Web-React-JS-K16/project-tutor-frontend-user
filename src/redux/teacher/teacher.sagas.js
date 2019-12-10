@@ -1,7 +1,16 @@
 /* eslint-disable no-restricted-globals */
 import { call, all, takeLatest, put } from 'redux-saga/effects'
+import { updateUserInfoSuccess } from 'redux/user/user.actions'
 import TeacherTypes from './teacher.types'
-import { updateCurrentTeacher, updateTeacherList, updateNumerOfTeachers } from './teacher.actions'
+import {
+  updateCurrentTeacher,
+  updateTeacherList,
+  updateNumerOfTeachers,
+  teacherGetInfoSuccess,
+  teacherGetInfoFailure,
+  teacherUpdateInfoSuccess,
+  teacherUpdateInfoFailure,
+} from './teacher.actions'
 import TeacherService from '../../services/teacher.service'
 
 export function* getInfo({ payload: id }) {
@@ -50,9 +59,46 @@ export function* getTeacherListSaga() {
 export function* countTeachersSaga() {
   yield takeLatest(TeacherTypes.COUNT_TEACHERS, countTeachers)
 }
+// === get teacher info to update
+/**
+ *
+ * @param {String} payload: as id in User collection
+ */
+function* teacherGetInfoToUpdate({ payload }) {
+  console.log('on teacher saga')
+  try {
+    const info = yield TeacherService.getInfoToUpdate(payload)
+    yield put(teacherGetInfoSuccess(info))
+  } catch (err) {
+    yield put(teacherGetInfoFailure(err.message))
+  }
+}
+function* teacherGetInfoToUpdateSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_GET_INFO, teacherGetInfoToUpdate)
+}
+// ===========
+function* teacherUpdateInfo({ payload: { info, token } }) {
+  try {
+    yield TeacherService.updateInfo({ info, token })
+    const { displayName, phone, birthdate, gender } = info
+    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender }))
+    yield put(teacherUpdateInfoSuccess(info))
+  } catch (err) {
+    yield put(teacherUpdateInfoFailure(err.message))
+  }
+}
+function* teacherUpdateInfoSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_UPDATE_INFO, teacherUpdateInfo)
+}
 
 // =================================
 
 export function* teacherSaga() {
-  yield all([call(getTeacherInfoSaga), call(getTeacherListSaga), call(countTeachersSaga)])
+  yield all([
+    call(getTeacherInfoSaga),
+    call(getTeacherListSaga),
+    call(countTeachersSaga),
+    call(teacherUpdateInfoSaga),
+    call(teacherGetInfoToUpdateSaga),
+  ])
 }

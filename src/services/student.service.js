@@ -56,9 +56,9 @@ export default class StudentService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        const { city, district, ward } = result.payload
+        const { city, district } = result.payload
         console.log('result: ', result)
-        return { city, district, ward, ...result.payload.user }
+        return { city, district, ...result.payload.user }
       })
       .catch(err => {
         throw err

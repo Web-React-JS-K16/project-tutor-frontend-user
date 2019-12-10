@@ -7,6 +7,8 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import ChangePasswordContainer from 'components/common/ChangePassword/ChangePassword.container'
 import { connect } from 'react-redux'
+import { STUDENT } from 'utils/constant'
+import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
@@ -20,6 +22,7 @@ import TeacherRegisterComponent from './components/teacher/TeacherRegister/Teach
 import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
 import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
 import StudentUpdateInfoPageComponent from './components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
+import TeacherUpdateInfoPage from './components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
@@ -46,6 +49,7 @@ const RouteTeacher = ({ currentUser }) => {
               </MainLayout>
             )}
           />
+          <Route path={`${teacherPath}/update-info`} render={() => <TeacherUpdateInfoPage />} />
         </>
       ) : (
         <>
@@ -86,11 +90,7 @@ const RouteStudent = ({ currentUser }) => {
           </Route>
           <Route
             path={`${studentPath}/update-info`}
-            render={() => (
-              <MainLayout>
-                <StudentUpdateInfoPageComponent />
-              </MainLayout>
-            )}
+            component={currentUser.typeID === STUDENT ? StudentUpdateInfoPageComponent : NotFoud404}
           />
         </>
       ) : (

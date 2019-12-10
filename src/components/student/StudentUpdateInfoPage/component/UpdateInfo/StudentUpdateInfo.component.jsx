@@ -69,7 +69,11 @@ const StudentUpdateInfoComponent = ({
   const { getFieldDecorator } = form
   console.log('getInfo: ', getInfo)
   if (getInfo.isLoading) {
-    return <LoadingIcon />
+    return (
+      <div className="student-update-info-loading">
+        <LoadingIcon />
+      </div>
+    )
   }
   if (getInfo.isSuccess === false) {
     return (
@@ -80,7 +84,7 @@ const StudentUpdateInfoComponent = ({
   }
 
   if (currentStudent) {
-    const { displayName, phone, birthdate, gender, city, district, ward } = currentStudent
+    const { displayName, phone, birthdate, gender, city, district } = currentStudent
     return (
       <div className="student-update-info">
         {!isLoading && isSuccess === false ? (
@@ -176,16 +180,6 @@ const StudentUpdateInfoComponent = ({
                   />
                 )}
               </Form.Item>
-              <Form.Item hasFeedback label="Phường">
-                {getFieldDecorator('ward', {
-                  initialValue: ward || '',
-                })(
-                  <Input
-                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="Phường"
-                  />
-                )}
-              </Form.Item>
             </div>
           </div>
           <div className="student-update-info-form__bottom">
@@ -202,7 +196,7 @@ const StudentUpdateInfoComponent = ({
       </div>
     )
   }
-  return <div>nothing</div>
+  return <div>...</div>
 }
 
 export default Form.create({ name: 'StudentUpdateInfoComponent' })(StudentUpdateInfoComponent)

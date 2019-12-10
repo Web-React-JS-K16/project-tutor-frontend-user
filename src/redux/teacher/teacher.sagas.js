@@ -14,9 +14,9 @@ export function* getInfo({ payload: id }) {
   }
 }
 
-export function* getList({ payload: { page, limit } }) {
+export function* getList({ payload: filterConditions }) {
   try {
-    const teachers = yield TeacherService.getTeacherList(page, limit)
+    const teachers = yield TeacherService.getTeacherList(filterConditions)
     yield put(updateTeacherList(teachers))
   } catch (err) {
     console.log('ERR GET TEACHER LIST ', err)

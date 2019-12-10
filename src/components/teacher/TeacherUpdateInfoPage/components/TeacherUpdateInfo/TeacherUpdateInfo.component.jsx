@@ -7,8 +7,6 @@ import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './TeacherUpdateInfo.style.scss'
 import TagService from '../../../../../services/tag.service'
 
-const { Option } = Select
-
 const TeacherUpdateInfoComponent = ({
   currentTeacher,
   currentUser: { token, _id },
@@ -78,8 +76,14 @@ const TeacherUpdateInfoComponent = ({
     }
     callback()
   }
+
+  const handleTagChange = (value, e) => {
+    console.log('value is : ', value)
+    console.log('e : ', e)
+  }
+
   const { getFieldDecorator } = form
-  console.log('getInfo: ', getInfo)
+  // console.log('getInfo: ', getInfo)
   if (getInfo.isLoading) {
     return (
       <div className="teacher-update-info-loading">
@@ -198,7 +202,7 @@ const TeacherUpdateInfoComponent = ({
             </div>
             <div className="content-form__about">
               <div className="teacher-update-form__title">Giới thiệu: </div>
-              <Form.Item hasFeedback>
+              <Form.Item>
                 {getFieldDecorator('about', {
                   initialValue: about || '',
                   rules: [
@@ -212,20 +216,12 @@ const TeacherUpdateInfoComponent = ({
               <div className="teacher-update-form__title">Kỹ năng: </div>
               {tagList !== null ? (
                 <Form.Item hasFeedback>
-                  {getFieldDecorator('tags')(
-                    <Select
-                      mode="multiple"
-                      // defaultValue={initalValueTag}
-                      defaultValue={[
-                        '5ded287961121e4a8c8b7592',
-                        '5ded295261121e4a8c8b75a2',
-                        '5ded299061121e4a8c8b75ad',
-                      ]}
-                    >
+                  {getFieldDecorator('tags', {
+                    initialValue: initalValueTag,
+                  })(
+                    <Select mode="multiple" style={{ width: '100%' }} onSelect={handleTagChange}>
                       {tagList.map(item => (
-                        <Option key={item._id} value={item._id}>
-                          {item.name}
-                        </Option>
+                        <Select.Option value={item._id}>{item.name}</Select.Option>
                       ))}
                     </Select>
                   )}

@@ -29,6 +29,7 @@ const studentPath = '/student'
 
 const RouteTeacher = ({ currentUser }) => {
   // const token = UserService.getPreferences(jwtToken)
+  console.log('current user: ', currentUser)
 
   return (
     <Switch>

@@ -13,20 +13,20 @@
   .teacher-update-info-form {
     margin-bottom: 3rem;
     .content-form {
-        &__info{
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            .content-form__info--block {
-              margin: 0px 7rem;
-            }
+      &__info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        .content-form__info--block {
+          margin: 0px 7rem;
         }
-        &__about {
-            .about-input{
-                min-height: 150px;
-                margin-top: 20px;
-            }
+      }
+      &__about {
+        .about-input {
+          min-height: 150px;
+          margin-top: 20px;
         }
+      }
     }
     &__bottom {
       display: flex;
@@ -47,10 +47,10 @@
   }
 }
 
-.teacher-update-info-loading{
+.teacher-update-info-loading {
   text-align: center;
 }
 .teacher-update-form__title {
-    color: $color-main;
-    font-weight: bold;
+  color: $color-main;
+  font-weight: bold;
 }

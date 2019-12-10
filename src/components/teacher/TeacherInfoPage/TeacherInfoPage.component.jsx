@@ -27,12 +27,11 @@ const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
                 <img src={teacher.avatar} alt="" />
                 <div>
                   <div className="name">{teacher.displayName}</div>
-                  {(teacher.city || teacher.district || teacher.ward) && (
+                  {(teacher.city || teacher.district) && (
                     <div className="address">
                       <Icon type="environment" />
-                      {teacher.city && <span>&ensp;{teacher.city}</span>}
-                      {teacher.district && <span>,&nbsp;{teacher.district}</span>}
-                      {teacher.ward && <span>,&nbsp;{teacher.ward}</span>}
+                      {teacher.city && <span>&ensp;{teacher.city.name}</span>}
+                      {teacher.district && <span>,&nbsp;{teacher.district.name}</span>}
                     </div>
                   )}
                 </div>
@@ -71,7 +70,7 @@ const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
             </div>
             <Divider />
             <div className="teacher-info-page__wrapper__statistics">
-              <Row gutter={16}>
+              <Row>
                 <Col span={4}>
                   <Statistic title="Mức lương (vnđ/h)" value={teacher.salary} />
                 </Col>

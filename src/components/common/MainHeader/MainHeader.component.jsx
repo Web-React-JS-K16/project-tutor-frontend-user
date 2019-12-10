@@ -171,7 +171,6 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           </>
         )}
       </div>
-
       <div className="main-header__search">
         <Search
           placeholder="Tìm kiếm"
@@ -179,7 +178,6 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           style={{ width: 200 }}
         />
       </div>
-
       <Menu
         getPopupContainer={node => node.parentNode}
         theme="light"

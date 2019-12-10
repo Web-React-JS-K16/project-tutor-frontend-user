@@ -133,7 +133,7 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
               />
             )}
           </Form.Item>
-          <Row gutter={8}>
+          <Row>
             <Col span={12}>
               <Form.Item hasFeedback>
                 {getFieldDecorator('phone', {
@@ -169,7 +169,7 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={8}>
+          <Row>
             <Col span={12}>
               <Form.Item hasFeedback>
                 {getFieldDecorator('password', {

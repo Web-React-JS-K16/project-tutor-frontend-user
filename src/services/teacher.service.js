@@ -7,6 +7,30 @@ export default class TeacherService {
     return new URLSearchParams(useLocation().search)
   }
 
+  static parameterizeObject = (obj, prefix) => {
+    if (!obj) return ''
+    const str = []
+    Object.keys(obj).forEach(key => {
+      if (obj[key]) {
+        const formarKey = prefix ? `${prefix}[${key}]` : key
+        const value = obj[key]
+        str.push(
+          value !== null && typeof value === 'object'
+            ? this.parameterizeObject(value, formarKey)
+            : `${encodeURIComponent(formarKey)}=${encodeURIComponent(value)}`
+        )
+      }
+    })
+    if (str.length === 0) return ''
+    return `${str.join('&')}`
+  }
+
+  static parameterizeArray = (key, arr) => {
+    if (!arr || arr.length === 0) return ''
+    const array = arr.map(encodeURIComponent)
+    return `&${key}[]=${array.join(`&${key}[]=`)}`
+  }
+
   static getTeacherInfo = id => {
     const api = `${apiUrl}/user/info?id=${id}`
     let status = 400
@@ -32,8 +56,20 @@ export default class TeacherService {
       })
   }
 
-  static getTeacherList = (page, limit) => {
-    const api = `${apiUrl}/user?type=${TEACHER}&page=${page}&limit=${limit}`
+  static getTeacherList = filterConditions => {
+    const page = filterConditions.currentPage
+    const limit = filterConditions.currentLimit
+    const majors = filterConditions.currentMajors
+    const fromSalary = filterConditions.currentFromSalary
+    const toSalary = filterConditions.currentToSalary
+    const locationObject = filterConditions.currentLocations
+
+    const query = `${this.parameterizeArray('majors', majors)}${this.parameterizeObject({
+      fromSalary,
+      toSalary,
+    })}&${this.parameterizeObject(locationObject)}`
+
+    const api = `${apiUrl}/user?type=${TEACHER}&page=${page}&limit=${limit}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {

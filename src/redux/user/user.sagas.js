@@ -16,6 +16,10 @@ import {
   resetPasswordFailure,
   onClearUserState,
   updateCurrentUser,
+  changePasswordSuccess,
+  changePasswordFailure,
+  updateAvatarSuccess,
+  updateAvatarFailure,
 } from './user.actions'
 import { onClearTeacherState, getTeacherInfo } from '../teacher/teacher.actions'
 import UserService from '../../services/user.service'
@@ -171,6 +175,33 @@ export function* authenticateSaga() {
   yield takeLatest(UserTypes.AUTHENTICATE, authenticate)
 }
 
+// ===========
+function* changePassword({ payload }) {
+  try {
+    yield UserService.changePassword(payload)
+    yield put(changePasswordSuccess())
+  } catch (err) {
+    yield put(changePasswordFailure(err.message))
+  }
+}
+function* changePasswordSaga() {
+  yield takeLatest(UserTypes.CHANGE_PASSPWORD, changePassword)
+}
+
+// ===========
+function* updateAvatar({ payload }) {
+  try {
+    const result = yield UserService.updateAvatar(payload)
+    console.log('result after update avatar: ', result)
+    yield put(updateAvatarSuccess(payload.avatar))
+  } catch (err) {
+    yield put(updateAvatarFailure(err.message))
+  }
+}
+function* updateAvatarSaga() {
+  yield takeLatest(UserTypes.UPDATE_AVATAR, updateAvatar)
+}
+
 export function* userSaga() {
   yield all([
     call(loginStartSagas),
@@ -182,5 +213,7 @@ export function* userSaga() {
     call(registerStartSaga),
     call(logoutSaga),
     call(authenticateSaga),
+    call(changePasswordSaga),
+    call(updateAvatarSaga),
   ])
 }

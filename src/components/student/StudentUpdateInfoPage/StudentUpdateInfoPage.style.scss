@@ -1,0 +1,10 @@
+@import "../../../default.style.scss";
+
+.student-update-info-page {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 40px; 
+  .ant-tabs-nav-wrap{
+    text-align: center !important;
+  }
+}

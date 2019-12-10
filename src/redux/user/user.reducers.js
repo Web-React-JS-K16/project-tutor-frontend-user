@@ -18,6 +18,16 @@ const INITIAL_STATE = {
     isTokenTrue: null,
     userId: null,
   },
+  changePassword: {
+    isSuccess: null,
+    isLoading: false,
+    message: null,
+  },
+  updateAvatar: {
+    isSuccess: null,
+    isLoading: null,
+    message: null,
+  },
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -177,6 +187,82 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentUser: action.payload,
       }
+
+    // Change password
+    case UserTypes.CHANGE_PASSPWORD:
+      return {
+        ...state,
+        changePassword: {
+          ...state.changePassword,
+          isLoading: true,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_SUCCESS:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: true,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_FAILURE:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    case UserTypes.CHANGE_PASSPWORD_CLEAR:
+      return {
+        ...state,
+        changePassword: {
+          isLoading: false,
+          isSuccess: null,
+          message: null,
+        },
+      }
+    // update avatar
+    case UserTypes.UPDATE_AVATAR:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: true,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_SUCCESS:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          avatar: action.payload, // new avatar
+        },
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: true,
+          message: null,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_FAIILURE:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_CLEAR:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: null,
+          message: null,
+        },
+      }
+
     default:
       return state
   }

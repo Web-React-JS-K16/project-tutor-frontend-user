@@ -4,7 +4,7 @@ import React from 'react'
 
 const MostPopular = () => (
   <div className="popular">
-    <h3 className="heading-primary">Ưu điểm nổi bậc</h3>
+    <h3 className="heading-primary">Ưu điểm nổi bật</h3>
     <div className="content">
       <div className="content__box">
         <i className="icon icon-basic-spread-text-bookmark" />

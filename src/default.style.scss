@@ -208,3 +208,26 @@ input {
     opacity: 1;
   }
 }
+
+// tab panel
+.ant-tabs-tab {
+  &:hover{
+    color: $color-main !important;
+  }
+}
+.ant-tabs-tab-active{
+  color: $color-main !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color:  $color-main;
+}
+
+// slide bar
+.makeStyles-blue-23 {
+  background-color: $color-main !important;
+  box-shadow:
+   0 12px 20px -10px #fffbe6,
+   0 4px 20px 0 #fff1b8,
+}
+

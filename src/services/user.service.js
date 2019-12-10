@@ -274,4 +274,33 @@ export default class UserService {
         throw err
       })
   }
+
+  static updateAvatar = ({ avatar, token }) => {
+    const api = `${apiUrl}/user/update-avatar`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        avatar,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw err
+      })
+  }
 }

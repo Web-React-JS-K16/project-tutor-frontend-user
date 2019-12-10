@@ -23,6 +23,11 @@ const INITIAL_STATE = {
     isLoading: false,
     message: null,
   },
+  updateAvatar: {
+    isSuccess: null,
+    isLoading: null,
+    message: null,
+  },
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -218,6 +223,46 @@ const userReducer = (state = INITIAL_STATE, action) => {
           message: null,
         },
       }
+    // update avatar
+    case UserTypes.UPDATE_AVATAR:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: true,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_SUCCESS:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          avatar: action.payload, // new avatar
+        },
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: true,
+          message: null,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_FAIILURE:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    case UserTypes.UPDATE_AVATAR_CLEAR:
+      return {
+        ...state,
+        updateAvatar: {
+          isLoading: false,
+          isSuccess: null,
+          message: null,
+        },
+      }
+
     default:
       return state
   }

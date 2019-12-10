@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Upload } from 'antd'
+import { Form, Icon, Input, Button, Alert, Radio, DatePicker } from 'antd'
 
 import './StudentUpdateInfo.style.scss'
 
 const StudentUpdateInfoComponent = ({
-  currentUser: { token, avatar, displayName, phone, birthdate, gender, city, district, ward },
+  currentUser: { token, displayName, phone, birthdate, gender, city, district, ward },
   form,
   updateInfoAction,
   clearUpdateInfo,
@@ -56,21 +56,10 @@ const StudentUpdateInfoComponent = ({
     callback()
   }
 
-  const normFile = e => {
-    console.log('Upload event:', e)
-    if (Array.isArray(e)) {
-      return e
-    }
-    return e && e.fileList
-  }
   const { getFieldDecorator } = form
 
   return (
     <div className="student-update-info-page">
-      <h1 className="student-update-info-page__title">Thay đổi thông tin</h1>
-      <div className="student-update-info-page__avatar">
-        <img src={avatar} alt={displayName} />
-      </div>
       {!isLoading && isSuccess === false ? <Alert message={message} type="error" showIcon /> : null}
       {!isLoading && isSuccess === true ? (
         <Alert message="Cập nhật thông tin thành công" type="success" showIcon />
@@ -174,25 +163,11 @@ const StudentUpdateInfoComponent = ({
           </div>
         </div>
         <div className="student-update-info-form__bottom">
-          <Form.Item label="Ảnh đại diện">
-            {getFieldDecorator('dragger', {
-              valuePropName: 'fileList',
-              getValueFromEvent: normFile,
-            })(
-              <Upload.Dragger name="files">
-                <p className="ant-upload-drag-icon">
-                  <Icon type="inbox" />
-                </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                <p className="ant-upload-hint">Support for a single or bulk upload.</p>
-              </Upload.Dragger>
-            )}
-          </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             className="btn-student-update-info"
-            // loading={isLoading}
+            loading={isLoading}
           >
             Cập nhật thông tin
           </Button>

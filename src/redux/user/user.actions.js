@@ -124,3 +124,20 @@ export const changePasswordFailure = message => ({
 export const clearChangePassword = () => ({
   type: UserTypes.CHANGE_PASSPWORD_CLEAR,
 })
+
+// change avatar
+export const updateAvatar = ({ avatar, token }) => ({
+  type: UserTypes.UPDATE_AVATAR,
+  payload: { avatar, token },
+})
+export const updateAvatarSuccess = newAvatar => ({
+  type: UserTypes.UPDATE_AVATAR_SUCCESS,
+  payload: newAvatar,
+})
+export const updateAvatarFailure = message => ({
+  type: UserTypes.UPDATE_AVATAR_FAIILURE,
+  payload: message,
+})
+export const updateAvatarClear = () => ({
+  type: UserTypes.UPDATE_AVATAR_CLEAR,
+})

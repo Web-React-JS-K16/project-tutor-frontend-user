@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
 import StudentUpdateInfoComponent from './StudentUpdateInfo.component'
-import { clearUpdateInfo, updateInfo } from '../../../redux/student/student.actions'
+import { updateInfo, clearUpdateInfo } from '../../../../../redux/student/student.actions'
 
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
   updateInfo: state.student.updateInfo,
 })
 
-const mapDispatchToProps = dispath => ({
-  clearUpdateInfo: () => dispath(clearUpdateInfo()),
-  updateInfoAction: ({ info, token }) => dispath(updateInfo({ info, token })),
+const mapDispatchToProps = dispatch => ({
+  clearUpdateInfo: () => dispatch(clearUpdateInfo()),
+  updateInfoAction: ({ info, token }) => dispatch(updateInfo({ info, token })),
 })
 
 const StudentUpdateInfoContainer = connect(

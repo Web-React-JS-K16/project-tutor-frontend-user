@@ -1,4 +1,4 @@
-@import "../../../default.style.scss";
+@import "../../../../../default.style.scss";
 
 .student-update-info-page {
   font-size: 16px;
@@ -7,29 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  &__title {
-    text-transform: uppercase;
-    font-size: $font-size-large;
-    text-align: center;
-    margin-top: 5rem;
-    color: $color-main;
-    div {
-      color: #8c8989;
-    }
-  }
-  &__avatar{
-    margin-top: 10px;
-    img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
-  }
-  .text-alternative {
-    margin-top: 20px;
-  }
   .student-update-info-form {
-    margin: 3rem auto;
+    margin-bottom: 3rem;
     .content-form {
       display: flex;
       align-items: flex-start;

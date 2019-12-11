@@ -1,9 +1,8 @@
 /* eslint react/prop-types: 0 */
 import React, { useEffect } from 'react'
-import { Form, Icon, Input, Button } from 'antd'
+import { Form, Spin, Icon, Input, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import './ResetPassword.style.scss'
-import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 
 const ResetPasswordComponent = ({
   match,
@@ -44,7 +43,7 @@ const ResetPasswordComponent = ({
   if (isLoading && isTokenTrue === null) {
     return (
       <div className="reset-password-page">
-        <LoadingIcon />
+        <Spin indicator={<Icon type="loading" spin />} />
       </div>
     )
   }

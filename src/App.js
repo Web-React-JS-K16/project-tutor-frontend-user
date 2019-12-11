@@ -9,6 +9,7 @@ import ChangePasswordContainer from 'components/common/ChangePassword/ChangePass
 import { connect } from 'react-redux'
 import { STUDENT } from 'utils/constant'
 import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
+import ErrorPage from 'components/common/ErrorPage/ErrorPage.component'
 import ContractDetailContainer from 'components/common/ContractDetail/ContractDetail.container'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
@@ -136,6 +137,8 @@ const App = ({ currentUser }) => {
           path="/contract-detail/:contractId"
           component={currentUser ? ContractDetailContainer : NotFoud404}
         />
+        <Route path="/error-page" component={ErrorPage} />
+        <Route path="/404" component={NotFoud404} />
       </Switch>
     </div>
   )

@@ -47,22 +47,30 @@ class ContractDetailComponent extends React.Component {
         params: { contractId },
       },
     } = this.props
-    const result = await ContractService.getContract({ id: contractId, token })
-    // console.log("result: ", result);
-    // TODO: check idUser here, only user in contract can se contract detail
-
-    const { studentId, teacherId, ...contract } = result
-    this.setState(
-      {
-        student: studentId,
-        teacher: teacherId,
-        contract,
-        contractId,
-      },
-      () => {
-        this.setState({ isLoading: false })
-      }
-    )
+    try {
+      // check idUser, only user in contract can se contract detail in backend
+      const result = await ContractService.getContract({ id: contractId, token })
+      const { studentId, teacherId, ...contract } = result
+      this.setState(
+        {
+          student: studentId,
+          teacher: teacherId,
+          contract,
+          contractId,
+        },
+        () => {
+          this.setState({ isLoading: false })
+        }
+      )
+    } catch (err) {
+      message.error(err.message)
+      const { history } = this.props
+      history.push({
+        pathname: '/error-page',
+        // search: '?query=abc',
+        state: { message: err.message },
+      })
+    }
   }
 
   onOpenReportModal = () => {

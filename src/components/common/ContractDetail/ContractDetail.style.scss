@@ -1,0 +1,54 @@
+@import "../../../default.style.scss";
+
+.contract-info-item {
+  display: flex;
+  margin: 5px;
+  &__label {
+    font-weight: bold;
+    color: #000;
+    margin-right: 5px;
+  }
+  
+}
+
+.contract-detail-component {
+  font-size: $font-size;
+  margin-top: 20px;
+  &__loading {
+    text-align: center;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__top {
+    // display: flex;
+    // justify-content: center;
+    // align-items: flex-end;
+    text-align: center;
+    &--title{
+      color: $color-main;
+      font-weight: bold;
+      font-size: $font-size-large;
+      text-transform: uppercase;
+    }
+    &--time {
+      margin-top: 5px;
+      font-size: 1.2rem;
+      color: $color-grey-1;
+      // text-align: right;
+      .span{
+        // text-align:right;
+      }
+    }
+  }
+  &__info {
+    display: flex;
+        justify-content: center;
+    align-items: center;
+    &--block {
+          margin: 2rem 3rem;
+
+    }
+  }
+}

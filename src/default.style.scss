@@ -15,6 +15,10 @@ $color-9: #874d00;
 $color-10: #613400;
 
 $font-size-large: 2rem;
+$font-size-small: 1rem;
+$font-size: 1.6rem;
+
+$min-height-page: 80vh;
 
 body,
 html {
@@ -23,11 +27,19 @@ html {
 }
 
 // re-custom from ant design
-button.ant-btn-primary {
-  background-color: $color-main !important;
-  border: none !important;
-  &:hover {
-    color: #fff !important;
+button {
+  &.ant-btn-primary {
+    background-color: $color-main !important;
+    border: none !important;
+    &:hover {
+      color: #fff !important;
+    }
+  }
+  &.ant-btn-default {
+    background-color: #fff !important;
+    &:hover {
+    color: $color-8 !important;
+    }
   }
 }
 

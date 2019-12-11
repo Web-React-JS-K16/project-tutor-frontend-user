@@ -32,4 +32,36 @@ export default class StudentService {
         throw err
       })
   }
+
+  static getInfo = token => {
+    if (!token) {
+      throw new Error('Có lỗi xảy ra.')
+    }
+    const api = `${apiUrl}/student/get-info`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      body: undefined,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        const { city, district } = result.payload
+        console.log('result: ', result)
+        return { city, district, ...result.payload.user }
+      })
+      .catch(err => {
+        throw err
+      })
+  }
 }

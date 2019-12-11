@@ -10,9 +10,9 @@ export const getTeacherInfo = id => ({
   payload: id,
 })
 
-export const getTeacherList = (page, limit) => ({
+export const getTeacherList = filterConditions => ({
   type: TeacherTypes.GET_TEACHER_LIST,
-  payload: { page, limit },
+  payload: filterConditions,
 })
 
 export const countTeachers = () => ({

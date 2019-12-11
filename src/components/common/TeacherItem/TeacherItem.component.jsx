@@ -23,9 +23,8 @@ const TeacherItem = ({ teacher }) => {
           {(teacher.city || teacher.district || teacher.ward) && (
             <div className="address">
               <Icon type="environment" />
-              {teacher.city && <span>&ensp;{teacher.city}</span>}
-              {teacher.district && <span>,&nbsp;{teacher.district}</span>}
-              {teacher.ward && <span>,&nbsp;{teacher.ward}</span>}
+              {teacher.city && <span>&ensp;{teacher.city.name}</span>}
+              {teacher.district && <span>,&nbsp;{teacher.district.name}</span>}
             </div>
           )}
           {/* <div className="address">
@@ -41,7 +40,7 @@ const TeacherItem = ({ teacher }) => {
       </div>
 
       <div className="teacher-item__sub-info">
-        <Row gutter={16}>
+        <Row>
           <Col span={10}>
             <div className="cost">
               <b>{teacher.salary}</b> vnđ/h

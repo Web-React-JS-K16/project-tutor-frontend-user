@@ -6,6 +6,7 @@ import teacherReducer from './teacher/teacher.reducers'
 import majorReducer from './major/major.reducers'
 import locationReducer from './location/location.reducers'
 import studentReducer from './student/student.reducers'
+import contractReducer from './contract/contract.reducers'
 
 const userPersistConfig = {
   key: 'user',
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   major: majorReducer,
   location: locationReducer,
   student: studentReducer,
+  contract: contractReducer,
 })
 
 export default rootReducer

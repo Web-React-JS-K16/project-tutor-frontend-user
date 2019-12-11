@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select } from 'antd'
+import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select, message } from 'antd'
 import moment from 'moment'
 import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './TeacherUpdateInfo.style.scss'
@@ -11,7 +11,8 @@ const TeacherUpdateInfoComponent = ({
   currentTeacher,
   currentUser: { token, _id },
   form,
-  updateInfo: { isLoading, isSuccess, message },
+  updateInfo: { isLoading, isSuccess },
+  updateInfo,
   getInfo,
   teacherUpdateInfo,
   teacherUpdateInfoClear,
@@ -80,6 +81,15 @@ const TeacherUpdateInfoComponent = ({
   const handleTagChange = (value, e) => {
     console.log('value is : ', value)
     console.log('e : ', e)
+  }
+
+  const getMessage = content => {
+    if (isSuccess) {
+      message.success(content || 'Thành công')
+      teacherUpdateInfoClear()
+    } else {
+      message.error(updateInfo.message)
+    }
   }
 
   const { getFieldDecorator } = form
@@ -242,12 +252,8 @@ const TeacherUpdateInfoComponent = ({
             </Button>
           </div>
         </Form>
-        {!isLoading && isSuccess === false ? (
-          <Alert message={message} type="error" showIcon />
-        ) : null}
-        {!isLoading && isSuccess === true ? (
-          <Alert message="Cập nhật thông tin thành công" type="success" showIcon />
-        ) : null}
+        {!isLoading && isSuccess === false ? getMessage() : null}
+        {!isLoading && isSuccess === true ? getMessage('Cập nhật thông tin thành công') : null}
       </div>
     )
   }

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker } from 'antd'
+import { Form, Icon, Input, Button, Alert, Radio, DatePicker, message } from 'antd'
 import moment from 'moment'
 import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './StudentUpdateInfo.style.scss'
@@ -9,7 +9,8 @@ const StudentUpdateInfoComponent = ({
   currentStudent,
   currentUser: { token },
   form,
-  updateInfo: { isLoading, isSuccess, message },
+  updateInfo: { isLoading, isSuccess },
+  updateInfo,
   getInfo,
   updateInfoAction,
   clearUpdateInfo,
@@ -66,6 +67,15 @@ const StudentUpdateInfoComponent = ({
     callback()
   }
 
+  const getMessage = content => {
+    if (isSuccess) {
+      message.success(content || 'Thành công')
+      clearUpdateInfo()
+    } else {
+      message.error(updateInfo.message)
+    }
+  }
+
   const { getFieldDecorator } = form
   console.log('getInfo: ', getInfo)
   if (getInfo.isLoading) {
@@ -87,12 +97,8 @@ const StudentUpdateInfoComponent = ({
     const { displayName, phone, birthdate, gender, city, district } = currentStudent
     return (
       <div className="student-update-info">
-        {!isLoading && isSuccess === false ? (
-          <Alert message={message} type="error" showIcon />
-        ) : null}
-        {!isLoading && isSuccess === true ? (
-          <Alert message="Cập nhật thông tin thành công" type="success" showIcon />
-        ) : null}
+        {!isLoading && isSuccess === false ? getMessage() : null}
+        {!isLoading && isSuccess === true ? getMessage('Cập nhật thông tin thành công') : null}
 
         <Form onSubmit={handleSubmit} className="student-update-info-form">
           <div className="content-form">

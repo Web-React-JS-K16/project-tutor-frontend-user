@@ -1,61 +1,42 @@
-// /* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types */
 
-// import React, { useState, useEffect } from 'react'
-// import { Form, Icon, Input, Button, Alert } from 'antd'
-// import './ChangePassword.style.scss'
+import React from 'react'
+import { Descriptions } from 'antd'
+import './ContractDetail.style.scss'
+import MainLayout from 'components/MainLayout'
 
-// const ContractDetailComponent = ({
-//   currentUser: { token },
-//   form,
-//   changePassword: { isLoading, isSuccess, message },
-//   onChangePassword,
-//   clearChangePassword,
-// }) => {
-//   useEffect(() => {
-//     clearChangePassword()
-//   }, [clearChangePassword])
+const ContractDetailComponent = () => {
+  // useEffect(() => {
+  //   const idContract = match.params.idContract;
+  //   console.log("atch: ", idContract)
+  //   async function fetchData() {
+  //     // const result = await TagService.getAllTag()
+  //     // console.log("result: ", result);
+  //     // setTagList(result)
+  //   }
+  //   fetchData()
+  // }, [])
 
-//   const handleSubmit = e => {
-//     e.preventDefault()
-//     form.validateFields((err, values) => {
-//       if (!err) {
-//         console.log('Received values of form: ', values)
-//         const { oldPassword, password } = values
-//         onChangePassword({ oldPassword, password, token })
-//         form.resetFields()
-//       }
-//     })
-//   }
+  return (
+    <MainLayout>
+      <div className="contract-detail-component">
+        <div className="contract-detail-component__info">
+          <div className="contract-detail-component__info--teacher">
+            <Descriptions title="User Info">
+              <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
+              <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
+              <Descriptions.Item label="Live">Hangzhou, Zhejiang</Descriptions.Item>
+              <Descriptions.Item label="Remark">empty</Descriptions.Item>
+              <Descriptions.Item label="Address">
+                No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+          <div className="contract-detail-component__info--student" />
+        </div>
+      </div>
+    </MainLayout>
+  )
+}
 
-//   const [confirmDirty, setConfirmDirty] = useState(0)
-
-//   const handleBlurConfirmPassword = e => {
-//     const { value } = e.target
-//     setConfirmDirty(confirmDirty || !!value)
-//   }
-
-//   const validateToNextPassword = (rule, value, callback) => {
-//     if (value && confirmDirty) {
-//       form.validateFields(['confirmedPassword'], { force: true })
-//     }
-//     callback()
-//   }
-
-//   const compareToFirstPassword = (rule, value, callback) => {
-//     if (value && value !== form.getFieldValue('password')) {
-//       callback('Mật khẩu không khớp. Vui lòng nhập lại.')
-//     } else {
-//       callback()
-//     }
-//   }
-
-//   const { getFieldDecorator } = form
-
-//   return (
-//     <div className="change-password-component">
-
-//     </div>
-//   )
-// }
-
-// export default ContractDetailComponent
+export default ContractDetailComponent

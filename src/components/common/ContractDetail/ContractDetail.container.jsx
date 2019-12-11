@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { changePassword, clearChangePassword } from '../../../redux/user/user.actions'
-import ChangePasswordComponent from './ChangePassword.component'
+import ContractDetailComponent from './ContractDetail.component'
 
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
@@ -13,9 +13,9 @@ const mapDispatchToProps = dispath => ({
   clearChangePassword: () => dispath(clearChangePassword()),
 })
 
-const ChangePasswordContainer = connect(
+const ContractDetailContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChangePasswordComponent)
+)(ContractDetailComponent)
 
-export default ChangePasswordContainer
+export default ContractDetailContainer

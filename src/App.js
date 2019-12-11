@@ -9,6 +9,7 @@ import ChangePasswordContainer from 'components/common/ChangePassword/ChangePass
 import { connect } from 'react-redux'
 import { STUDENT } from 'utils/constant'
 import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
+import ContractDetailContainer from 'components/common/ContractDetail/ContractDetail.container'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
@@ -130,6 +131,11 @@ const App = ({ currentUser }) => {
         <Route path="/foget-password" component={ForgetPasswordContainer} />
         <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
         <Route path="/change-password" component={ChangePasswordContainer} />
+
+        <Route
+          path="/contract-detail/:idContract"
+          component={currentUser ? ContractDetailContainer : NotFoud404}
+        />
       </Switch>
     </div>
   )

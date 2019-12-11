@@ -8,6 +8,7 @@ import './TeacherListPage.style.scss'
 import TeacherItem from '../../common/TeacherItem/TeacherItem.component'
 import TeacherService from '../../../services/teacher.service'
 import UserService from '../../../services/user.service'
+import { itemPerPage } from '../../../utils/constant'
 
 const { Panel } = Collapse
 const { TreeNode } = Tree
@@ -24,8 +25,8 @@ const TeacherListPage = ({
   getLocationList,
 }) => {
   const query = TeacherService.useQuery()
-  const page = query.get('page')
-  const limit = query.get('limit')
+  const page = query.get('page') || 1
+  const limit = query.get('limit') || itemPerPage
 
   const [currentPage, setCurrentPage] = useState(1)
   const [currentMajors, setCurrentMajors] = useState([])
@@ -124,7 +125,8 @@ const TeacherListPage = ({
 
   const handleChangeSort = value => {
     console.log('handleChangeSort = ', value)
-    setCurrentSort(value)
+    const sort = { orderBy: 'salary', orderType: value }
+    setCurrentSort(sort)
     const filterConditions = {
       currentPage,
       currentLimit: limit,
@@ -132,7 +134,7 @@ const TeacherListPage = ({
       currentFromSalary,
       currentToSalary,
       currentLocations,
-      currentSort: { orderBy: 'salary', orderType: value },
+      currentSort: sort,
     }
     executeFilter(filterConditions)
   }
@@ -148,6 +150,8 @@ const TeacherListPage = ({
                   <Panel header="Giá trên giờ" key="1">
                     <Slider
                       range
+                      min={0}
+                      max={1000}
                       step={10}
                       defaultValue={[0, 1000]}
                       onAfterChange={handleAfterChangeSalary}

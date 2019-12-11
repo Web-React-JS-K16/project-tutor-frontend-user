@@ -3,7 +3,7 @@ import ContractTypes from './contract.types'
 const INITIAL_STATE = {
   contractList: [],
   newContract: {},
-  currentContract: {}
+  currentContract: {},
 }
 
 const contractReducer = (state = INITIAL_STATE, action) => {
@@ -21,7 +21,7 @@ const contractReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newContract: action.payload,
-    }
+      }
     default:
       return state
   }

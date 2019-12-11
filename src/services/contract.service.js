@@ -26,12 +26,13 @@ export default class ContractService {
       })
   }
 
-  static createContract = () => {
+  static createContract = contract => {
     const api = `${apiUrl}/contract/create`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
+      body: JSON.stringify(contract),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },

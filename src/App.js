@@ -46,6 +46,17 @@ const RouteTeacher = ({ currentUser }) => {
               </MainLayout>
             )}
           />
+
+          {/* WITHOUT login, user can access those links */}
+          <Route
+            exact
+            path={`${teacherPath}`}
+            render={() => (
+              <MainLayout>
+                <TeacherListPageContainer />
+              </MainLayout>
+            )}
+          />
         </>
       ) : (
         <>
@@ -54,19 +65,19 @@ const RouteTeacher = ({ currentUser }) => {
           <Route exact path={`${teacherPath}/info`}>
             <Redirect to="/" />
           </Route>
+
+          {/* WITHOUT login, user can access those links */}
+          <Route
+            exact
+            path={`${teacherPath}`}
+            render={() => (
+              <MainLayout>
+                <TeacherListPageContainer />
+              </MainLayout>
+            )}
+          />
         </>
       )}
-
-      {/* WITHOUT login, user can access those links */}
-      <Route
-        exact
-        path={`${teacherPath}`}
-        render={() => (
-          <MainLayout>
-            <TeacherListPageContainer />
-          </MainLayout>
-        )}
-      />
     </Switch>
   )
 }

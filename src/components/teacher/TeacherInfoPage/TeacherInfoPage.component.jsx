@@ -2,12 +2,25 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
-import { Icon, Rate, Progress, Divider, Tag, Statistic, Row, Col, Pagination } from 'antd'
+import {
+  Icon,
+  Rate,
+  Progress,
+  Divider,
+  Tag,
+  Statistic,
+  Row,
+  Col,
+  Pagination,
+  Spin,
+  Button,
+} from 'antd'
 import './TeacherInfoPage.style.scss'
 import WorkHistoryItem from 'components/common/WorkHistoryItem/WorkHistoryItem.component'
 import TeacherService from '../../../services/teacher.service'
+import { STUDENT } from '../../../utils/constant'
 
-const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
+const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo }) => {
   const query = TeacherService.useQuery()
   const userId = query.get('id')
 
@@ -19,7 +32,7 @@ const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
 
   return (
     <div className="teacher-info-page">
-      {teacher && (
+      {teacher ? (
         <>
           <div className="teacher-info-page__wrapper">
             <div className="teacher-info-page__wrapper__basic-info">
@@ -34,6 +47,7 @@ const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
                       {teacher.district && <span>,&nbsp;{teacher.district.name}</span>}
                     </div>
                   )}
+                  {currentUser.typeID === STUDENT && <Button type="primary">Đăng kí học</Button>}
                 </div>
               </div>
               <div className="teacher-info-page__wrapper__basic-info__right">
@@ -110,6 +124,10 @@ const TeacherInfoPage = ({ teacher, getTeacherInfo }) => {
             </div>
           </div>
         </>
+      ) : (
+        <div className="teacher-info-page__loading">
+          <Spin indicator={<Icon type="loading" spin />} />
+        </div>
       )}
     </div>
   )

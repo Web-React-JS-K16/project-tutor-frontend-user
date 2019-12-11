@@ -28,7 +28,7 @@ html {
 
 // re-custom from ant design
 button {
-  &.ant-btn-primary{
+  &.ant-btn-primary {
     background-color: $color-main !important;
     border: none !important;
     &:hover {
@@ -39,7 +39,7 @@ button {
     background-color: #fff !important;
     &:hover {
     color: $color-8 !important;
-  }
+    }
   }
 }
 
@@ -155,8 +155,8 @@ input {
 }
 
 .message {
-    &--error {
-      font-size: 16px !important;
+  &--error {
+    font-size: 16px !important;
     color: red;
     text-align: center;
   }
@@ -236,23 +236,20 @@ input {
 
 // tab panel
 .ant-tabs-tab {
-  &:hover{
+  &:hover {
     color: $color-main !important;
   }
 }
-.ant-tabs-tab-active{
+.ant-tabs-tab-active {
   color: $color-main !important;
 }
 
 .ant-tabs-ink-bar {
-  background-color:  $color-main;
+  background-color: $color-main;
 }
 
 // slide bar
 .makeStyles-blue-23 {
   background-color: $color-main !important;
-  box-shadow:
-   0 12px 20px -10px #fffbe6,
-   0 4px 20px 0 #fff1b8,
+  box-shadow: 0 12px 20px -10px #fffbe6, 0 4px 20px 0 #fff1b8;
 }
-

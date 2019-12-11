@@ -157,7 +157,7 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
               <Form.Item hasFeedback>
                 {getFieldDecorator('birthdate', {
                   rules: [
-                    { required: true, message: 'Vui lòng nhập ngày sinh.' },
+                    { required: true, message: 'Vui lòng chọn ngày sinh.' },
                     { validator: validateBirthdate },
                   ],
                 })(

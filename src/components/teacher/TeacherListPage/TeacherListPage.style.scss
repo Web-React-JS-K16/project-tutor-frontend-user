@@ -14,6 +14,9 @@
     &__left {
     }
     &__right {
+      .sort-select {
+        text-align: right;
+      }
       .ant-col {
         margin-top: 24px;
         .teacher-item {

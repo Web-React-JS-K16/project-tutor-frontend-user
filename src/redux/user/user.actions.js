@@ -141,3 +141,9 @@ export const updateAvatarFailure = message => ({
 export const updateAvatarClear = () => ({
   type: UserTypes.UPDATE_AVATAR_CLEAR,
 })
+
+// update user's info
+export const updateUserInfoSuccess = info => ({
+  type: UserTypes.UPDATE_USER_INFO_SUCCESS,
+  payload: info,
+})

@@ -7,6 +7,10 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import ChangePasswordContainer from 'components/common/ChangePassword/ChangePassword.container'
 import { connect } from 'react-redux'
+import { STUDENT } from 'utils/constant'
+import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
+import ErrorPage from 'components/common/ErrorPage/ErrorPage.component'
+import ContractDetailContainer from 'components/common/ContractDetail/ContractDetail.container'
 import MainLayout from './components/MainLayout'
 import Home from './components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
@@ -20,12 +24,14 @@ import TeacherRegisterComponent from './components/teacher/TeacherRegister/Teach
 import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
 import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
 import StudentUpdateInfoPageComponent from './components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
+import TeacherUpdateInfoPage from './components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
 
 const RouteTeacher = ({ currentUser }) => {
   // const token = UserService.getPreferences(jwtToken)
+  console.log('current user: ', currentUser)
 
   return (
     <Switch>
@@ -46,6 +52,7 @@ const RouteTeacher = ({ currentUser }) => {
               </MainLayout>
             )}
           />
+          <Route path={`${teacherPath}/update-info`} render={() => <TeacherUpdateInfoPage />} />
 
           {/* WITHOUT login, user can access those links */}
           <Route
@@ -97,11 +104,7 @@ const RouteStudent = ({ currentUser }) => {
           </Route>
           <Route
             path={`${studentPath}/update-info`}
-            render={() => (
-              <MainLayout>
-                <StudentUpdateInfoPageComponent />
-              </MainLayout>
-            )}
+            component={currentUser.typeID === STUDENT ? StudentUpdateInfoPageComponent : NotFoud404}
           />
         </>
       ) : (
@@ -140,6 +143,13 @@ const App = ({ currentUser }) => {
         <Route path="/foget-password" component={ForgetPasswordContainer} />
         <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
         <Route path="/change-password" component={ChangePasswordContainer} />
+
+        <Route
+          path="/contract-detail/:contractId"
+          component={currentUser ? ContractDetailContainer : NotFoud404}
+        />
+        <Route path="/error-page" component={ErrorPage} />
+        <Route path="/404" component={NotFoud404} />
       </Switch>
     </div>
   )

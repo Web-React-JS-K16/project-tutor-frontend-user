@@ -262,6 +262,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
           message: null,
         },
       }
+    // update user's info
+    case UserTypes.UPDATE_USER_INFO_SUCCESS:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          ...action.payload,
+        },
+      }
 
     default:
       return state

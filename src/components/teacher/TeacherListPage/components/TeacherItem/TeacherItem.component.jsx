@@ -7,7 +7,6 @@ import { Icon, Divider, Tag, Rate, Button, Row, Col } from 'antd'
 import './TeacherItem.style.scss'
 
 const TeacherItem = ({ teacher }) => {
-  console.log('teacher tags', teacher.tags)
   return (
     <div className="teacher-item">
       <div className="teacher-item__basic-info">

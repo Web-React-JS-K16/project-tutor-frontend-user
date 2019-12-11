@@ -1,9 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select } from 'antd'
+import { Form, Spin, Icon, Input, Button, Alert, Radio, DatePicker, Select } from 'antd'
 import moment from 'moment'
-import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './TeacherUpdateInfo.style.scss'
 import TagService from '../../../../../services/tag.service'
 
@@ -87,7 +86,7 @@ const TeacherUpdateInfoComponent = ({
   if (getInfo.isLoading) {
     return (
       <div className="teacher-update-info-loading">
-        <LoadingIcon />
+        <Spin indicator={<Icon type="loading" spin />} />
       </div>
     )
   }
@@ -133,7 +132,10 @@ const TeacherUpdateInfoComponent = ({
                   {getFieldDecorator('phone', {
                     initialValue: phone || '',
                     rules: [
-                      { required: true, message: 'Vui lòng nhập số điện thoại' },
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập số điện thoại',
+                      },
                       {
                         validator: validatePhoneNumber,
                       },
@@ -227,7 +229,7 @@ const TeacherUpdateInfoComponent = ({
                   )}
                 </Form.Item>
               ) : (
-                <LoadingIcon />
+                <Spin indicator={<Icon type="loading" spin />} />
               )}
             </div>
           </div>

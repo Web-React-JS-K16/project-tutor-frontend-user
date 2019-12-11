@@ -5,10 +5,10 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
-import TeacherItem from '../../common/TeacherItem/TeacherItem.component'
-import TeacherService from '../../../services/teacher.service'
-import UserService from '../../../services/user.service'
-import { itemPerPage } from '../../../utils/constant'
+import TeacherService from 'services/teacher.service'
+import UserService from 'services/user.service'
+import { itemPerPage } from 'utils/constant'
+import TeacherItem from './components/TeacherItem/TeacherItem.component'
 
 const { Panel } = Collapse
 const { TreeNode } = Tree
@@ -138,7 +138,7 @@ const TeacherListPage = ({
     }
     executeFilter(filterConditions)
   }
-  console.log('currentPage', currentPage)
+
   return (
     <div className="teacher-list-page">
       {teacherList && majorList && locationList ? (
@@ -215,17 +215,15 @@ const TeacherListPage = ({
                     )
                   })}
                 </Row>
-                {teacherList && (
-                  <Row>
-                    <Pagination
-                      simple
-                      defaultCurrent={parseInt(currentPage)}
-                      defaultPageSize={parseInt(limit)}
-                      total={numberOfTeachers}
-                      onChange={handleChangePage}
-                    />
-                  </Row>
-                )}
+                <Row>
+                  <Pagination
+                    simple
+                    defaultCurrent={parseInt(currentPage)}
+                    defaultPageSize={parseInt(limit)}
+                    total={numberOfTeachers}
+                    onChange={handleChangePage}
+                  />
+                </Row>
               </div>
             </Col>
           </Row>

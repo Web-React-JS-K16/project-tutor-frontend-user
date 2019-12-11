@@ -30,7 +30,7 @@ export const updateCurrentTeacher = teacher => ({
 })
 
 export const updateNumerOfTeachers = number => ({
-  type: TeacherTypes.UPDATE_NUMBER_OF_TEACHER,
+  type: TeacherTypes.UPDATE_NUMBER_OF_TEACHERS,
   payload: number,
 })
 

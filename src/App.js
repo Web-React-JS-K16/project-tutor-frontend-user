@@ -133,7 +133,7 @@ const App = ({ currentUser }) => {
         <Route path="/change-password" component={ChangePasswordContainer} />
 
         <Route
-          path="/contract-detail/:idContract"
+          path="/contract-detail/:contractId"
           component={currentUser ? ContractDetailContainer : NotFoud404}
         />
       </Switch>

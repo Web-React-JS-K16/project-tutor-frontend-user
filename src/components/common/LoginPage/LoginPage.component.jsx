@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 // import PropTypes from 'prop-types'
-import { Form, Icon, Input, Button } from 'antd'
+import { Form, Icon, Input, Button, Alert } from 'antd'
 import { Link, Redirect } from 'react-router-dom'
 import './LoginPage.style.scss'
 import AuthenWithFacebookContainer from '../AuthenWithFacebook/AuthenWithFacebook.container'
@@ -29,7 +30,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
 
   if (user.currentUser) {
     if (typeID === STUDENT) return <Redirect to="/" />
-    if (typeID === TEACHER) return <Redirect to="/teacher/info" />
+    if (typeID === TEACHER) return <Redirect to={`/teacher/info?id=${user.currentUser._id}`} />
   }
   return (
     <div className="login-page">
@@ -37,6 +38,10 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
         Đăng nhập
         <div>{title}</div>
       </h1>
+      {!user.isLoading && user.errorMessage && (
+        <Alert message={user.errorMessage} type="error" showIcon />
+      )}
+
       <div className="login-page__social">
         <div className="btn-social btn--google">
           <AuthenWithFacebookContainer typeID={typeID} isDisabled="false" />
@@ -94,9 +99,6 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
           </div>
         </div>
       </Form>
-      <div className="message--error">
-        {!user.isLoading && user.errorMessage ? user.errorMessage : ''}
-      </div>
     </div>
   )
 }

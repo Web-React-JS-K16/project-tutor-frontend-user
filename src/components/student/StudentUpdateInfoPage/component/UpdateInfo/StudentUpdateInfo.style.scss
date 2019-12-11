@@ -1,0 +1,48 @@
+@import "../../../../../default.style.scss";
+
+.student-update-info {
+  font-size: 16px;
+  font-size: 16px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .ant-alert {
+    margin-bottom: 15px;
+  }
+  .student-update-info-form {
+    margin-bottom: 3rem;
+    .content-form {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      .student-update-info-form__block {
+        margin: 0px 10px;
+        &--title{
+          color: $color-main;
+          font-weight: bold;
+        }
+      }
+    }
+    &__bottom {
+      display: flex;
+      flex-direction: column;
+      .btn-student-update-info {
+        max-width: 200px;
+        margin: auto;
+      }
+    }
+  }
+  .ant-form-item-required {
+    margin: 0px;
+  }
+  .ant-form-item-label {
+    label {
+      margin: 0px;
+    }
+  }
+}
+
+.student-update-info-loading{
+  text-align: center;
+}

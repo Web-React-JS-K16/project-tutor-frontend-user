@@ -1,7 +1,7 @@
 // import React from 'react';
 import React from 'react'
-import RegisterPageContainer from '../../common/RegisterPage/RegisterPage.container'
-import { STUDENT } from '../../../utils/constant'
+import RegisterPageContainer from 'components/common/RegisterPage/RegisterPage.container'
+import { STUDENT } from 'utils/constant'
 
 const StudentRegisterComponent = () => {
   return (

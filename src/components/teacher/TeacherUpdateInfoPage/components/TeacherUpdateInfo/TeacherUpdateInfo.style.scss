@@ -1,0 +1,56 @@
+@import "../../../../../default.style.scss";
+
+.teacher-update-info {
+  font-size: 16px;
+  font-size: 16px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .ant-alert {
+    margin-bottom: 15px;
+  }
+  .teacher-update-info-form {
+    margin-bottom: 3rem;
+    .content-form {
+      &__info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        .content-form__info--block {
+          margin: 0px 7rem;
+        }
+      }
+      &__about {
+        .about-input {
+          min-height: 150px;
+          margin-top: 20px;
+        }
+      }
+    }
+    &__bottom {
+      display: flex;
+      flex-direction: column;
+      .btn-teacher-update-info {
+        max-width: 200px;
+        margin: auto;
+      }
+    }
+  }
+  .ant-form-item-required {
+    margin: 0px;
+  }
+  .ant-form-item-label {
+    label {
+      margin: 0px;
+    }
+  }
+}
+
+.teacher-update-info-loading {
+  text-align: center;
+}
+.teacher-update-form__title {
+  color: $color-main;
+  font-weight: bold;
+}

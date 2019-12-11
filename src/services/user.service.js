@@ -131,7 +131,7 @@ export default class UserService {
     // eslint-disable-next-line no-undef
     localStorage.removeItem(key)
   }
-  
+
   static activeEmail = token => {
     const api = `${apiUrl}/user/active-email`
     let status = 400
@@ -228,6 +228,65 @@ export default class UserService {
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+
+  static changePassword = ({ password, oldPassword, token }) => {
+    const api = `${apiUrl}/user/change-password`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        password,
+        oldPassword,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+
+  static updateAvatar = ({ avatar, token }) => {
+    const api = `${apiUrl}/user/update-avatar`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({
+        avatar,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(response => {

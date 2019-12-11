@@ -1,11 +1,15 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Avatar, Dropdown, Input, Button, Radio } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
 import Swal from 'sweetalert2'
-import UserService from '../../../services/user.service'
-import { jwtToken } from '../../../utils/constant'
+import UserService from 'services/user.service'
+import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
 import './MainHeader.style.scss'
 // import PropTypes from 'prop-types'
 
@@ -19,7 +23,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
   useEffect(() => {
     const token = UserService.getPreferences(jwtToken)
     if (!currentUser && token) onAuthenticate(token)
-  })
+  }, [currentUser, onAuthenticate])
 
   const userOptions = {
     viSignin: 'đăng nhập',
@@ -42,11 +46,11 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
     }, 1000)
   })
 
-  const radioStyle = {
-    display: 'block',
-    height: '30px',
-    lineHeight: '30px',
-  }
+  // const radioStyle = {
+  //   display: 'block',
+  //   height: '30px',
+  //   lineHeight: '30px',
+  // }
 
   // const handleOnChange = e => {
   //   setUserType(e.target.value)
@@ -106,7 +110,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           userType = userOptions.enTeacher
         }
         // eslint-disable-next-line no-undef
-        window.location.href = `${userType}/${action}`
+        window.location.href = `/${userType}/${action}`
         return null
       },
     })
@@ -114,24 +118,31 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
 
   const UserMenu = (
     <Menu>
-      <Menu.Item>Xin chào, {currentUser && currentUser.displayName}</Menu.Item>
+      <Menu.Item style={{ cursor: 'default' }}>
+        Xin chào, {currentUser && currentUser.displayName}
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
-        <Link to="/">Trang cá nhân</Link>
+        {currentUser &&
+          (currentUser.typeID === TEACHER ? (
+            <Link to={`/teacher/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+          ) : (
+            <Link to={`/student/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+          ))}
       </Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item>
-        <Button type="primary" onClick={handleLogout}>
-          Đăng xuất
-        </Button>
+        <Link to="/">
+          <div onClick={handleLogout}>Đăng xuất</div>
+        </Link>
       </Menu.Item>
     </Menu>
   )
 
   return (
-    <Header className="main-header" style={{}}>
+    <Header className="main-header">
       <div className="main-header__logo">
         <Link to="/">
           <img
@@ -140,7 +151,6 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           />
         </Link>
       </div>
-      <Radio style={radioStyle}>Học sinh</Radio>
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown
@@ -161,15 +171,13 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           </>
         )}
       </div>
-
       <div className="main-header__search">
         <Search
-          placeholder="input search text"
+          placeholder="Tìm kiếm"
           onSearch={value => console.log(value)}
           style={{ width: 200 }}
         />
       </div>
-
       <Menu
         getPopupContainer={node => node.parentNode}
         theme="light"
@@ -177,8 +185,12 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
         defaultSelectedKeys={['2']}
         style={{ lineHeight: '64px' }}
       >
-        <Menu.Item key="1">Trang chủ</Menu.Item>
-        <Menu.Item key="2">Giáo viên</Menu.Item>
+        <Menu.Item key="1">
+          <Link to="/">Trang chủ</Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to={`/teacher?page=1&limit=${itemPerPage}`}>Gia sư</Link>
+        </Menu.Item>
         <SubMenu
           key="sub1"
           title={

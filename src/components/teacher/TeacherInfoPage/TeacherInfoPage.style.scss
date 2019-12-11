@@ -1,0 +1,114 @@
+@import '../../../default.style.scss';
+
+.teacher-info-page {
+  width: 80%;
+  margin: 70px auto;
+  font-size: 16px;
+  min-height: 80vh;
+  &__wrapper {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    margin-top: 30px;
+    -webkit-box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
+    box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
+    &:nth-child(1) {
+      margin-top: 0;
+    }
+    &__basic-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      &__left {
+        display: flex;
+        align-items: flex-start;
+        img {
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+        }
+        & > div {
+          margin-left: 10px;
+          .name {
+            font-size: 24px;
+            color: $color-main;
+          }
+          .address {
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+      &__right {
+        .job-success {
+          position: relative;
+          margin-bottom: 30px;
+          margin-top: 15px;
+          &::before {
+            content: attr(percent-success);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(-60%);
+            font-size: 18px;
+            font-weight: 600;
+          }
+          &::after {
+            content: attr(job-success);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transform: translateY(90%);
+            font-size: 14px;
+            color: $color-grey-2;
+          }
+        }
+        .ratings {
+          & > div {
+            font-size: 14px;
+            color: $color-grey-2;
+          }
+        }
+      }
+    }
+    &__description {
+      padding: 30px 0 10px;
+    }
+    &__skill-tags {
+      .ant-tag {
+        font-size: 13px;
+        text-transform: capitalize;
+      }
+    }
+    &__statistics {
+      .ant-statistic-content {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    &__work-history {
+      .title {
+        font-size: 24px;
+      }
+      .content {
+        padding-top: 40px;
+      }
+      .ant-pagination {
+        text-align: center;
+      }
+    }
+  }
+  &__loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .ant-spin {
+      i {
+        font-size: 40px;
+      }
+    }
+  }
+}

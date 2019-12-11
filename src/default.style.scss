@@ -3,6 +3,8 @@ $color-light: #fffbe6;
 $color-dark: #001529;
 $color-grey-1: #656565;
 $color-grey-2: rgba(0, 0, 0, 0.45);
+$color-grey-3: #f9f9f9;
+$color-yellow-1: #feffe6;
 $color-background: #fff295;
 
 // sub color
@@ -13,19 +15,30 @@ $color-9: #874d00;
 $color-10: #613400;
 
 $font-size-large: 2rem;
+$font-size-small: 1rem;
+$font-size: 1.6rem;
+
 
 body,
 html {
   font-size: 62.5%; // 10px
-  background-color: #f2f2f2;
+  background-color: $color-grey-3;
 }
 
 // re-custom from ant design
 button {
-  background-color: $color-main !important;
-  border: none !important;
-  &:hover {
-    color: #fff !important;
+  &.ant-btn-primary{
+    background-color: $color-main !important;
+    border: none !important;
+    &:hover {
+      color: #fff !important;
+    }
+  }
+  &.ant-btn-default {
+    background-color: #fff !important;
+    &:hover {
+    color: $color-8 !important;
+  }
   }
 }
 
@@ -49,6 +62,7 @@ button {
 a {
   color: $color-main !important;
   &:hover {
+    text-decoration: none;
     color: $color-7 !important;
   }
 }
@@ -57,6 +71,14 @@ a {
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: $color-main !important;
   border-color: $color-main !important;
+}
+.ant-checkbox-checked::after {
+  border-color: $color-main;
+}
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: $color-main;
 }
 
 // input
@@ -124,6 +146,11 @@ input {
 .ant-dropdown-menu-item:hover,
 .ant-dropdown-menu-submenu-title:hover {
   background-color: $color-background;
+}
+
+// spin
+.ant-spin {
+  color: $color-main;
 }
 
 .message {
@@ -205,3 +232,26 @@ input {
     opacity: 1;
   }
 }
+
+// tab panel
+.ant-tabs-tab {
+  &:hover{
+    color: $color-main !important;
+  }
+}
+.ant-tabs-tab-active{
+  color: $color-main !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color:  $color-main;
+}
+
+// slide bar
+.makeStyles-blue-23 {
+  background-color: $color-main !important;
+  box-shadow:
+   0 12px 20px -10px #fffbe6,
+   0 4px 20px 0 #fff1b8,
+}
+

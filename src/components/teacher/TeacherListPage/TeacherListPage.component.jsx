@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree } from 'antd'
+import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
 import TeacherItem from '../../common/TeacherItem/TeacherItem.component'
 import TeacherService from '../../../services/teacher.service'
@@ -11,6 +11,7 @@ import UserService from '../../../services/user.service'
 
 const { Panel } = Collapse
 const { TreeNode } = Tree
+const { Option } = Select
 
 const TeacherListPage = ({
   numberOfTeachers,
@@ -26,20 +27,22 @@ const TeacherListPage = ({
   const page = query.get('page')
   const limit = query.get('limit')
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentMajors, setCurrentMajors] = useState([])
+  const [currentFromSalary, setCurrentFromSalary] = useState(0)
+  const [currentToSalary, setCurrentToSalary] = useState(1000)
+  const [currentLocations, setCurrentLocations] = useState({})
+  const [currentSort, setCurrentSort] = useState({})
+
   useEffect(() => {
     if (page && limit) {
+      setCurrentPage(page)
       getTeacherList({ currentPage: page, currentLimit: limit })
       getMajorList()
       getLocationList()
       countTeachers()
     }
   }, [page, limit, getTeacherList, getMajorList, getLocationList, countTeachers])
-
-  const [currentPage, setCurrentPage] = useState(0)
-  const [currentMajors, setCurrentMajors] = useState(0)
-  const [currentFromSalary, setCurrentFromSalary] = useState(0)
-  const [currentToSalary, setCurrentToSalary] = useState(0)
-  const [currentLocations, setCurrentLocations] = useState(0)
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-list', JSON.stringify(filterConditions))
@@ -56,6 +59,7 @@ const TeacherListPage = ({
       currentFromSalary,
       currentToSalary,
       currentLocations,
+      currentSort,
     }
     executeFilter(filterConditions)
   }
@@ -70,6 +74,7 @@ const TeacherListPage = ({
       currentFromSalary,
       currentToSalary,
       currentLocations,
+      currentSort,
     }
     executeFilter(filterConditions)
   }
@@ -85,6 +90,7 @@ const TeacherListPage = ({
       currentFromSalary: value[0],
       currentToSalary: value[1],
       currentLocations,
+      currentSort,
     }
     executeFilter(filterConditions)
   }
@@ -111,10 +117,26 @@ const TeacherListPage = ({
       currentFromSalary,
       currentToSalary,
       currentLocations: { location: tempList },
+      currentSort,
     }
     executeFilter(filterConditions)
   }
 
+  const handleChangeSort = value => {
+    console.log('handleChangeSort = ', value)
+    setCurrentSort(value)
+    const filterConditions = {
+      currentPage,
+      currentLimit: limit,
+      currentMajors,
+      currentFromSalary,
+      currentToSalary,
+      currentLocations,
+      currentSort: { orderBy: 'salary', orderType: value },
+    }
+    executeFilter(filterConditions)
+  }
+  console.log('currentPage', currentPage)
   return (
     <div className="teacher-list-page">
       {teacherList && majorList && locationList ? (
@@ -127,7 +149,7 @@ const TeacherListPage = ({
                     <Slider
                       range
                       step={10}
-                      defaultValue={[20, 1000]}
+                      defaultValue={[0, 1000]}
                       onAfterChange={handleAfterChangeSalary}
                     />
                   </Panel>
@@ -174,6 +196,12 @@ const TeacherListPage = ({
             </Col>
             <Col span={20}>
               <div className="teacher-list-page__wrapper__right">
+                <div className="sort-select">
+                  <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>
+                    <Option value="ASC">Giá trên giờ tăng dần</Option>
+                    <Option value="DSC">Giá trên giờ giảm dần</Option>
+                  </Select>
+                </div>
                 <Row gutter={16}>
                   {teacherList.map(teacher => {
                     return (
@@ -187,7 +215,7 @@ const TeacherListPage = ({
                   <Row>
                     <Pagination
                       simple
-                      defaultCurrent={1}
+                      defaultCurrent={parseInt(currentPage)}
                       defaultPageSize={parseInt(limit)}
                       total={numberOfTeachers}
                       onChange={handleChangePage}

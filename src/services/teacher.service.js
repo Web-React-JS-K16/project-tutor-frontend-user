@@ -116,8 +116,12 @@ export default class TeacherService {
     const fromSalary = filterConditions.currentFromSalary
     const toSalary = filterConditions.currentToSalary
     const locationObject = filterConditions.currentLocations
+    const sort = filterConditions.currentSort
 
-    const query = `${this.parameterizeArray('majors', majors)}${this.parameterizeObject({
+    const query = `&${this.parameterizeObject(sort)}${this.parameterizeArray(
+      'majors',
+      majors
+    )}&${this.parameterizeObject({
       fromSalary,
       toSalary,
     })}&${this.parameterizeObject(locationObject)}`

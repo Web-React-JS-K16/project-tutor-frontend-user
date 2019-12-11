@@ -85,7 +85,8 @@ const RegisterPage = ({ user, form, register, onClearUserState, typeID, title })
     if (typeID === TEACHER) return <Redirect to={`/teacher/info?id=${user.currentUser._id}`} />
   }
   if (user.registerUser) {
-    return <Redirect to="/teacher/login" />
+    if (typeID === STUDENT) return <Redirect to="/student/login" />
+    if (typeID === TEACHER) return <Redirect to="/teacher/login" />
   }
 
   return (

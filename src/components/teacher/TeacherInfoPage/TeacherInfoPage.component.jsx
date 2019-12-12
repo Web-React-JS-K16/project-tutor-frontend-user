@@ -16,7 +16,7 @@ import {
   Button,
 } from 'antd'
 import './TeacherInfoPage.style.scss'
-import WorkHistoryItem from 'components/common/WorkHistoryItem/WorkHistoryItem.component'
+import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.component'
 import TeacherService from '../../../services/teacher.service'
 import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
@@ -151,22 +151,7 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo, createContract 
               <div className="title">Lịch sử làm việc</div>
               <div className="content">
                 {teacher.contracts.map(contract => {
-                  const startDate = new Date(contract.startDate)
-                  const endDate = new Date(contract.endDate)
-                  const formatStartDate = `${startDate.getMonth()} ${startDate.getFullYear()}`
-                  const formatEndDate = `${endDate.getMonth()} ${endDate.getFullYear()}`
-                  return (
-                    <WorkHistoryItem
-                      key={contract.name}
-                      name={contract.name}
-                      startDate={formatStartDate}
-                      endDate={formatEndDate}
-                      ratings={contract.comment.ratings}
-                      cost={contract.cost}
-                      workingHour={contract.workingHour}
-                      comment={contract.comment.content}
-                    />
-                  )
+                  return <WorkHistoryItem key={contract.name} contract={contract} />
                 })}
               </div>
               <Pagination simple defaultCurrent={1} total={50} />

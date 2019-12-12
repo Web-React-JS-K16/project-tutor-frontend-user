@@ -5,10 +5,10 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
-import TeacherItem from '../../common/TeacherItem/TeacherItem.component'
-import TeacherService from '../../../services/teacher.service'
-import UserService from '../../../services/user.service'
-import { itemPerPage } from '../../../utils/constant'
+import TeacherService from 'services/teacher.service'
+import UserService from 'services/user.service'
+import { itemPerPage } from 'utils/constant'
+import TeacherItem from './components/TeacherItem/TeacherItem.component'
 
 const { Panel } = Collapse
 const { TreeNode } = Tree
@@ -138,13 +138,13 @@ const TeacherListPage = ({
     }
     executeFilter(filterConditions)
   }
-  console.log('currentPage', currentPage)
+
   return (
     <div className="teacher-list-page">
       {teacherList && majorList && locationList ? (
         <div className="teacher-list-page__wrapper">
-          <Row>
-            <Col span={4} style={{ paddingRight: 30 }}>
+          <Row gutter={16}>
+            <Col span={5}>
               <div className="teacher-list-page__wrapper__left">
                 <Collapse bordered={false} defaultActiveKey={[]}>
                   <Panel header="Giá trên giờ" key="1">
@@ -198,7 +198,7 @@ const TeacherListPage = ({
                 </Collapse>
               </div>
             </Col>
-            <Col span={20}>
+            <Col span={19}>
               <div className="teacher-list-page__wrapper__right">
                 <div className="sort-select">
                   <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>
@@ -215,17 +215,15 @@ const TeacherListPage = ({
                     )
                   })}
                 </Row>
-                {teacherList && (
-                  <Row>
-                    <Pagination
-                      simple
-                      defaultCurrent={parseInt(currentPage)}
-                      defaultPageSize={parseInt(limit)}
-                      total={numberOfTeachers}
-                      onChange={handleChangePage}
-                    />
-                  </Row>
-                )}
+                <Row>
+                  <Pagination
+                    simple
+                    defaultCurrent={parseInt(currentPage)}
+                    defaultPageSize={parseInt(limit)}
+                    total={numberOfTeachers}
+                    onChange={handleChangePage}
+                  />
+                </Row>
               </div>
             </Col>
           </Row>

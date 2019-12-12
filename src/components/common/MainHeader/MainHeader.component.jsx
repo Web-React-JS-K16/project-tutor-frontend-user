@@ -11,15 +11,12 @@ import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
 import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
 import './MainHeader.style.scss'
-// import PropTypes from 'prop-types'
 
 const { Header } = Layout
 const { SubMenu } = Menu
 const { Search } = Input
 
 const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
-  // const [userType, setUserType] = useState(STUDENT)
-
   useEffect(() => {
     const token = UserService.getPreferences(jwtToken)
     if (!currentUser && token) onAuthenticate(token)
@@ -45,49 +42,6 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
       })
     }, 1000)
   })
-
-  // const radioStyle = {
-  //   display: 'block',
-  //   height: '30px',
-  //   lineHeight: '30px',
-  // }
-
-  // const handleOnChange = e => {
-  //   setUserType(e.target.value)
-  // }
-
-  // const showConfirm = confirmAction => {
-  //   Modal.confirm({
-  //     centered: true,
-  //     title: `Bạn muốn ${confirmAction} với tư cách là`,
-  //     content: (
-  //       <Radio.Group onChange={handleOnChange} defaultValue={STUDENT}>
-  //         <Radio style={radioStyle} value={STUDENT}>
-  //           Học sinh
-  //         </Radio>
-  //         <Radio style={radioStyle} value={TEACHER}>
-  //           Giáo viên
-  //         </Radio>
-  //       </Radio.Group>
-  //     ),
-  //     okText: 'Đồng ý',
-  //     cancelText: 'Hủy bỏ',
-  //     onOk() {
-  //       if (confirmAction === 'đăng nhập') {
-  //         return userType == 0
-  //           ? (window.location.href = 'student/login')
-  //           : (window.location.href = 'teacher/login')
-  //       } else {
-  //         return userType == 0
-  //           ? (window.location.href = 'student/register')
-  //           : (window.location.href = 'teacher/register')
-  //       }
-  //     },
-  //     onCancel() {
-  //       console.log('Cancel')
-  //     },
-  //   })
-  // }
 
   const showConfirm = confirmAction => {
     Swal.fire({
@@ -131,6 +85,11 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           ))}
       </Menu.Item>
       <Menu.Item>
+        {currentUser && (
+          <Link to={`/contract-list/${currentUser._id}?page=1&limit=${itemPerPage}`}>Hợp đồng</Link>
+        )}
+      </Menu.Item>
+      <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item>
@@ -154,7 +113,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown
-            overlay={UserMenu}
+            overlay={currentUser ? UserMenu : null}
             placement="bottomRight"
             getPopupContainer={trigger => trigger.parentNode}
           >

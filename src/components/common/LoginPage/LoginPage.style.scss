@@ -1,4 +1,4 @@
-@import "../../../default.style.scss";
+@import '../../../default.style.scss';
 
 .login-page {
   font-size: 16px;
@@ -65,6 +65,7 @@
           $size: 40px;
           width: $size;
           height: $size;
+          border: none;
           &:hover {
             cursor: pointer;
           }

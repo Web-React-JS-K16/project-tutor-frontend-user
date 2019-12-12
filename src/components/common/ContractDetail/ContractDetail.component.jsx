@@ -5,9 +5,8 @@ import './ContractDetail.style.scss'
 import MainLayout from 'components/MainLayout'
 import ContractService from 'services/contract.service'
 import * as moment from 'moment'
-import { Tag, message } from 'antd'
+import { Tag, message, Spin, Icon } from 'antd'
 import { CONTRACT_TYPE } from 'utils/constant'
-import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 import CardInfoComponent from './components/CardInfo/CardInfo.component'
 import ContractCommentComponnet from './components/ContractComment/ContractComment.component'
 import {
@@ -49,7 +48,10 @@ class ContractDetailComponent extends React.Component {
     } = this.props
     try {
       // check idUser, only user in contract can se contract detail in backend
-      const result = await ContractService.getContract({ id: contractId, token })
+      const result = await ContractService.getContract({
+        id: contractId,
+        token,
+      })
       const { studentId, teacherId, ...contract } = result
       this.setState(
         {
@@ -80,7 +82,9 @@ class ContractDetailComponent extends React.Component {
 
   onCloseReportModal = () => {
     const { reportContract } = this.state
-    this.setState({ reportContract: { ...reportContract, visibleModal: false } })
+    this.setState({
+      reportContract: { ...reportContract, visibleModal: false },
+    })
   }
 
   onReportContract = async value => {
@@ -91,7 +95,11 @@ class ContractDetailComponent extends React.Component {
     const { contractId } = this.state
 
     try {
-      const result = await ContractService.reportContract({ contractId, content: value, token })
+      const result = await ContractService.reportContract({
+        contractId,
+        content: value,
+        token,
+      })
       console.log(result)
       if (result.isSuccess) {
         message.success(result.message)
@@ -115,7 +123,7 @@ class ContractDetailComponent extends React.Component {
       <MainLayout>
         {isLoading && (
           <div className="contract-detail-component__loading">
-            <LoadingIcon />
+            <Spin indicator={<Icon type="loading" spin />} />
           </div>
         )}
         {!isLoading && (

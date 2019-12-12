@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker } from 'antd'
+import { Form, Spin, Icon, Input, Button, Alert, Radio, DatePicker } from 'antd'
 import moment from 'moment'
-import LoadingIcon from '../../../../common/LoadingIcon/LoadingIcon.component'
 import './StudentUpdateInfo.style.scss'
 
 const StudentUpdateInfoComponent = ({
@@ -71,7 +70,7 @@ const StudentUpdateInfoComponent = ({
   if (getInfo.isLoading) {
     return (
       <div className="student-update-info-loading">
-        <LoadingIcon />
+        <Spin indicator={<Icon type="loading" spin />} />
       </div>
     )
   }

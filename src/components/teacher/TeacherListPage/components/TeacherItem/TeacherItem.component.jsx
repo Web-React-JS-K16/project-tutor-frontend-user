@@ -7,7 +7,6 @@ import { Icon, Divider, Tag, Rate, Button, Row, Col } from 'antd'
 import './TeacherItem.style.scss'
 
 const TeacherItem = ({ teacher }) => {
-  console.log('teacher tags', teacher.tags)
   return (
     <div className="teacher-item">
       <div className="teacher-item__basic-info">
@@ -24,16 +23,12 @@ const TeacherItem = ({ teacher }) => {
           {(teacher.city || teacher.district || teacher.ward) && (
             <div className="address">
               <Icon type="environment" />
-              {teacher.district && <span>&nbsp;{teacher.district.name}</span>}
-              {teacher.city && <span>,&nbsp;{teacher.city.name}</span>}
+              <span>
+                &nbsp;{teacher.district && teacher.district.name},&nbsp;
+                {teacher.city && teacher.city.name}
+              </span>
             </div>
           )}
-          {/* <div className="address">
-            <Icon type="environment" />
-            <span>&ensp;HCM</span>
-            <span>,&nbsp;Gò Vấp</span>
-            <span>,&nbsp;phường 11</span>
-          </div> */}
           <div className="ratings">
             <Rate disabled defaultValue={teacher.ratings} />
           </div>

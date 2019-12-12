@@ -23,16 +23,12 @@ const TeacherItem = ({ teacher }) => {
           {(teacher.city || teacher.district || teacher.ward) && (
             <div className="address">
               <Icon type="environment" />
-              {teacher.district && <span>&nbsp;{teacher.district.name}</span>}
-              {teacher.city && <span>,&nbsp;{teacher.city.name}</span>}
+              <span>
+                &nbsp;{teacher.district && teacher.district.name},&nbsp;
+                {teacher.city && teacher.city.name}
+              </span>
             </div>
           )}
-          {/* <div className="address">
-            <Icon type="environment" />
-            <span>&ensp;HCM</span>
-            <span>,&nbsp;Gò Vấp</span>
-            <span>,&nbsp;phường 11</span>
-          </div> */}
           <div className="ratings">
             <Rate disabled defaultValue={teacher.ratings} />
           </div>

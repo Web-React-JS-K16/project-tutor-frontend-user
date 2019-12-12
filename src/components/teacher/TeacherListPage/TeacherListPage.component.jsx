@@ -143,8 +143,8 @@ const TeacherListPage = ({
     <div className="teacher-list-page">
       {teacherList && majorList && locationList ? (
         <div className="teacher-list-page__wrapper">
-          <Row>
-            <Col span={4} style={{ paddingRight: 30 }}>
+          <Row gutter={16}>
+            <Col span={5}>
               <div className="teacher-list-page__wrapper__left">
                 <Collapse bordered={false} defaultActiveKey={[]}>
                   <Panel header="Giá trên giờ" key="1">
@@ -198,7 +198,7 @@ const TeacherListPage = ({
                 </Collapse>
               </div>
             </Col>
-            <Col span={20}>
+            <Col span={19}>
               <div className="teacher-list-page__wrapper__right">
                 <div className="sort-select">
                   <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>

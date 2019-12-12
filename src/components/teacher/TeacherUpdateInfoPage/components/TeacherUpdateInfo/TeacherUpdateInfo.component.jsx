@@ -6,7 +6,7 @@ import './TeacherUpdateInfo.style.scss'
 import UpdateInfoUserComponent from 'components/common/UpdateInfoUser/UpdateInfoUser.component'
 
 const TeacherUpdateInfoComponent = props => {
-  console.log('reacher props: ', props)
+  // console.log('teacher props: ', props)
   return <UpdateInfoUserComponent {...props} isTeacher />
 }
 

@@ -11,11 +11,11 @@ const TeacherUpdateInfoPage = () => {
     <MainLayout>
       <div className="teacher-update-info-page">
         <Tabs defaultActiveKey="1">
-          <TabPane tab="Thay đổi ảnh đại diện" key="1">
-            <UploadAvatarContainer />
-          </TabPane>
-          <TabPane tab="Thay đổi thông tin" key="2">
+          <TabPane tab="Thay đổi thông tin" key="1">
             <TeacherUpdateInfoContainer />
+          </TabPane>
+          <TabPane tab="Thay đổi ảnh đại diện" key="2">
+            <UploadAvatarContainer />
           </TabPane>
         </Tabs>
       </div>

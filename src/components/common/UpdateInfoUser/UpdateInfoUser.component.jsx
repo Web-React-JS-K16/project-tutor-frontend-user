@@ -18,62 +18,49 @@ class UpdateInfoUser extends React.Component {
       tagList: [],
       cityList: null,
       districtList: null, // all district
-      initalValueDistrict: '',
+      initalValueDistrict: null,
       validDistrictList: null,
       isFetching: true,
     }
   }
 
   componentDidMount = async () => {
-    const {
-      currentUser: { _id },
-      getInfoInitial,
-      onUpdateInfoClear,
-    } = this.props
-    getInfoInitial(_id)
+    const { onUpdateInfoClear } = this.props
     onUpdateInfoClear()
     await this.fetchData()
   }
 
   fetchData = async () => {
-    const { isTeacher, history } = this.props
-    console.log('props: ', this.props)
-    // this.props.history.push('/')
+    const {
+      isTeacher,
+      history,
+      currentUser: { city, district },
+    } = this.props
+    console.log('4.1 district: ', district)
     try {
       if (isTeacher) {
         const tagList = await TagService.getAllTag()
         this.setState({ tagList })
       }
       const cityList = await CityService.getAll()
+      const districtList = await DistrictService.getAll()
       this.setState(
         {
           cityList,
+          districtList,
+          initalValueDistrict: district,
         },
         () => {
-          const { districtList, validDistrictList } = this.state
-          if (districtList !== null && validDistrictList !== null) {
-            this.setState({ isFetching: false })
-          }
-          // console.log("city: ", cityList)
-          // console.log("city: ", districtList)
+          console.log('3.3. on set up valid district')
+          this.getValidDistrict(city)
+          this.setState({ isFetching: false })
         }
       )
     } catch (err) {
-      // console.log('err: ', err.message)
       history.push({
         pathname: '/error-page',
         state: { message: err.message },
       })
-    }
-  }
-
-  getSnapshotBeforeUpdate = async prevProps => {
-    const { currentUserUpdate } = this.props
-    console.log('prev- now: ', prevProps.currentUserUpdate, ' ******** ', currentUserUpdate)
-
-    if (prevProps.currentUserUpdate !== currentUserUpdate) {
-      await this.getValidDistrict(currentUserUpdate.city)
-      this.setState({ initalValueDistrict: currentUserUpdate.district })
     }
   }
 
@@ -131,56 +118,27 @@ class UpdateInfoUser extends React.Component {
       onUpdateInfoClear()
     } else {
       message.error(updateInfo.message)
-      // onUpdateInfoClear()
+      onUpdateInfoClear()
     }
   }
 
   /**
    * get valid distrist list then set to state
    */
-  getValidDistrict = async city => {
+  getValidDistrict = city => {
     if (!city) {
       this.setState({ validDistrictList: [] })
       return []
     }
-
     const { districtList } = this.state
-    if (!districtList) {
-      // get all district
-      const result = await DistrictService.getAll()
-      // get valid district
-      const validDistrictList = result.filter(item => item.cityId === city)
-      // set to state
-      this.setState({ districtList: result, validDistrictList }, () => {
-        const { cityList } = this.state
-        if (cityList !== null) {
-          this.setState({ isFetching: false })
-        }
-      })
-      return validDistrictList
-    }
-
-    console.log('1.1: ', districtList)
     const validDistrictList = districtList.filter(item => item.cityId === city)
     this.setState({ validDistrictList })
     return validDistrictList
   }
 
-  onHandleCityChange = async city => {
-    console.log('2.1 city changed: ', city)
-
-    await this.getValidDistrict(city)
-    this.setState({ initalValueDistrict: '' })
-    const { form } = this.props
-    form.resetFields(['district'])
-    // console.log("after reset");
-    //   document.getElementById('district-select').value = '';
-
-    // this.setState({validDistrictList}, ()=>{
-    //   // clear district
-    //   // eslint-disable-next-line no-undef
-
-    // })
+  onHandleCityChange = city => {
+    this.getValidDistrict(city)
+    this.setState({ initalValueDistrict: null })
   }
 
   render() {
@@ -191,7 +149,6 @@ class UpdateInfoUser extends React.Component {
       updateInfo: { isLoading, isSuccess },
       getInfo,
     } = this.props
-    // const { isFetching, tagList, cityList, districtList } = this.state
     const { isFetching, tagList, validDistrictList, cityList, initalValueDistrict } = this.state
     if (isFetching) {
       return (

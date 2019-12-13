@@ -198,6 +198,7 @@ class ContractDetailComponent extends React.Component {
           token: currentUser.token,
         })
         message.success(result.message)
+        this.setState({ contract: { ...contract, comment: result.comment } })
       } catch (err) {
         message.error(err.message)
       }
@@ -219,9 +220,9 @@ class ContractDetailComponent extends React.Component {
         {!isLoading && (
           <div className="contract-detail-component">
             <div className="contract-detail-component__top">
-              <div className="contract-detail-component__top--title">Chi tiết hợp đồng</div>
+              <div className="contract-detail-component__top--title">{contract.name}</div>
               <div className="contract-detail-component__top--time">
-                Ngày bắt đầu: {moment(contract.startDate).format('L')}
+                Ngày bắt đầu: {moment(contract.startDate).format('DD/MM/YYYY')}
               </div>
               <Tag color={CONTRACT_TYPE[contract.status].color}>
                 {CONTRACT_TYPE[contract.status].text}
@@ -284,7 +285,13 @@ class ContractDetailComponent extends React.Component {
                 />
                 <ContractInfoItem
                   label="Ngày kết thúc"
-                  content={contract.endDate ? moment(contract.endDate).format('L') : <i>(Trống)</i>}
+                  content={
+                    contract.endDate ? (
+                      moment(contract.endDate).format('DD/MM/YYYY')
+                    ) : (
+                      <i>(Trống)</i>
+                    )
+                  }
                 />
                 <ContractInfoItem
                   label="Giá"
@@ -296,7 +303,7 @@ class ContractDetailComponent extends React.Component {
 
             <div className="contract-detail-component__comment">
               <ContractCommentComponnet
-                student={currentUser}
+                student={student}
                 contract={contract}
                 loading={commentContract.isLoading}
                 onHandleComment={this.onHandleCommentContract}

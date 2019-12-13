@@ -105,6 +105,12 @@ input {
 .ant-radio-input:focus + .ant-radio-inner {
   border-color: $color-main;
 }
+// textarea
+textarea {
+  &:hover {
+    border: 1px solid $color-main !important;
+  }
+}
 
 // select
 .ant-select-selection {

@@ -29,7 +29,7 @@ const CardInfoComponent = ({
               <CustomTimeLine label="Số điện thoại" content={phone}>
                 {displayName}
               </CustomTimeLine>
-              <CustomTimeLine label="Ngày sinh" content={moment(birthdate).format('L')}>
+              <CustomTimeLine label="Ngày sinh" content={moment(birthdate).format('DD/MM/YYYY')}>
                 {displayName}
               </CustomTimeLine>
               <CustomTimeLine label="Email" content={email}>

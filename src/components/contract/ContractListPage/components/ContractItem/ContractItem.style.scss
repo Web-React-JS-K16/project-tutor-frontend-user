@@ -14,8 +14,26 @@
   &__basic-info {
     display: flex;
     flex-direction: column;
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      .name {
+        font-weight: 500;
+      }
+      .status {
+        width: fit-content;
+        margin-left: 20px;
+      }
+    }
+    &__date {
+      margin: 10px 0;
+      font-size: 13px;
+    }
   }
   .ant-divider {
     margin: 0px;
+  }
+  .ant-btn {
+    margin-top: 10px;
   }
 }

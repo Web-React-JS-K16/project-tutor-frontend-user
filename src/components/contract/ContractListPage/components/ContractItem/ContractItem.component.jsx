@@ -12,12 +12,17 @@ const ContractItem = ({ contract }) => {
   return (
     <div className="contract-item">
       <div className="contract-item__basic-info">
-        <div className="contract-item__basic-info__name">{contract.name}</div>
-        <div className="contract-item__basic-info__status">
-          <Tag color={CONTRACT_TYPE[contract.status].color}>
-            {CONTRACT_TYPE[contract.status].text}
-          </Tag>
+        <div className="contract-item__basic-info__top">
+          <Link to={`/contract-detail/${contract._id}`}>
+            <div className="name">{contract.name}</div>
+          </Link>
+          <div className="status">
+            <Tag color={CONTRACT_TYPE[contract.status].color}>
+              {CONTRACT_TYPE[contract.status].text}
+            </Tag>
+          </div>
         </div>
+
         <div className="contract-item__basic-info__date">
           {moment(contract.startDate).format('DD/MM/YYYY')}&nbsp;-&nbsp;
           {moment(contract.endDate).format('DD/MM/YYYY')}

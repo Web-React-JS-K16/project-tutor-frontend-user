@@ -73,6 +73,12 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo, createContract 
                 <img src={teacher.avatar} alt="" />
                 <div>
                   <div className="name">{teacher.displayName}</div>
+                  {!teacher.city && !teacher.district && (
+                    <div className="address">
+                      <Icon type="environment" />
+                      <i>&nbsp;Chưa cập nhật địa chỉ</i>
+                    </div>
+                  )}
                   {(teacher.city || teacher.district) && (
                     <div className="address">
                       <Icon type="environment" />
@@ -120,9 +126,15 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo, createContract 
             </div>
             <div className="teacher-info-page__wrapper__description">
               {/* <h4>Lawyer & Freelance Writer</h4> */}
+              {!teacher.about && (
+                <p>
+                  <i>Chưa cập nhật giới thiệu</i>
+                </p>
+              )}
               <p>{teacher.about}</p>
             </div>
             <div className="teacher-info-page__wrapper__skill-tags">
+              {(!teacher.tags || teacher.tags.length === 0) && <i>Chưa cập nhật kĩ năng</i>}
               {teacher.tags.map(tag => {
                 return (
                   <Tag key={tag._id} color="orange">
@@ -150,6 +162,7 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo, createContract 
             <div className="teacher-info-page__wrapper__work-history">
               <div className="title">Lịch sử làm việc</div>
               <div className="content">
+                {(!teacher.contracts || teacher.contracts.length === 0) && <i>Trống</i>}
                 {teacher.contracts.map(contract => {
                   return <WorkHistoryItem key={contract.name} contract={contract} />
                 })}

@@ -1,38 +1,59 @@
 import React, { useState } from 'react'
-import { Comment, Avatar, Form, Button, Input } from 'antd'
+import { Button, Input, Rate } from 'antd'
+import { TEACHER } from 'utils/constant'
+import './ContractComment.style.scss'
 
-const ContractCommentComponnet = () => {
-  const [value, setValue] = useState(null)
+const ContractCommentComponnet = ({
+  student: { avatar, displayName, typeID },
+  contract: { comment, rating },
+  onHandleComment,
+  loading,
+}) => {
+  const [ratingValue, setRatingValue] = useState(5)
+
   const handleSubmit = () => {
-    // TODO:
-    // if (!value) {
-    // }
-  }
-  const handleChange = e => {
-    setValue(e.value)
+    // eslint-disable-next-line no-undef
+    const commentValue = document.getElementById('contract-comment').value
+    console.log('value: ', comment)
+    console.log('rate: ', rating)
+    onHandleComment({ comment: commentValue, rating: ratingValue })
   }
 
   return (
-    <Comment
-      avatar={
-        <Avatar
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          alt="Han Solo"
-        />
-      }
-      content={
-        <div>
-          <Form.Item>
-            <Input.TextArea rows={4} onChange={handleChange} value={value} />
-          </Form.Item>
-          <Form.Item>
-            <Button htmlType="submit" loading={false} onClick={handleSubmit} type="primary">
-              Add Comment
-            </Button>
-          </Form.Item>
+    <div className="contract-comment">
+      <div className="contract-comment__avatar">
+        <div className="img">
+          <img src={avatar} alt={displayName} />
         </div>
-      }
-    />
+        <div className="name">{displayName}</div>
+      </div>
+      <Rate allowHalf defaultValue={rating || 5} onChange={value => setRatingValue(value)} />
+      <Input.TextArea
+        id="contract-comment"
+        disabled={typeID === TEACHER}
+        rows={4}
+        defaultValue={comment || ''}
+      />
+      <Button
+        htmlType="button"
+        disabled={typeID === TEACHER}
+        loading={loading}
+        onClick={handleSubmit}
+        type="primary"
+      >
+        Đánh giá
+      </Button>
+    </div>
+    // <Comment
+    //   avatar={
+
+    //   }
+    //   content={
+    //     <div>
+
+    //     </div>
+    //   }
+    // />
   )
 }
 

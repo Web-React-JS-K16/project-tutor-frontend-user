@@ -113,4 +113,99 @@ export default class ContractService {
         throw new Error(err.message)
       })
   }
+
+  /**
+   * Teacher approve contract
+   * input: {contractId, token as token of teacher}
+   */
+  static approveContract = ({ contractId, token }) => {
+    const api = `${apiUrl}/contract/approve/${contractId}`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err.message)
+      })
+  }
+
+  /**
+   * Teacher or student cancel contract
+   * input: {contractId, token as token of teacher}
+   */
+  static cancelContract = ({ contractId, token }) => {
+    const api = `${apiUrl}/contract/cancel/${contractId}`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err.message)
+      })
+  }
+
+  /**
+   * Student comment and rate contract
+   * input: {comment, rating, id as contractId, token as token of student}
+   */
+  static ratingContract = ({ comment, rating, id, token }) => {
+    const api = `${apiUrl}/contract/rating/`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'PUT',
+      body: JSON.stringify({
+        comment,
+        rating,
+        id,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err.message)
+      })
+  }
 }

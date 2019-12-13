@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 
 import React from 'react'
@@ -5,8 +6,8 @@ import './ContractDetail.style.scss'
 import MainLayout from 'components/MainLayout'
 import ContractService from 'services/contract.service'
 import * as moment from 'moment'
-import { Tag, message } from 'antd'
-import { CONTRACT_TYPE } from 'utils/constant'
+import { Tag, message, Modal } from 'antd'
+import { CONTRACT_TYPE, STUDENT, TEACHER, NOT_START, VALID, CANCEL } from 'utils/constant'
 import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 import CardInfoComponent from './components/CardInfo/CardInfo.component'
 import ContractCommentComponnet from './components/ContractComment/ContractComment.component'
@@ -14,6 +15,8 @@ import {
   ContractToolComponent,
   ContractReportModal,
 } from './components/ContractTool/ContractTool.component'
+
+const { confirm } = Modal
 
 const ContractInfoItem = ({ label, content }) => {
   return (
@@ -36,6 +39,10 @@ class ContractDetailComponent extends React.Component {
       reportContract: {
         isLoading: false,
         visibleModal: false,
+      },
+      commentContract: {
+        isFetching: false,
+        isLoading: false,
       },
     }
   }
@@ -104,12 +111,103 @@ class ContractDetailComponent extends React.Component {
     }
   }
 
-  onCancelContract = () => {}
+  // aprrove contract
+  confirmAprroveContract = () => {
+    const callback = this.onApproveContract
+    confirm({
+      title: 'Bạn muốn chấp nhận hợp đồng này?',
+      content: 'Học sinh sẽ nhận được thông báo khi bạn chấp nhận hợp đồng.',
+      okText: 'Đồng ý',
+      okType: 'primary',
+      cancelText: 'Hủy',
+      async onOk() {
+        console.log('OK')
+        await callback()
+      },
+      onCancel() {
+        console.log('Cancel')
+      },
+    })
+  }
 
-  onApproveContract = () => {}
+  onApproveContract = async () => {
+    const { contract } = this.state
+    const {
+      currentUser: { token },
+    } = this.props
+    try {
+      const result = await ContractService.approveContract({ contractId: contract._id, token })
+      this.setState({ contract: { ...contract, status: VALID } }, () => {
+        message.success(result.message)
+      })
+    } catch (err) {
+      message.error(err.message)
+    }
+  }
+
+  // cancel contract
+  confirmCancelContract = () => {
+    const callback = this.onCancelContract
+    const {
+      currentUser: { typeID },
+    } = this.props
+    Modal.confirm({
+      title: 'Bạn muốn hủy hợp đồng này?',
+      content: `${
+        typeID === TEACHER ? 'Học sinh' : 'Giáo viên'
+      } sẽ nhận được thông báo khi bạn hủy hợp đồng.`,
+      okText: 'Đồng ý hủy',
+      okType: 'danger',
+      cancelText: 'Đóng',
+      async onOk() {
+        console.log('OK')
+        await callback()
+      },
+      onCancel() {
+        console.log('Cancel')
+      },
+    })
+  }
+
+  onCancelContract = async () => {
+    // TODO
+    const { contract } = this.state
+    const {
+      currentUser: { token },
+    } = this.props
+    try {
+      const result = await ContractService.cancelContract({ contractId: contract._id, token })
+      this.setState({ contract: { ...contract, status: CANCEL } }, () => {
+        message.success(result.message)
+      })
+    } catch (err) {
+      message.error(err.message)
+    }
+  }
+
+  // commnet
+  onHandleCommentContract = async ({ comment, rating }) => {
+    const { currentUser } = this.props
+    const { contract, commentContract } = this.state
+    this.setState({ commentContract: { ...commentContract, isLoading: true } }, async () => {
+      try {
+        const result = await ContractService.ratingContract({
+          comment,
+          rating,
+          id: contract._id,
+          token: currentUser.token,
+        })
+        message.success(result.message)
+      } catch (err) {
+        message.error(err.message)
+      }
+      this.setState({ commentContract: { ...commentContract, isLoading: false } })
+    })
+  }
 
   render() {
-    const { isLoading, student, teacher, contract, reportContract } = this.state
+    const { isLoading, student, teacher, contract, reportContract, commentContract } = this.state
+    const { currentUser } = this.props
 
     return (
       <MainLayout>
@@ -125,22 +223,40 @@ class ContractDetailComponent extends React.Component {
               <div className="contract-detail-component__top--time">
                 Ngày bắt đầu: {moment(contract.startDate).format('L')}
               </div>
+              <Tag color={CONTRACT_TYPE[contract.status].color}>
+                {CONTRACT_TYPE[contract.status].text}
+              </Tag>
+
               <div className="contract-detail-component__top--tools">
-                <ContractToolComponent
-                  content="Tố cáo"
-                  icon="waring"
-                  onClick={() => this.onOpenReportModal()}
-                />
-                <ContractToolComponent
-                  content="Hủy hợp đồng"
-                  icon="waring"
-                  onClick={this.onCancelContract}
-                />
-                <ContractToolComponent
-                  content="Chấp nhận"
-                  icon="waring"
-                  onClick={this.onApproveContract}
-                />
+                {currentUser.typeID === STUDENT && contract.status !== NOT_START && (
+                  <ContractToolComponent
+                    content="Tố cáo"
+                    icon="waring"
+                    onClick={() => this.onOpenReportModal()}
+                  />
+                )}
+                {currentUser.typeID === TEACHER && contract.status === NOT_START && (
+                  <ContractToolComponent
+                    content="Chấp nhận"
+                    icon="waring"
+                    onClick={() => this.confirmAprroveContract()}
+                  />
+                )}
+                {/* {
+                  currentUser.typeID === STUDENT && contract.status === CANCEL &&
+                  <ContractToolComponent
+                    content="Khôi phục hợp đồng"
+                    icon="waring"
+                    onClick={}
+                  />
+                } */}
+                {contract.status === VALID && (
+                  <ContractToolComponent
+                    content="Hủy hợp đồng"
+                    icon="waring"
+                    onClick={() => this.confirmCancelContract()}
+                  />
+                )}
               </div>
             </div>
             <div className="contract-detail-component__info">
@@ -164,11 +280,11 @@ class ContractDetailComponent extends React.Component {
                 <ContractInfoItem label="Nội dung" content={contract.content || <i>(Trống)</i>} />
                 <ContractInfoItem
                   label="Ngày bắt đầu"
-                  content={moment(contract.startDate).format('L')}
+                  content={moment(contract.startDate).format('L') || <i>(Trống)</i>}
                 />
                 <ContractInfoItem
                   label="Ngày kết thúc"
-                  content={moment(contract.endDate).format('L') || <i>(Trống)</i>}
+                  content={contract.endDate ? moment(contract.endDate).format('L') : <i>(Trống)</i>}
                 />
                 <ContractInfoItem
                   label="Giá"
@@ -179,7 +295,12 @@ class ContractDetailComponent extends React.Component {
             </div>
 
             <div className="contract-detail-component__comment">
-              <ContractCommentComponnet />
+              <ContractCommentComponnet
+                student={currentUser}
+                contract={contract}
+                loading={commentContract.isLoading}
+                onHandleComment={this.onHandleCommentContract}
+              />
             </div>
           </div>
         )}

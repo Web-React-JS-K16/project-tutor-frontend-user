@@ -32,7 +32,7 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
         ...state,
         teacherList: action.payload,
       }
-    case TeacherTypes.UPDATE_NUMBER_OF_TEACHER:
+    case TeacherTypes.UPDATE_NUMBER_OF_TEACHERS:
       return {
         ...state,
         numberOfTeachers: action.payload,

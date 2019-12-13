@@ -1,8 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React, { useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, Spin, Icon } from 'antd'
 import { Link } from 'react-router-dom'
-import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 import './ActiveEmail.style.scss'
 
 /**
@@ -25,7 +24,7 @@ const ActiveEmailComponent = ({
   if (isLoading) {
     return (
       <div className="active-email-page">
-        <LoadingIcon />
+        <Spin indicator={<Icon type="loading" spin />} />
       </div>
     )
   }

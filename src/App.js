@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 
 import 'antd/dist/antd.css'
@@ -11,20 +12,21 @@ import { STUDENT, TEACHER } from 'utils/constant'
 import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
 import ErrorPage from 'components/common/ErrorPage/ErrorPage.component'
 import ContractDetailContainer from 'components/common/ContractDetail/ContractDetail.container'
-import MainLayout from './components/MainLayout'
-import Home from './components/common/HomePage/Home.component'
-import TeacherInfoPageContainer from './components/teacher/TeacherInfoPage/TeacherInfoPage.container'
-import TeacherListPageContainer from './components/teacher/TeacherListPage/TeacherListPage.container'
-import TeacherLoginComponent from './components/teacher/TeacherLogin/TeacherLogin.component'
-import StudentLoginComponent from './components/student/StudentLogin/StudentLogin.component'
-import ActiveEmailContainer from './components/common/ActiveEmail/ActiveEmail.container'
-import ForgetPasswordContainer from './components/common/ForgetPassword/ForgetPassword.container'
-import ResetPasswordContainer from './components/common/ResetPassword/ResetPassword.container'
-import TeacherRegisterComponent from './components/teacher/TeacherRegister/TeacherRegister.component'
-import StudentRegisterComponent from './components/student/StudentRegister/StudentRegister.component'
-import RegisterPageContainer from './components/common/RegisterPage/RegisterPage.container'
-import StudentUpdateInfoPageComponent from './components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
-import TeacherUpdateInfoPage from './components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
+import ContractListPageContainer from 'components/contract/ContractListPage/ContractListPage.container'
+import MainLayout from 'components/MainLayout'
+import Home from 'components/common/HomePage/Home.component'
+import TeacherInfoPageContainer from 'components/teacher/TeacherInfoPage/TeacherInfoPage.container'
+import TeacherListPageContainer from 'components/teacher/TeacherListPage/TeacherListPage.container'
+import TeacherLoginComponent from 'components/teacher/TeacherLogin/TeacherLogin.component'
+import StudentLoginComponent from 'components/student/StudentLogin/StudentLogin.component'
+import ActiveEmailContainer from 'components/common/ActiveEmail/ActiveEmail.container'
+import ForgetPasswordContainer from 'components/common/ForgetPassword/ForgetPassword.container'
+import ResetPasswordContainer from 'components/common/ResetPassword/ResetPassword.container'
+import TeacherRegisterComponent from 'components/teacher/TeacherRegister/TeacherRegister.component'
+import StudentRegisterComponent from 'components/student/StudentRegister/StudentRegister.component'
+import RegisterPageContainer from 'components/common/RegisterPage/RegisterPage.container'
+import StudentUpdateInfoPageComponent from 'components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
+import TeacherUpdateInfoPage from 'components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
@@ -144,6 +146,14 @@ const App = ({ currentUser }) => {
           <>
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
+            <Route
+              path="/contract-list/:userId"
+              render={props => (
+                <MainLayout>
+                  <ContractListPageContainer {...props} />
+                </MainLayout>
+              )}
+            />
           </>
         ) : (
           <>

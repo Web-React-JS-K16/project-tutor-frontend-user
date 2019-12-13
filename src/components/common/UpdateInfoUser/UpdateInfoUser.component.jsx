@@ -2,13 +2,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select, message } from 'antd'
+import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select, message, Spin } from 'antd'
 import { withRouter } from 'react-router'
 import moment from 'moment'
 import TagService from 'services/tag.service'
 import DistrictService from 'services/district.service'
 import CityService from 'services/city.service'
-import LoadingIcon from '../LoadingIcon/LoadingIcon.component'
 import './UpdateInfoUser.style.scss'
 
 class UpdateInfoUser extends React.Component {
@@ -153,7 +152,7 @@ class UpdateInfoUser extends React.Component {
     if (isFetching) {
       return (
         <div className="user-update-info-loading">
-          <LoadingIcon />
+          <Spin indicator={<Icon type="loading" spin />} />
         </div>
       )
     }
@@ -298,7 +297,7 @@ class UpdateInfoUser extends React.Component {
                         )}
                       </Form.Item>
                     ) : (
-                      <LoadingIcon />
+                      <Spin indicator={<Icon type="loading" spin />} />
                     )}
                   </div>
 

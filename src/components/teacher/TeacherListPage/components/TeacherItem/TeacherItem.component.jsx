@@ -7,7 +7,6 @@ import { Icon, Divider, Tag, Rate, Button, Row, Col } from 'antd'
 import './TeacherItem.style.scss'
 
 const TeacherItem = ({ teacher }) => {
-  console.log('teacher tags', teacher.tags)
   return (
     <div className="teacher-item">
       <div className="teacher-item__basic-info">
@@ -21,19 +20,21 @@ const TeacherItem = ({ teacher }) => {
             <div className="name">{teacher.displayName}</div>
           </Link>
 
+          {!teacher.city && !teacher.district && !teacher.ward && (
+            <div className="address">
+              <Icon type="environment" />
+              <i>&nbsp;Chưa cập nhật địa chỉ</i>
+            </div>
+          )}
           {(teacher.city || teacher.district || teacher.ward) && (
             <div className="address">
               <Icon type="environment" />
-              {teacher.city && <span>&ensp;{teacher.city.name}</span>}
-              {teacher.district && <span>,&nbsp;{teacher.district.name}</span>}
+              <span>
+                &nbsp;{teacher.district && teacher.district.name},&nbsp;
+                {teacher.city && teacher.city.name}
+              </span>
             </div>
           )}
-          {/* <div className="address">
-            <Icon type="environment" />
-            <span>&ensp;HCM</span>
-            <span>,&nbsp;Gò Vấp</span>
-            <span>,&nbsp;phường 11</span>
-          </div> */}
           <div className="ratings">
             <Rate disabled defaultValue={teacher.ratings} />
           </div>
@@ -56,6 +57,7 @@ const TeacherItem = ({ teacher }) => {
       </div>
       <Divider />
       <div className="teacher-item__tags">
+        {(!teacher.tags || teacher.tags.length === 0) && <i>Chưa cập nhật kĩ năng</i>}
         {teacher.tags.map(tag => {
           return (
             <Tag key={tag._id} color="orange">

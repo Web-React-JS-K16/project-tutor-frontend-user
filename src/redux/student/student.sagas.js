@@ -31,8 +31,8 @@ function* studentGetInfoSaga() {
 function* updateInfo({ payload: { info, token } }) {
   try {
     yield StudentService.updateInfo({ info, token })
-    const { displayName, phone, birthdate, gender } = info
-    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender }))
+    const { displayName, phone, birthdate, gender, city, district } = info
+    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender, city, district }))
     yield put(updateInfoSuccess(info))
   } catch (err) {
     yield put(updateInfoFailure(err.message))

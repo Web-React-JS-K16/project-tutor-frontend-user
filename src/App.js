@@ -160,8 +160,12 @@ const App = ({ currentUser }) => {
             <Route path="/register" component={RegisterPageContainer} />
             <Route path="/foget-password" component={ForgetPasswordContainer} />
             <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
+            <Route path="/contract-detail/:contractId">
+              <Redirect to={`${studentPath}/login`} />
+            </Route>
           </>
         )}
+        <Route path="/*" component={NotFoud404} />
       </Switch>
     </div>
   )

@@ -12,11 +12,11 @@ const StudentUpdateInfoPageComponent = () => {
     <MainLayout>
       <div className="student-update-info-page">
         <Tabs defaultActiveKey="1">
-          <TabPane tab="Thay đổi ảnh đại diện" key="1">
-            <UploadAvatarContainer />
-          </TabPane>
-          <TabPane tab="Thay đổi thông tin" key="2">
+          <TabPane tab="Thay đổi thông tin" key="1">
             <StudentUpdateInfoContainer />
+          </TabPane>
+          <TabPane tab="Thay đổi ảnh đại diện" key="2">
+            <UploadAvatarContainer />
           </TabPane>
         </Tabs>
       </div>

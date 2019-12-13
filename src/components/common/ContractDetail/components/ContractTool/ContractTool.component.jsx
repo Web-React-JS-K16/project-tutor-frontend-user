@@ -38,7 +38,7 @@ const ContractReportModal = ({ visible, onClose, onSubmit, loading }) => {
 const ContractToolComponent = ({ content, icon, onClick }) => {
   return (
     <div className="card-info">
-      <Button type="default" icon={icon} typeHtml="button" onClick={onClick}>
+      <Button type="primary" icon={icon} typeHtml="button" onClick={onClick}>
         {content}
       </Button>
     </div>

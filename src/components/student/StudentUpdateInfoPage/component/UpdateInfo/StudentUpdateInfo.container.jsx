@@ -8,15 +8,15 @@ import {
 
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
-  currentStudent: state.student.currentStudent,
+  currentUserUpdate: state.student.currentStudent,
   updateInfo: state.student.updateInfo,
   getInfo: state.student.getInfo,
 })
 
 const mapDispatchToProps = dispatch => ({
-  clearUpdateInfo: () => dispatch(clearUpdateInfo()),
-  updateInfoAction: ({ info, token }) => dispatch(updateInfo({ info, token })),
-  studentGetInfo: token => dispatch(studentGetInfo(token)),
+  onUpdateInfoClear: () => dispatch(clearUpdateInfo()),
+  onUpdateInfo: ({ info, token }) => dispatch(updateInfo({ info, token })),
+  getInfoInitial: token => dispatch(studentGetInfo(token)),
 })
 
 const StudentUpdateInfoContainer = connect(

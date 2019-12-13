@@ -13,7 +13,7 @@ const CustomTimeLine = ({ label, content }) => (
 )
 
 const CardInfoComponent = ({
-  user: { displayName, avatar, phone, birthdate, email, address, about },
+  user: { displayName, avatar, phone, birthdate, email, city, district, about },
   isStudent,
 }) => {
   return (
@@ -29,13 +29,13 @@ const CardInfoComponent = ({
               <CustomTimeLine label="Số điện thoại" content={phone}>
                 {displayName}
               </CustomTimeLine>
-              <CustomTimeLine label="Ngày sinh" content={moment(birthdate).format('L')}>
+              <CustomTimeLine label="Ngày sinh" content={moment(birthdate).format('DD/MM/YYYY')}>
                 {displayName}
               </CustomTimeLine>
               <CustomTimeLine label="Email" content={email}>
                 {displayName}
               </CustomTimeLine>
-              <CustomTimeLine label="Địa chỉ" content={address}>
+              <CustomTimeLine label="Địa chỉ" content={`${district.name}, ${city.name}`}>
                 {displayName}
               </CustomTimeLine>
             </Timeline>

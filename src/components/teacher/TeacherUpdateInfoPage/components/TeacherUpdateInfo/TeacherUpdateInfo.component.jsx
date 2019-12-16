@@ -14,7 +14,7 @@ const TeacherUpdateInfoComponent = ({
   getInfo,
   teacherUpdateInfo,
   teacherUpdateInfoClear,
-  teacherGetInfo,
+  teacherGetInfoToUpdate,
 }) => {
   const [tagList, setTagList] = useState(null)
   useEffect(() => {
@@ -28,9 +28,9 @@ const TeacherUpdateInfoComponent = ({
 
   useEffect(() => {
     // console.log('get info')
-    teacherGetInfo(_id)
+    teacherGetInfoToUpdate(_id)
     // console.log('get info after')
-  }, [teacherGetInfo, _id])
+  }, [teacherGetInfoToUpdate, _id])
 
   useEffect(() => {
     teacherUpdateInfoClear()

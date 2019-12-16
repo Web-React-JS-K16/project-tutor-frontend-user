@@ -21,9 +21,9 @@ import {
   updateAvatarSuccess,
   updateAvatarFailure,
 } from './user.actions'
-import { onClearTeacherState, getTeacherInfo } from '../teacher/teacher.actions'
+import { onClearTeacherState } from '../teacher/teacher.actions'
 import UserService from '../../services/user.service'
-import { jwtToken, TEACHER, STUDENT } from '../../utils/constant'
+import { jwtToken } from '../../utils/constant'
 
 // ==== login
 export function* login({ payload: { email, password, typeID } }) {
@@ -86,11 +86,6 @@ export function* authenticate({ payload: token }) {
     const user = yield UserService.authenticate(token)
     if (user) {
       yield put(updateCurrentUser(user))
-      if (user.typeID === TEACHER) {
-        yield put(getTeacherInfo(user._id))
-      } else if (user.typeID === STUDENT) {
-        // get student info
-      }
     } else {
       yield put(updateCurrentUser(null))
     }

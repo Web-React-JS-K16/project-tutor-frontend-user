@@ -3,7 +3,7 @@ import TeacherUpdateInfoComponent from './TeacherUpdateInfo.component'
 import {
   teacherUpdateInfo,
   teacherUpdateInfoClear,
-  teacherGetInfo,
+  teacherGetInfoToUpdate,
 } from '../../../../../redux/teacher/teacher.actions'
 
 const mapStateToProps = state => ({
@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   teacherUpdateInfoClear: () => dispatch(teacherUpdateInfoClear()),
   teacherUpdateInfo: ({ info, token }) => dispatch(teacherUpdateInfo({ info, token })),
-  teacherGetInfo: id => dispatch(teacherGetInfo(id)),
+  teacherGetInfoToUpdate: id => dispatch(teacherGetInfoToUpdate(id)),
 })
 
 const TeacherUpdateInfoContainer = connect(

@@ -1,8 +1,13 @@
 import ContractTypes from './contract.types'
 
 const INITIAL_STATE = {
-  contractList: [],
-  numberOfContracts: 0,
+  getList: {
+    contractList: [],
+    numberOfContracts: 0,
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
   newContract: {},
   currentContract: {},
 }
@@ -13,15 +18,32 @@ const contractReducer = (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
       }
-    case ContractTypes.UPDATE_CONTRACT_LIST:
+    case ContractTypes.GET_CONTRACT_LIST:
       return {
         ...state,
-        contractList: action.payload,
+        getList: {
+          ...state.getList,
+          isLoading: true,
+        },
       }
-    case ContractTypes.UPDATE_NUMBER_OF_CONTRACTS:
+    case ContractTypes.GET_CONTRACT_LIST_SUCCESS:
       return {
         ...state,
-        numberOfContracts: action.payload,
+        getList: {
+          isLoading: false,
+          isSuccess: true,
+          contractList: action.payload.contractList,
+          numberOfContracts: action.payload.numberOfContracts,
+        },
+      }
+    case ContractTypes.GET_CONTRACT_LIST_FAILURE:
+      return {
+        ...state,
+        getList: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
       }
     case ContractTypes.UPDATE_CONTRACT:
       return {

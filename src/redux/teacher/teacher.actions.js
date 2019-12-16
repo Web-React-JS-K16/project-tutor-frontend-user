@@ -5,34 +5,39 @@ export const onClearTeacherState = () => ({
   type: TeacherTypes.CLEAR_TEACHER_STATE,
 })
 
-export const getTeacherInfo = id => ({
-  type: TeacherTypes.GET_TEACHER_INFO,
-  payload: id,
-})
+// export const getTeacherInfo = id => ({
+//   type: TeacherTypes.GET_TEACHER_INFO,
+//   payload: id,
+// })
 
 export const getTeacherList = filterConditions => ({
   type: TeacherTypes.GET_TEACHER_LIST,
   payload: filterConditions,
 })
 
-export const countTeachers = () => ({
-  type: TeacherTypes.COUNT_TEACHERS,
+// export const countTeachers = () => ({
+//   type: TeacherTypes.COUNT_TEACHERS,
+// })
+
+export const getTeacherListSuccess = (teacherList, numberOfTeachers) => ({
+  type: TeacherTypes.GET_TEACHER_LIST_SUCCESS,
+  payload: { teacherList, numberOfTeachers },
 })
 
-export const updateTeacherList = teachers => ({
-  type: TeacherTypes.UPDATE_TEACHER_LIST,
-  payload: teachers,
+export const getTeacherListFailure = message => ({
+  type: TeacherTypes.GET_TEACHER_LIST_FAILURE,
+  payload: message,
 })
 
-export const updateCurrentTeacher = teacher => ({
-  type: TeacherTypes.UPDATE_CURRENT_TEACHER,
-  payload: teacher,
-})
+// export const updateCurrentTeacher = teacher => ({
+//   type: TeacherTypes.UPDATE_CURRENT_TEACHER,
+//   payload: teacher,
+// })
 
-export const updateNumerOfTeachers = number => ({
-  type: TeacherTypes.UPDATE_NUMBER_OF_TEACHERS,
-  payload: number,
-})
+// export const updateNumerOfTeachers = number => ({
+//   type: TeacherTypes.UPDATE_NUMBER_OF_TEACHERS,
+//   payload: number,
+// })
 
 //= == get info teacher
 export const teacherGetInfo = id => ({
@@ -41,6 +46,14 @@ export const teacherGetInfo = id => ({
 })
 export const teacherGetInfoSuccess = info => ({
   type: TeacherTypes.TEACHER_GET_INFO_SUCCESS,
+  payload: info,
+})
+export const teacherGetInfoToUpdate = id => ({
+  type: TeacherTypes.TEACHER_GET_INFO_TO_UPDATE,
+  payload: id,
+})
+export const teacherGetInfoToUpdateSuccess = info => ({
+  type: TeacherTypes.TEACHER_GET_INFO_TO_UPDATE_SUCCESS,
   payload: info,
 })
 export const teacherGetInfoFailure = message => ({

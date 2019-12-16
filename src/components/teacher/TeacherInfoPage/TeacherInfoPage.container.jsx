@@ -1,15 +1,16 @@
 import { connect } from 'react-redux'
 import TeacherInfoPage from './TeacherInfoPage.component'
-import { getTeacherInfo } from '../../../redux/teacher/teacher.actions'
+import { teacherGetInfo, onClearTeacherState } from '../../../redux/teacher/teacher.actions'
 import { createContract } from '../../../redux/contract/contract.actions'
 
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
-  teacher: state.teacher.currentTeacher,
+  getInfoObj: state.teacher.getInfo,
 })
 
 const mapDispatchToProps = dispatch => ({
-  getTeacherInfo: id => dispatch(getTeacherInfo(id)),
+  onClearTeacherState: () => dispatch(onClearTeacherState()),
+  teacherGetInfo: id => dispatch(teacherGetInfo(id)),
   createContract: contract => dispatch(createContract(contract)),
 })
 

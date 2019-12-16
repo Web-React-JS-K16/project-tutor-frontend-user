@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
-import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
+import { jwtToken, TEACHER } from 'utils/constant'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
@@ -85,9 +85,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           ))}
       </Menu.Item>
       <Menu.Item>
-        {currentUser && (
-          <Link to={`/contract-list/${currentUser._id}?page=1&limit=${itemPerPage}`}>Hợp đồng</Link>
-        )}
+        {currentUser && <Link to={`/contract-list/${currentUser._id}`}>Hợp đồng</Link>}
       </Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
@@ -148,7 +146,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           <Link to="/">Trang chủ</Link>
         </Menu.Item>
         <Menu.Item key="2">
-          <Link to={`/teacher?page=1&limit=${itemPerPage}`}>Gia sư</Link>
+          <Link to="/teacher">Gia sư</Link>
         </Menu.Item>
         <SubMenu
           key="sub1"

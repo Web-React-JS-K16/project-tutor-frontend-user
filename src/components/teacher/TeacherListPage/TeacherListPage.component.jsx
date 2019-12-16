@@ -3,9 +3,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
-import TeacherService from 'services/teacher.service'
 import UserService from 'services/user.service'
 import { itemPerPage } from 'utils/constant'
 import TeacherItem from './components/TeacherItem/TeacherItem.component'
@@ -15,18 +15,20 @@ const { TreeNode } = Tree
 const { Option } = Select
 
 const TeacherListPage = ({
-  numberOfTeachers,
-  teacherList,
+  // numberOfTeachers,
+  getListObj,
   getTeacherList,
-  countTeachers,
   majorList,
   getMajorList,
   locationList,
   getLocationList,
+  onClearTeacherState,
 }) => {
-  const query = TeacherService.useQuery()
-  const page = query.get('page') || 1
-  const limit = query.get('limit') || itemPerPage
+  // const query = TeacherService.useQuery()
+  // const page = query.get('page') || 1
+  // const limit = query.get('limit') || itemPerPage
+  const page = 1
+  const limit = itemPerPage
 
   const [currentPage, setCurrentPage] = useState(1)
   const [currentMajors, setCurrentMajors] = useState([])
@@ -36,14 +38,14 @@ const TeacherListPage = ({
   const [currentSort, setCurrentSort] = useState({})
 
   useEffect(() => {
+    onClearTeacherState()
     if (page && limit) {
       setCurrentPage(page)
       getTeacherList({ currentPage: page, currentLimit: limit })
       getMajorList()
       getLocationList()
-      countTeachers()
     }
-  }, [page, limit, getTeacherList, getMajorList, getLocationList, countTeachers])
+  }, [page, limit, onClearTeacherState, getTeacherList, getMajorList, getLocationList])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-list', JSON.stringify(filterConditions))
@@ -139,9 +141,25 @@ const TeacherListPage = ({
     executeFilter(filterConditions)
   }
 
+  if (!getListObj.isLoading && getListObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getListObj.message}` },
+        }}
+      />
+    )
+  }
+
   return (
     <div className="teacher-list-page">
-      {teacherList && majorList && locationList ? (
+      {getListObj.isLoading && (
+        <div className="teacher-list-page__loading">
+          <Spin indicator={<Icon type="loading" spin />} />
+        </div>
+      )}
+      {majorList && locationList && (
         <div className="teacher-list-page__wrapper">
           <Row gutter={16}>
             <Col span={5}>
@@ -206,31 +224,31 @@ const TeacherListPage = ({
                     <Option value="DSC">Giá trên giờ giảm dần</Option>
                   </Select>
                 </div>
-                <Row gutter={16}>
-                  {teacherList.map(teacher => {
-                    return (
-                      <Col key={teacher._id} span={8}>
-                        <TeacherItem teacher={teacher} />
-                      </Col>
-                    )
-                  })}
-                </Row>
-                <Row>
-                  <Pagination
-                    simple
-                    defaultCurrent={parseInt(currentPage)}
-                    defaultPageSize={parseInt(limit)}
-                    total={numberOfTeachers}
-                    onChange={handleChangePage}
-                  />
-                </Row>
+                {!getListObj.isLoading && getListObj.isSuccess === true && (
+                  <>
+                    <Row gutter={16}>
+                      {getListObj.teacherList.map(teacher => {
+                        return (
+                          <Col key={teacher._id} span={8}>
+                            <TeacherItem teacher={teacher} />
+                          </Col>
+                        )
+                      })}
+                    </Row>
+                    <Row>
+                      <Pagination
+                        simple
+                        defaultCurrent={parseInt(currentPage)}
+                        defaultPageSize={parseInt(limit)}
+                        total={getListObj.numberOfTeachers}
+                        onChange={handleChangePage}
+                      />
+                    </Row>
+                  </>
+                )}
               </div>
             </Col>
           </Row>
-        </div>
-      ) : (
-        <div className="teacher-list-page__loading">
-          <Spin indicator={<Icon type="loading" spin />} />
         </div>
       )}
     </div>

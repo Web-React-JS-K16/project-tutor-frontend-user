@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
-import { Button, Alert, message } from 'antd'
+import { Button, message } from 'antd'
 import { IMG_AVATAR_REF, DEFAULT_AVATAR_URL } from '../../../utils/constant'
 import storage from '../../../firebase.config'
 import './UploadAvatar.style.scss'
@@ -35,7 +35,7 @@ class UploadAvatar extends Component {
     const { uploadFile } = this.state
     console.log('on upload')
     if (!uploadFile) {
-      message.info('Vui lòng chọn hình.')
+      message.warning('Vui lòng chọn hình.')
       return
     }
     this.setState({ isUploadLoading: true }, () => {
@@ -65,23 +65,33 @@ class UploadAvatar extends Component {
     })
   }
 
+  getMessage = content => {
+    const {
+      updateAvatar: { isSuccess },
+      updateAvatar,
+      updateAvatarClear,
+    } = this.props
+    if (isSuccess) {
+      message.success(content || 'Thành công')
+      updateAvatarClear()
+      this.setState({ uploadFile: null })
+    } else {
+      message.error(updateAvatar.message)
+    }
+  }
+
   render() {
     const { uploadFile, isUploadLoading } = this.state
     const {
       currentUser,
       updateAvatar: { isLoading, isSuccess },
-      updateAvatar,
     } = this.props
     // console.log("currnet user: ", currentUser);
     return (
       <div className="upload-avatar-wrap">
         <div className="message">
-          {!isLoading && isSuccess === false ? (
-            <Alert message={updateAvatar.message} type="error" showIcon />
-          ) : null}
-          {!isLoading && isSuccess === true ? (
-            <Alert message="Đổi ảnh đại diện thành công" type="success" showIcon />
-          ) : null}
+          {!isLoading && isSuccess === false ? this.getMessage() : null}
+          {!isLoading && isSuccess === true ? this.getMessage('Đổi ảnh đại diện thành công') : null}
         </div>
         <div className="current-avatar">
           <img src={(currentUser && currentUser.avatar) || DEFAULT_AVATAR_URL} alt="" />

@@ -27,6 +27,7 @@ import StudentRegisterComponent from 'components/student/StudentRegister/Student
 import RegisterPageContainer from 'components/common/RegisterPage/RegisterPage.container'
 import StudentUpdateInfoPageComponent from 'components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
 import TeacherUpdateInfoPage from 'components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
+import ChatContainer from 'components/common/Chat/Chat.container'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
@@ -144,6 +145,7 @@ const App = ({ currentUser }) => {
 
         {currentUser ? (
           <>
+            <Route path="/chat" component={ChatContainer} />
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
             <Route

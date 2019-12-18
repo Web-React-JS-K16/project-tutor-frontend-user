@@ -33,7 +33,6 @@ const teacherPath = '/teacher'
 const studentPath = '/student'
 
 const RouteTeacher = ({ currentUser }) => {
-  // const token = UserService.getPreferences(jwtToken)
   console.log('current user: ', currentUser)
 
   return (
@@ -89,8 +88,6 @@ const RouteTeacher = ({ currentUser }) => {
 }
 
 const RouteStudent = ({ currentUser }) => {
-  // const token = UserService.getPreferences(jwtToken)
-
   return (
     <Switch>
       {/* WITHOUT login, user can access those links */}

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
-import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
+import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
@@ -25,7 +25,7 @@ const MainHeader = ({
   getNotificationList,
 }) => {
   useEffect(() => {
-    const token = UserService.getPreferences(jwtToken)
+    const token = UserService.getPreferences(JWT_TOKEN)
     if (!currentUser && token) onAuthenticate(token)
   }, [currentUser, onAuthenticate])
 
@@ -34,7 +34,11 @@ const MainHeader = ({
 
     if (currentUser) {
       const userId = currentUser._id
-      getNotificationList({ userId, currentPage: 1, currentLimit: itemPerPage })
+      getNotificationList({
+        userId,
+        currentPage: 1,
+        currentLimit: ITEMS_PER_PAGE,
+      })
     }
   }, [currentUser, onClearNotificationState, getNotificationList])
 

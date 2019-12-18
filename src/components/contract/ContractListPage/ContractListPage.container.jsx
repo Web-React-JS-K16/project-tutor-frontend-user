@@ -4,6 +4,7 @@ import ContractListPage from './ContractListPage.component'
 
 const mapStateToProps = state => ({
   getListObj: state.contract.getList,
+  currentUser: state.user.currentUser,
 })
 
 const mapDispatchToProps = dispatch => ({

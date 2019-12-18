@@ -1,5 +1,5 @@
 import apiUrl from './api-url'
-import { jwtToken } from '../utils/constant'
+import { JWT_TOKEN } from '../utils/constant'
 
 export default class UserService {
   static login = ({ email, password, typeID }) => {
@@ -25,7 +25,7 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        this.setPreferences(jwtToken, result.user.token)
+        this.setPreferences(JWT_TOKEN, result.user.token)
         return result.user
       })
       .catch(err => {
@@ -54,7 +54,7 @@ export default class UserService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        this.setPreferences(jwtToken, result.user.token)
+        this.setPreferences(JWT_TOKEN, result.user.token)
         return result.user
       })
       .catch(err => {
@@ -112,7 +112,7 @@ export default class UserService {
         return user
       })
       .catch(err => {
-        this.removePreferences(jwtToken)
+        this.removePreferences(JWT_TOKEN)
         throw new Error(err)
       })
   }

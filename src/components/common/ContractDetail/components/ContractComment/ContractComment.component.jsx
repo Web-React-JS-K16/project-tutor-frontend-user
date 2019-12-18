@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Input, Rate, Tag } from 'antd'
-import { TEACHER, VALID } from 'utils/constant'
+import { TEACHER, CONTRACT_TYPES } from 'utils/constant'
 import * as moment from 'moment'
 
 import './ContractComment.style.scss'
 
 const ContractCommentComponnet = ({
   student: { avatar, displayName, typeID },
-  contract: { comment, rating, status },
+  contract: { comment, status },
   onHandleComment,
   loading,
 }) => {
@@ -32,25 +32,31 @@ const ContractCommentComponnet = ({
             <Tag color="green">Học sinh</Tag>
           </div>
           <div className="time">
-            {comment.time ? moment(comment.time).format('DD/MM/YYYY HH:mm') : ''}
+            {comment.date ? moment(comment.date).format('DD/MM/YYYY HH:mm') : ''}
           </div>
         </div>
       </div>
       <div className="contract-comment__rating">
-        <Rate allowHalf defaultValue={rating || 5} onChange={value => setRatingValue(value)} />
+        <Rate
+          allowHalf
+          defaultValue={comment.ratings || 5}
+          onChange={value => setRatingValue(value)}
+        />
       </div>
       <Input.TextArea
         id="contract-comment"
         disabled={typeID === TEACHER}
         rows={4}
         defaultValue={
-          status === VALID ? 'Bạn sẽ được đánh giá khi kết thúc hợp đồng' : comment.content || ''
+          status === CONTRACT_TYPES.IS_VALID
+            ? 'Bạn sẽ được đánh giá khi kết thúc hợp đồng'
+            : comment.content || ''
         }
       />
       <div className="contract-comment__btn">
         <Button
           htmlType="button"
-          disabled={typeID === TEACHER || status === VALID}
+          disabled={typeID === TEACHER || status === CONTRACT_TYPES.IS_VALID}
           loading={loading}
           onClick={handleSubmit}
           type="primary"

@@ -7,15 +7,21 @@ import { Redirect } from 'react-router-dom'
 import { Row, Col, Pagination, Spin, Icon } from 'antd'
 import './ContractListPage.style.scss'
 import UserService from 'services/user.service'
-import { itemPerPage } from 'utils/constant'
+import { ITEMS_PER_PAGE } from 'utils/constant'
 import ContractItem from './components/ContractItem/ContractItem.component'
 
-const ContractListPage = ({ match, getListObj, onClearContractState, getContractList }) => {
+const ContractListPage = ({
+  match,
+  currentUser,
+  getListObj,
+  onClearContractState,
+  getContractList,
+}) => {
   // const query = TeacherService.useQuery()
   // const page = query.get('page') || 1
-  // const limit = query.get('limit') || itemPerPage
+  // const limit = query.get('limit') || ITEMS_PER_PAGE
   const page = 1
-  const limit = itemPerPage
+  const limit = ITEMS_PER_PAGE
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -58,7 +64,7 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
 
   return (
     <div className="contract-list-page">
-      {getListObj.isLoading && (
+      {(getListObj.isLoading || !currentUser) && (
         <div className="contract-list-page__loading">
           <Spin indicator={<Icon type="loading" spin />} />
         </div>
@@ -71,7 +77,7 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
                 {getListObj.contractList.map(contract => {
                   return (
                     <Col key={contract._id} span={12}>
-                      <ContractItem contract={contract} />
+                      <ContractItem contract={contract} currentUser={currentUser} />
                     </Col>
                   )
                 })}

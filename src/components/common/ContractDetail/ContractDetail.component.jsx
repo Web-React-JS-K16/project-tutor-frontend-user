@@ -7,7 +7,7 @@ import MainLayout from 'components/MainLayout'
 import ContractService from 'services/contract.service'
 import * as moment from 'moment'
 import { Tag, message, Modal, Spin, Icon } from 'antd'
-import { CONTRACT_TYPE, STUDENT, TEACHER, NOT_START, VALID, CANCEL } from 'utils/constant'
+import { CUSTOM_CONTRACT_TYPES, CONTRACT_TYPES, STUDENT, TEACHER } from 'utils/constant'
 import CardInfoComponent from './components/CardInfo/CardInfo.component'
 import ContractCommentComponnet from './components/ContractComment/ContractComment.component'
 import {
@@ -144,8 +144,11 @@ class ContractDetailComponent extends React.Component {
       currentUser: { token },
     } = this.props
     try {
-      const result = await ContractService.approveContract({ contractId: contract._id, token })
-      this.setState({ contract: { ...contract, status: VALID } }, () => {
+      const result = await ContractService.approveContract({
+        contractId: contract._id,
+        token,
+      })
+      this.setState({ contract: { ...contract, status: CONTRACT_TYPES.IS_VALID } }, () => {
         message.success(result.message)
       })
     } catch (err) {
@@ -184,8 +187,11 @@ class ContractDetailComponent extends React.Component {
       currentUser: { token },
     } = this.props
     try {
-      const result = await ContractService.cancelContract({ contractId: contract._id, token })
-      this.setState({ contract: { ...contract, status: CANCEL } }, () => {
+      const result = await ContractService.cancelContract({
+        contractId: contract._id,
+        token,
+      })
+      this.setState({ contract: { ...contract, status: CONTRACT_TYPES.IS_CANCELLED } }, () => {
         message.success(result.message)
       })
     } catch (err) {
@@ -210,7 +216,9 @@ class ContractDetailComponent extends React.Component {
       } catch (err) {
         message.error(err.message)
       }
-      this.setState({ commentContract: { ...commentContract, isLoading: false } })
+      this.setState({
+        commentContract: { ...commentContract, isLoading: false },
+      })
     })
   }
 
@@ -230,27 +238,40 @@ class ContractDetailComponent extends React.Component {
             <div className="contract-detail-component__top">
               <div className="contract-detail-component__top--title">{contract.name}</div>
               <div className="contract-detail-component__top--time">
-                Ngày bắt đầu: {moment(contract.startDate).format('DD/MM/YYYY')}
+                {contract.startDate ? (
+                  moment(contract.startDate).format('DD/MM/YYYY')
+                ) : (
+                  <i>(Chưa cập nhật)</i>
+                )}
+                &ensp;-&ensp;
+                {contract.endDate ? (
+                  moment(contract.endDate).format('DD/MM/YYYY')
+                ) : (
+                  <i>(Chưa cập nhật)</i>
+                )}
               </div>
-              <Tag color={CONTRACT_TYPE[contract.status].color}>
-                {CONTRACT_TYPE[contract.status].text}
+              <Tag color={CUSTOM_CONTRACT_TYPES[contract.status].color}>
+                {currentUser.typeID === TEACHER
+                  ? CUSTOM_CONTRACT_TYPES[contract.status].textForTeacher
+                  : CUSTOM_CONTRACT_TYPES[contract.status].textForStudent}
               </Tag>
 
               <div className="contract-detail-component__top--tools">
-                {currentUser.typeID === STUDENT && contract.status !== NOT_START && (
+                {currentUser.typeID === STUDENT && contract.status === CONTRACT_TYPES.IS_VALID && (
                   <ContractToolComponent
                     content="Tố cáo"
                     icon="waring"
                     onClick={() => this.onOpenReportModal()}
                   />
                 )}
-                {currentUser.typeID === TEACHER && contract.status === NOT_START && (
-                  <ContractToolComponent
-                    content="Chấp nhận"
-                    icon="waring"
-                    onClick={() => this.confirmAprroveContract()}
-                  />
-                )}
+                {currentUser.typeID === TEACHER &&
+                  contract.status === CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE && (
+                    <ContractToolComponent
+                      content="Chấp nhận"
+                      icon="waring"
+                      onClick={() => this.confirmAprroveContract()}
+                    />
+                  )}
                 {/* {
                   currentUser.typeID === STUDENT && contract.status === CANCEL &&
                   <ContractToolComponent
@@ -259,7 +280,7 @@ class ContractDetailComponent extends React.Component {
                     onClick={}
                   />
                 } */}
-                {contract.status === VALID && (
+                {contract.status === CONTRACT_TYPES.IS_VALID && (
                   <ContractToolComponent
                     content="Hủy hợp đồng"
                     icon="waring"
@@ -281,15 +302,23 @@ class ContractDetailComponent extends React.Component {
                 <ContractInfoItem
                   label="Tình trạng"
                   content={
-                    <Tag color={CONTRACT_TYPE[contract.status].color}>
-                      {CONTRACT_TYPE[contract.status].text}
+                    <Tag color={CUSTOM_CONTRACT_TYPES[contract.status].color}>
+                      {currentUser.typeID === TEACHER
+                        ? CUSTOM_CONTRACT_TYPES[contract.status].textForTeacher
+                        : CUSTOM_CONTRACT_TYPES[contract.status].textForStudent}
                     </Tag>
                   }
                 />
                 <ContractInfoItem label="Nội dung" content={contract.content || <i>(Trống)</i>} />
                 <ContractInfoItem
                   label="Ngày bắt đầu"
-                  content={moment(contract.startDate).format('L') || <i>(Trống)</i>}
+                  content={
+                    contract.startDate ? (
+                      moment(contract.startDate).format('DD/MM/YYYY')
+                    ) : (
+                      <i>(Chưa cập nhật)</i>
+                    )
+                  }
                 />
                 <ContractInfoItem
                   label="Ngày kết thúc"
@@ -297,14 +326,11 @@ class ContractDetailComponent extends React.Component {
                     contract.endDate ? (
                       moment(contract.endDate).format('DD/MM/YYYY')
                     ) : (
-                      <i>(Trống)</i>
+                      <i>(Chưa cập nhật)</i>
                     )
                   }
                 />
-                <ContractInfoItem
-                  label="Giá"
-                  content={`${contract.costPerHour.$numberDecimal * 1000} đ/giờ`}
-                />
+                <ContractInfoItem label="Giá" content={`${contract.costPerHour} vnđ/giờ`} />
                 <ContractInfoItem label="Tổng số giờ" content={`${contract.workingHour} giờ`} />
               </div>
             </div>

@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom'
 import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
 import UserService from 'services/user.service'
-import { itemPerPage } from 'utils/constant'
+import { ITEMS_PER_PAGE } from 'utils/constant'
 import TeacherItem from './components/TeacherItem/TeacherItem.component'
 
 const { Panel } = Collapse
@@ -26,9 +26,9 @@ const TeacherListPage = ({
 }) => {
   // const query = TeacherService.useQuery()
   // const page = query.get('page') || 1
-  // const limit = query.get('limit') || itemPerPage
+  // const limit = query.get('limit') || ITEMS_PER_PAGE
   const page = 1
-  const limit = itemPerPage
+  const limit = ITEMS_PER_PAGE
 
   const [currentPage, setCurrentPage] = useState(1)
   const [currentMajors, setCurrentMajors] = useState([])

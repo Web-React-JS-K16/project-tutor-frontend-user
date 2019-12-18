@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { Result, Button } from 'antd'
 import './ErrorPage.style.scss'
 
 const ErrorPage = props => {
@@ -13,7 +15,18 @@ const ErrorPage = props => {
     }
   }
   // console.log('my props: ', props)
-  return <div className="error-page">{myMessage}</div>
+  return (
+    <Result
+      status="500"
+      title="500"
+      subTitle={myMessage}
+      extra={
+        <Link to="/">
+          <Button type="primary">Về trang chủ</Button>
+        </Link>
+      }
+    />
+  )
 }
 
 export default ErrorPage

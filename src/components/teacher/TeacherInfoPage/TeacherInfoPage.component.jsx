@@ -18,26 +18,26 @@ import {
 } from 'antd'
 import './TeacherInfoPage.style.scss'
 import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.component'
-import TeacherService from '../../../services/teacher.service'
 import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
 
 const TeacherInfoPage = ({
+  match,
   currentUser,
   getInfoObj,
   onClearTeacherState,
   teacherGetInfo,
   createContract,
 }) => {
-  const query = TeacherService.useQuery()
-  const userId = query.get('id')
-
   useEffect(() => {
     onClearTeacherState()
+    const {
+      params: { userId },
+    } = match
     if (userId) {
       teacherGetInfo(userId)
     }
-  }, [userId, onClearTeacherState, teacherGetInfo])
+  }, [match, onClearTeacherState, teacherGetInfo])
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)

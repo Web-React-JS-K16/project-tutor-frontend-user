@@ -1,43 +1,22 @@
 import TeacherTypes from './teacher.types'
 
-// clear isLoading, error msg, user when user start login/ register
 export const onClearTeacherState = () => ({
   type: TeacherTypes.CLEAR_TEACHER_STATE,
 })
 
-// export const getTeacherInfo = id => ({
-//   type: TeacherTypes.GET_TEACHER_INFO,
-//   payload: id,
-// })
-
+//= == get teacher list
 export const getTeacherList = filterConditions => ({
   type: TeacherTypes.GET_TEACHER_LIST,
   payload: filterConditions,
 })
-
-// export const countTeachers = () => ({
-//   type: TeacherTypes.COUNT_TEACHERS,
-// })
-
 export const getTeacherListSuccess = (teacherList, numberOfTeachers) => ({
   type: TeacherTypes.GET_TEACHER_LIST_SUCCESS,
   payload: { teacherList, numberOfTeachers },
 })
-
 export const getTeacherListFailure = message => ({
   type: TeacherTypes.GET_TEACHER_LIST_FAILURE,
   payload: message,
 })
-
-// export const updateCurrentTeacher = teacher => ({
-//   type: TeacherTypes.UPDATE_CURRENT_TEACHER,
-//   payload: teacher,
-// })
-
-// export const updateNumerOfTeachers = number => ({
-//   type: TeacherTypes.UPDATE_NUMBER_OF_TEACHERS,
-//   payload: number,
-// })
 
 //= == get info teacher
 export const teacherGetInfo = id => ({
@@ -62,7 +41,6 @@ export const teacherGetInfoFailure = message => ({
 })
 
 //= == update info teacher
-
 export const teacherUpdateInfo = ({ info, token }) => ({
   type: TeacherTypes.TEACHER_UPDATE_INFO,
   payload: { info, token },

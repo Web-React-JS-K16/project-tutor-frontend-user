@@ -5,12 +5,12 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Row, Col, Pagination, Spin, Icon } from 'antd'
-import './ContractListPage.style.scss'
+import './NotificationPage.style.scss'
 import UserService from 'services/user.service'
 import { itemPerPage } from 'utils/constant'
-import ContractItem from './components/ContractItem/ContractItem.component'
+import NotificationItem from './components/NotificationItem/NotificationItem.component'
 
-const ContractListPage = ({ match, getListObj, onClearContractState, getContractList }) => {
+const NotificationPage = ({ match, getListObj, onClearNotificationState, getNotificationList }) => {
   // const query = TeacherService.useQuery()
   // const page = query.get('page') || 1
   // const limit = query.get('limit') || itemPerPage
@@ -20,19 +20,19 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    onClearContractState()
+    onClearNotificationState()
     const {
       params: { userId },
     } = match
     if (userId && page && limit) {
       setCurrentPage(page)
-      getContractList({ userId, currentPage: page, currentLimit: limit })
+      getNotificationList({ userId, currentPage: page, currentLimit: limit })
     }
-  }, [match, page, limit, onClearContractState, getContractList])
+  }, [match, page, limit, onClearNotificationState, getNotificationList])
 
   const executeFilter = filterConditions => {
-    UserService.setPreferences('project-tutor-contract-list', JSON.stringify(filterConditions))
-    getContractList(filterConditions)
+    UserService.setPreferences('project-tutor-notification-list', JSON.stringify(filterConditions))
+    getNotificationList(filterConditions)
   }
 
   const handleChangePage = pageNumber => {
@@ -43,6 +43,10 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
       currentLimit: limit,
     }
     executeFilter(filterConditions)
+  }
+
+  const onDeleteNotification = (e, notification) => {
+    console.log('delete ', e, notification)
   }
 
   if (!getListObj.isLoading && getListObj.isSuccess === false) {
@@ -57,21 +61,24 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
   }
 
   return (
-    <div className="contract-list-page">
+    <div className="notification-list-page">
       {getListObj.isLoading && (
-        <div className="contract-list-page__loading">
+        <div className="notification-list-page__loading">
           <Spin indicator={<Icon type="loading" spin />} />
         </div>
       )}
       {!getListObj.isLoading && getListObj.isSuccess === true && (
-        <div className="contract-list-page__wrapper">
+        <div className="notification-list-page__wrapper">
           <Row>
             <Col span={24}>
               <Row gutter={16}>
-                {getListObj.contractList.map(contract => {
+                {getListObj.notificationList.map(notification => {
                   return (
-                    <Col key={contract._id} span={12}>
-                      <ContractItem contract={contract} />
+                    <Col key={notification._id} span={24}>
+                      <NotificationItem
+                        notification={notification}
+                        onDeleteNotification={onDeleteNotification}
+                      />
                     </Col>
                   )
                 })}
@@ -81,7 +88,7 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
                   simple
                   defaultCurrent={parseInt(currentPage)}
                   defaultPageSize={parseInt(limit)}
-                  total={getListObj.numberOfContracts}
+                  total={getListObj.numberOfNotifications}
                   onChange={handleChangePage}
                 />
               </Row>
@@ -93,6 +100,6 @@ const ContractListPage = ({ match, getListObj, onClearContractState, getContract
   )
 }
 
-ContractListPage.propTypes = {}
+NotificationPage.propTypes = {}
 
-export default ContractListPage
+export default NotificationPage

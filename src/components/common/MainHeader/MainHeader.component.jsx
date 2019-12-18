@@ -6,21 +6,37 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
-import { jwtToken, TEACHER } from 'utils/constant'
+import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
 const { SubMenu } = Menu
 const { Search } = Input
 
-const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
+const MainHeader = ({
+  currentUser,
+  getNotificationListObj,
+  handleLogout,
+  onAuthenticate,
+  onClearNotificationState,
+  getNotificationList,
+}) => {
   useEffect(() => {
     const token = UserService.getPreferences(jwtToken)
     if (!currentUser && token) onAuthenticate(token)
   }, [currentUser, onAuthenticate])
+
+  useEffect(() => {
+    onClearNotificationState()
+
+    if (currentUser) {
+      const userId = currentUser._id
+      getNotificationList({ userId, currentPage: 1, currentLimit: itemPerPage })
+    }
+  }, [currentUser, onClearNotificationState, getNotificationList])
 
   const userOptions = {
     viSignin: 'đăng nhập',
@@ -70,6 +86,29 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
     })
   }
 
+  const NotificationMenu = (
+    <Menu>
+      {getNotificationListObj.notificationList &&
+        getNotificationListObj.notificationList.map(notification => {
+          return (
+            <Menu.Item>
+              <Link to={notification.link}>
+                <div>{notification.content}</div>
+              </Link>
+            </Menu.Item>
+          )
+        })}
+      <Menu.Divider />
+      <Menu.Item>
+        {currentUser && (
+          <Link to={`/notification-list/${currentUser._id}`}>
+            <div>Xem tất cả</div>
+          </Link>
+        )}
+      </Menu.Item>
+    </Menu>
+  )
+
   const UserMenu = (
     <Menu>
       <Menu.Item style={{ cursor: 'default' }}>
@@ -108,6 +147,19 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           />
         </Link>
       </div>
+      {currentUser && (
+        <div className="main-header__notifications">
+          <Badge count={getNotificationListObj.numberOfNotifications}>
+            <Dropdown
+              overlay={NotificationMenu}
+              placement="bottomRight"
+              getPopupContainer={trigger => trigger.parentNode}
+            >
+              <Icon type="bell" style={{ color: 'rgba(0, 0, 0, 0.45)' }} theme="filled" />
+            </Dropdown>
+          </Badge>
+        </div>
+      )}
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown

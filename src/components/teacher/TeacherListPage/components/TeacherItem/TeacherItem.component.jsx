@@ -11,12 +11,12 @@ const TeacherItem = ({ teacher }) => {
     <div className="teacher-item">
       <div className="teacher-item__basic-info">
         <div className="teacher-item__basic-info__left">
-          <Link to={`/teacher/info?id=${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher._id}`}>
             <img src={teacher.avatar} alt="" />
           </Link>
         </div>
         <div className="teacher-item__basic-info__right">
-          <Link to={`/teacher/info?id=${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher._id}`}>
             <div className="name">{teacher.displayName}</div>
           </Link>
 

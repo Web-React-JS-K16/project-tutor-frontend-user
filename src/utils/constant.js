@@ -36,10 +36,15 @@ export const CONTRACT_TYPE = [
 export const CLIENT_EMIT_SEND_MESSAGE = 'message'
 export const CLIENT_ON_RECIEVE_MESSAGE = 'message'
 
-export const CLIENT_EMIT_CREATE_ROOM = 'create room' // send to server a request create a new room
-export const CLIENT_ON_CREATE_ROOM = 'create room' // send to server request join room (room is created before)
+export const CLIENT_EMIT_OPEN_ROOM = 'open room' // send to server a request create a new room
+export const CLIENT_ON_OPEN_ROOM = 'open room' // send to server request join room (room is created before)
 
 export const CLIENT_EMIT_ACCEPT_NEW_ROOM = 'accept room' // send to server a request create a new room
 
 export const CLIENT_ON_ROOMATE_OFF = 'roomate off' // receive msg roomate offline
-export const ADMIN = 'admin'
+export const SYSTEM = 'SYSTEM'
+
+export const TYPE_MESSAGE = {
+  MESSAGE: 0,
+  ROOMATE_OFF: 1,
+}

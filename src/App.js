@@ -145,7 +145,8 @@ const App = ({ currentUser }) => {
 
         {currentUser ? (
           <>
-            <Route path="/chat" component={ChatContainer} />
+            <Route exact path="/chat" component={ChatContainer} />
+            <Route exact path="/chat/:roomId" component={ChatContainer} />
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
             <Route

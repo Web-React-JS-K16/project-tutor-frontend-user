@@ -5,7 +5,16 @@ import { studentSaga } from './student/student.sagas'
 import { majorSaga } from './major/major.sagas'
 import { locationSaga } from './location/location.sagas'
 import { contractSaga } from './contract/contract.sagas'
+import { chatSaga } from './chat/chat.sagas'
 
 export default function* rootSagas() {
-  yield all([call(userSaga), call(teacherSaga), call(studentSaga), call(majorSaga), call(locationSaga), call(contractSaga)])
+  yield all([
+    call(userSaga),
+    call(teacherSaga),
+    call(studentSaga),
+    call(majorSaga),
+    call(locationSaga),
+    call(contractSaga),
+    call(chatSaga),
+  ])
 }

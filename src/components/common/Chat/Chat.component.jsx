@@ -1,19 +1,21 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/sort-comp */
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
 import io from 'socket.io-client'
-import { Tooltip, Button } from 'antd'
 import './Chat.style.scss'
 import apiUrl from 'services/api-url'
 import {
   CLIENT_EMIT_SEND_MESSAGE,
   CLIENT_ON_RECIEVE_MESSAGE,
-  CLIENT_EMIT_CREATE_ROOM,
-  CLIENT_ON_CREATE_ROOM,
+  CLIENT_EMIT_OPEN_ROOM,
+  CLIENT_ON_OPEN_ROOM,
   CLIENT_EMIT_ACCEPT_NEW_ROOM,
   STUDENT,
   CLIENT_ON_ROOMATE_OFF,
-  ADMIN,
+  TYPE_MESSAGE,
 } from 'utils/constant'
+import ChatService from 'services/chat.service'
 import ChatRoomComponent from './components/ChatRoom/ChatRoom.component'
 
 // let socket;
@@ -22,190 +24,219 @@ class ChatComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      rooms: [],
+      isLoading: true,
+      errorMessage: null,
     }
   }
 
-  componentDidMount() {
-    socket = io(apiUrl)
-    const {
-      currentUser: { _id, displayName },
-    } = this.props
-    socket.emit('join', { userId: _id, displayName }, ({ error, rooms }) => {
-      if (error) {
-        // eslint-disable-next-line no-alert
-        alert(error)
-      } else if (rooms) {
-        console.log('my rooms: ', rooms)
-
-        const roomChat = rooms.map(item => {
-          return {
-            room: item.room,
-            idRoomate: item.members.filter(user => user !== _id),
-            // TODO
-            message: [],
-          }
-        })
-        console.log('my exist room: ', roomChat)
-        this.setState({ rooms: roomChat })
-      }
-    })
-
-    socket.on(CLIENT_ON_CREATE_ROOM, payload => {
-      console.log('2.3 on listen create room from student')
-      const { room, idRoomate } = payload
-      socket.emit(CLIENT_EMIT_ACCEPT_NEW_ROOM, { isAccept: true, room }, () => {
-        this.createNewRoomOnState({ room, idRoomate })
+  onCreateRoomChatFinish = (isSuccess, roomInfo, errorMessage) => {
+    if (isSuccess) {
+      console.log('create room finish: ', roomInfo)
+      const { onAddRoomChat } = this.props
+      // update room in redux
+      onAddRoomChat(roomInfo)
+      // emit to roomate
+      const { student, teacher, room } = roomInfo
+      socket.emit(CLIENT_EMIT_OPEN_ROOM, {
+        room,
+        student: student._id,
+        teacher: teacher._id,
       })
-    })
+      // set loading to false
+      this.setState({ isLoading: false, errorMessage: null })
+    } else {
+      this.setState({ isLoading: false, errorMessage })
+    }
   }
 
   // eslint-disable-next-line react/sort-comp
   onReceiveMessage = () => {
+    console.log('on regis listen message')
     socket.on(CLIENT_ON_RECIEVE_MESSAGE, payload => {
-      // console.log("2.1 on listening message from other")
-      // console.log('on listen 2.2: ', payload)
+      console.log('on listen 2.2: ', payload)
       const { message, room, from, time } = payload
-      const { rooms } = this.state
-      const indexUpdateRoom = rooms.findIndex(item => item.room === room)
-      // console.log("2.2 index room: ", indexUpdateRoom)
-      // console.log("2.2 update room: ", rooms[indexUpdateRoom])
-      if (indexUpdateRoom !== -1) {
-        const updateRoom = {
-          ...rooms[indexUpdateRoom],
-          message: [...rooms[indexUpdateRoom].message, { content: message, time, from }],
-        }
-        const newRooms = [
-          ...rooms.slice(0, indexUpdateRoom),
-          updateRoom,
-          ...rooms.slice(indexUpdateRoom + 1),
-        ]
-        this.setState({ rooms: newRooms })
-      } else {
-        // eslint-disable-next-line no-alert
-        alert('Phòng chat không tồn tại')
+      const { onReceiveNewMessage } = this.props
+      onReceiveNewMessage({ room, newMessage: { content: message, time, from } })
+    })
+  }
+
+  // teacher listen new room
+  onlistenNewRoom = () => {
+    socket.on(CLIENT_ON_OPEN_ROOM, async payload => {
+      console.log('2.3 on listen create room from student')
+      const { room } = payload
+      // get room info
+      const {
+        currentUser: { token },
+        onAddRoomChat,
+      } = this.props
+      try {
+        const roomInfo = await ChatService.getDetail({ token, room })
+        onAddRoomChat(roomInfo)
+        socket.emit(CLIENT_EMIT_ACCEPT_NEW_ROOM, { isAccept: true, room })
+      } catch (err) {
+        alert(err.message)
       }
     })
   }
 
-  createNewRoomOnState({ room, idRoomate }) {
-    const { rooms } = this.state
-    // add new room to state
-    const newRoom = [...rooms, { room, idRoomate, message: [] }]
-    this.setState({ rooms: newRoom }, () => {
-      // on receive message
-      this.onReceiveMessage()
-      this.onReceiveMessageRoomateOff()
+  onlistenRoomateOff = () => {
+    socket.on(CLIENT_ON_ROOMATE_OFF, payload => {
+      const { room, userLeft } = payload
+      const {
+        onReceiveNewMessage,
+        currentUser: { typeID, _id },
+      } = this.props
+      if (_id !== userLeft) {
+        onReceiveNewMessage({
+          room,
+          newMessage: { type: TYPE_MESSAGE.ROOMATE_OFF, typeIDCurrentUser: typeID },
+        })
+      }
     })
   }
 
-  onReceiveMessageRoomateOff = () => {
-    socket.on(CLIENT_ON_ROOMATE_OFF, payload => {
-      const { room } = payload
-      const { rooms } = this.state
-      const indexUpdateRoom = rooms.findIndex(item => item.room === room)
-      if (indexUpdateRoom !== -1) {
-        const updateRoom = {
-          ...rooms[indexUpdateRoom],
-          message: [
-            ...rooms[indexUpdateRoom].message,
-            { content: 'Bạn chat đã offline', from: ADMIN },
-          ],
-        }
-        const newRooms = [
-          ...rooms.slice(0, indexUpdateRoom),
-          updateRoom,
-          ...rooms.slice(indexUpdateRoom + 1),
-        ]
-        this.setState({ rooms: newRooms })
+  setupListenFromSocket = () => {
+    console.log('on setup listent')
+    this.onlistenNewRoom()
+    this.onlistenRoomateOff()
+    this.onReceiveMessage()
+  }
+
+  getIdRoomFromParam = () => {
+    const { match } = this.props
+    return match.params.roomId
+  }
+
+  onGetAllRoomComplete = (isSuccess, rooms, message) => {
+    // console.log("on get room complete")
+    const { currentUser, onSetUpRoomSuccess, onSetCurrentRoom } = this.props
+    if (isSuccess) {
+      onSetUpRoomSuccess(rooms)
+      /* Get id room on params */
+      const currentRoomChat = this.getIdRoomFromParam()
+      // console.log("1.1 curr room: ", currentRoomChat)
+      if (!currentRoomChat) {
+        onSetCurrentRoom(rooms[0].room || null)
       } else {
-        alert('Phòng chat không tồn tại')
+        // Find room to show detail
+        const index = rooms.findIndex(item => item.room === currentRoomChat)
+        if (index === -1) {
+          // room not exist
+          // If (room is not exit  && typeID === STUDENT) then create a new chat room
+          if (currentUser.typeID === STUDENT) {
+            const { onCreateRoomChat } = this.props
+            // Note: idCurrentRoomChat = <idStudent><idTeacher>
+            const teacher = currentRoomChat.replace(currentUser._id, '')
+            const newRoomInfo = {
+              room: currentRoomChat,
+              teacher,
+              student: currentUser._id,
+              message: [],
+            }
+            // create a new room chat and set it to current room if success
+            onCreateRoomChat({
+              token: currentUser.token,
+              roomInfo: newRoomInfo,
+              onCreateRoomChatFinish: this.onCreateRoomChatFinish,
+            })
+          } else {
+            // current user is TEACHER and room is not exist => return rooms[0]
+            onSetCurrentRoom(rooms[0].room || null)
+            this.setState({ isLoading: false, errorMessage: null })
+          }
+        } else {
+          // room exist
+          onSetCurrentRoom(currentRoomChat)
+          this.setState({ isLoading: false, errorMessage: null })
+        }
+      }
+      // set up to listen from socket
+      this.setupListenFromSocket()
+    } else {
+      // get all rooms error
+      this.setState({ isLoading: false, errorMessage: message })
+    }
+  }
+
+  componentDidMount() {
+    const {
+      onSetUpRoom,
+      currentUser: { token },
+    } = this.props
+    // get data all room chat
+    console.log('2.1 did mount setup')
+    onSetUpRoom(token, this.onGetAllRoomComplete)
+
+    socket = io(apiUrl)
+    const {
+      currentUser: { _id, typeID },
+    } = this.props
+    socket.emit('join', { userId: _id, typeID }, ({ error, rooms }) => {
+      if (error) {
+        // eslint-disable-next-line no-alert
+        alert(error)
+      } else if (rooms) {
+        // console.log('my rooms: ', rooms)
       }
     })
   }
 
   componentWillUnmount() {
-    //   socket.emit('endChat', { text: 'disconnect', type: 'endGame' });
     socket.off()
   }
 
   getRoom = room => {
-    const { rooms } = this.state
+    const { rooms } = this.props
     return rooms.filter(item => item.room === room)
   }
 
   sendMessage = (value, room) => {
-    // TODO: edit room here
-    // room = '5def6aee5173c433a4ec4457-5defc8ea486aa9176437b354'
-    const roomInfo = this.getRoom(room)
-    if (roomInfo) {
-      const { idRoomate } = roomInfo
-      const {
-        currentUser: { _id },
-      } = this.props
-      // console.log("3.1 on send message to: ", roomInfo);
-      // console.log("3.11 on send message to: ", room);
-      socket.emit(CLIENT_EMIT_SEND_MESSAGE, {
-        message: value,
-        from: _id,
-        to: idRoomate,
-        room,
-        time: new Date(),
-      })
-    } else {
-      console.log('cannot get room to send message')
-    }
-  }
-
-  onCreateRoomChat = idRoomate => {
-    console.log('on create new room')
     const {
       currentUser: { _id },
     } = this.props
-    // TODO
-    // eslint-disable-next-line no-param-reassign
-    idRoomate = '5defc8ea486aa9176437b354' // id teacher
-    const idRoom = `${_id}-${idRoomate}`
-    // const idRoom = 'demo room'
-    socket.emit(
-      CLIENT_EMIT_CREATE_ROOM,
-      {
-        room: idRoom,
-        to: idRoomate,
-        from: _id,
-      },
-      () => {
-        this.createNewRoomOnState({ room: idRoom, idRoomate })
+    console.log('3.11 on send message to: ', room)
+    socket.emit(CLIENT_EMIT_SEND_MESSAGE, {
+      message: value,
+      from: _id,
+      room,
+      time: new Date(),
+    })
+  }
+
+  getCurrentRoomChat = () => {
+    const { currentRoomId, rooms } = this.props
+    // console.log("1.3 rooms in state: ", rooms)
+    if (rooms.length > 0) {
+      const index = rooms.findIndex(item => item.room === currentRoomId)
+      if (index !== -1) {
+        // console.log("1.4 ", rooms[index])
+        return <ChatRoomComponent roomInfo={rooms[index]} sendMessage={this.sendMessage} />
       }
-    )
+      return <div>Trống</div>
+    }
+    return <div>Đang tải</div>
   }
 
   render() {
-    const { rooms } = this.state
-    const {
-      currentUser: { typeID },
-    } = this.props
-    console.log('my room: ', rooms)
+    const { rooms } = this.props
+    const { isLoading, errorMessage } = this.state
+    // console.log('my room: ', rooms)
 
     return (
       <div className="chat-component">
-        {typeID === STUDENT && (
-          <Tooltip placement="top" title="Thêm phòng chat">
-            <Button shape="circle" icon="add" onClick={() => this.onCreateRoomChat()} />
-          </Tooltip>
-        )}
         <div>Chat</div>
-        <div>
-          {rooms.map((item, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <ChatRoomComponent key={index} roomInfo={item} sendMessage={this.sendMessage} />
-          ))}
-          {/* <Input.Search
-           placeholder="input search loading with enterButton"
-            onSearch = {(value) => this.sendMessage(value)}
-            enterButton 
-            allowClear/> */}
-        </div>
+        {!isLoading && !errorMessage && (
+          <div>
+            {rooms.map(item => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div>{item.room}</div>
+            ))}
+
+            <div>Phòng chat hiện tại</div>
+            {this.getCurrentRoomChat()}
+          </div>
+        )}
       </div>
     )
   }

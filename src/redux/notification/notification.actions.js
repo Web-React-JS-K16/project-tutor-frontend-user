@@ -5,13 +5,21 @@ export const onClearNotificationState = () => ({
 })
 
 //= == get notification list
-export const getNotificationList = userId => ({
+export const getNotificationList = filterConditions => ({
   type: NotificationTypes.GET_NOTIFICATION_LIST,
-  payload: userId,
+  payload: filterConditions,
 })
-export const getNotificationListSuccess = (notificationList, numberOfNotifications) => ({
+export const getNotificationListSuccess = (
+  notificationList,
+  numberOfNotifications,
+  numberOfUnreadNotifications
+) => ({
   type: NotificationTypes.GET_NOTIFICATION_LIST_SUCCESS,
-  payload: { notificationList, numberOfNotifications },
+  payload: {
+    notificationList,
+    numberOfNotifications,
+    numberOfUnreadNotifications,
+  },
 })
 export const getNotificationListFailure = message => ({
   type: NotificationTypes.GET_NOTIFICATION_LIST_FAILURE,

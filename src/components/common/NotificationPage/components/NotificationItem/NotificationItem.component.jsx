@@ -4,17 +4,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Link, Redirect } from 'react-router-dom'
 import { Divider, Icon, Button } from 'antd'
 import * as moment from 'moment'
 import './NotificationItem.style.scss'
 
-const NotificationItem = ({ notification, onDeleteNotification }) => {
-  const onClickNotification = (e, link) => {
-    return <Redirect to={link} />
-  }
+const NotificationItem = ({ notification, onDeleteNotification, onReadNotification }) => {
   return (
-    <div className="notification-item" onClick={e => onClickNotification(e, notification.Link)}>
+    <div className="notification-item">
       <div className="notification-item__info">
         <div className="notification-item__info__left">
           <div className="date">{moment(notification.updatedAt).format('DD/MM/YYYY HH:mm')}</div>
@@ -29,9 +25,9 @@ const NotificationItem = ({ notification, onDeleteNotification }) => {
         </button>
       </div>
       <Divider />
-      <Link to={notification.link}>
-        <Button type="primary">Xem chi tiết</Button>
-      </Link>
+      <Button type="primary" onClick={e => onReadNotification(e, notification)}>
+        Xem chi tiết
+      </Button>
     </div>
   )
 }

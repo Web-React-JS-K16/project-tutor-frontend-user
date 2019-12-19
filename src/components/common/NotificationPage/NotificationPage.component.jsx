@@ -8,9 +8,16 @@ import { Row, Col, Pagination, Spin, Icon } from 'antd'
 import './NotificationPage.style.scss'
 import UserService from 'services/user.service'
 import { ITEMS_PER_PAGE } from 'utils/constant'
+import NotificationService from 'services/notification.service'
 import NotificationItem from './components/NotificationItem/NotificationItem.component'
 
-const NotificationPage = ({ match, getListObj, onClearNotificationState, getNotificationList }) => {
+const NotificationPage = ({
+  history,
+  match,
+  getListObj,
+  onClearNotificationState,
+  getNotificationList,
+}) => {
   // const query = TeacherService.useQuery()
   // const page = query.get('page') || 1
   // const limit = query.get('limit') || ITEMS_PER_PAGE
@@ -18,6 +25,7 @@ const NotificationPage = ({ match, getListObj, onClearNotificationState, getNoti
   const limit = ITEMS_PER_PAGE
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [currentUserId, setCurrentUserId] = useState('')
 
   useEffect(() => {
     onClearNotificationState()
@@ -26,6 +34,7 @@ const NotificationPage = ({ match, getListObj, onClearNotificationState, getNoti
     } = match
     if (userId && page && limit) {
       setCurrentPage(page)
+      setCurrentUserId(userId)
       getNotificationList({ userId, currentPage: page, currentLimit: limit })
     }
   }, [match, page, limit, onClearNotificationState, getNotificationList])
@@ -39,6 +48,7 @@ const NotificationPage = ({ match, getListObj, onClearNotificationState, getNoti
     console.log('handleChangePage = ', pageNumber)
     setCurrentPage(pageNumber)
     const filterConditions = {
+      userId: currentUserId,
       currentPage: pageNumber,
       currentLimit: limit,
     }
@@ -46,7 +56,20 @@ const NotificationPage = ({ match, getListObj, onClearNotificationState, getNoti
   }
 
   const onDeleteNotification = (e, notification) => {
-    console.log('delete ', e, notification)
+    const filterConditions = {
+      userId: currentUserId,
+      currentPage,
+      currentLimit: limit,
+    }
+    NotificationService.updateIsDeletedNotification(notification._id)
+      .then(executeFilter(filterConditions))
+      .catch(err => console.log('ERROR UPDATE IS-DELETED NOTIFICATION ', err.message))
+  }
+
+  const onReadNotification = (e, notification) => {
+    NotificationService.updateIsReadNotification(notification._id)
+      .then(history.push(notification.link))
+      .catch(err => console.log('ERROR UPDATE IS-DELETED NOTIFICATION ', err.message))
   }
 
   if (!getListObj.isLoading && getListObj.isSuccess === false) {
@@ -78,6 +101,7 @@ const NotificationPage = ({ match, getListObj, onClearNotificationState, getNoti
                       <NotificationItem
                         notification={notification}
                         onDeleteNotification={onDeleteNotification}
+                        onReadNotification={onReadNotification}
                       />
                     </Col>
                   )

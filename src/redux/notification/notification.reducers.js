@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   getList: {
     notificationList: [],
     numberOfNotifications: 0,
+    numberOfUnreadNotifications: 0,
     isLoading: false,
     isSuccess: null,
     message: null,
@@ -32,6 +33,7 @@ const notificationReducer = (state = INITIAL_STATE, action) => {
           isSuccess: true,
           notificationList: action.payload.notificationList,
           numberOfNotifications: action.payload.numberOfNotifications,
+          numberOfUnreadNotifications: action.payload.numberOfUnreadNotifications,
         },
       }
     case NotificationTypes.GET_NOTIFICATION_LIST_FAILURE:

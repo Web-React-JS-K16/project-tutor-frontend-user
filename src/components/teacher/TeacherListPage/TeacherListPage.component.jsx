@@ -159,11 +159,12 @@ const TeacherListPage = ({
           <Spin indicator={<Icon type="loading" spin />} />
         </div>
       )}
-      {majorList && locationList && (
-        <div className="teacher-list-page__wrapper">
-          <Row gutter={16}>
-            <Col span={5}>
-              <div className="teacher-list-page__wrapper__left">
+
+      <div className="teacher-list-page__wrapper">
+        <Row gutter={16}>
+          <Col span={5}>
+            <div className="teacher-list-page__wrapper__left">
+              {majorList && locationList && (
                 <Collapse bordered={false} defaultActiveKey={[]}>
                   <Panel header="Giá trên giờ" key="1">
                     <Slider
@@ -171,7 +172,7 @@ const TeacherListPage = ({
                       min={0}
                       max={1000}
                       step={10}
-                      defaultValue={[0, 1000]}
+                      defaultValue={[currentFromSalary, currentToSalary]}
                       onAfterChange={handleAfterChangeSalary}
                     />
                   </Panel>
@@ -214,43 +215,45 @@ const TeacherListPage = ({
                     </Tree>
                   </Panel>
                 </Collapse>
-              </div>
-            </Col>
-            <Col span={19}>
-              <div className="teacher-list-page__wrapper__right">
+              )}
+            </div>
+          </Col>
+          <Col span={19}>
+            <div className="teacher-list-page__wrapper__right">
+              <Row>
                 <div className="sort-select">
                   <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>
                     <Option value="ASC">Giá trên giờ tăng dần</Option>
                     <Option value="DSC">Giá trên giờ giảm dần</Option>
                   </Select>
                 </div>
-                {!getListObj.isLoading && getListObj.isSuccess === true && (
-                  <>
-                    <Row gutter={16}>
-                      {getListObj.teacherList.map(teacher => {
-                        return (
-                          <Col key={teacher._id} span={8}>
-                            <TeacherItem teacher={teacher} />
-                          </Col>
-                        )
-                      })}
-                    </Row>
-                    <Row>
-                      <Pagination
-                        simple
-                        defaultCurrent={parseInt(currentPage)}
-                        defaultPageSize={parseInt(limit)}
-                        total={getListObj.numberOfTeachers}
-                        onChange={handleChangePage}
-                      />
-                    </Row>
-                  </>
-                )}
-              </div>
-            </Col>
-          </Row>
-        </div>
-      )}
+              </Row>
+              {!getListObj.isLoading && getListObj.isSuccess === true && (
+                <>
+                  <Row gutter={16}>
+                    {getListObj.teacherList.map(teacher => {
+                      return (
+                        <Col key={teacher._id} span={8}>
+                          <TeacherItem teacher={teacher} />
+                        </Col>
+                      )
+                    })}
+                  </Row>
+                  <Row>
+                    <Pagination
+                      simple
+                      defaultCurrent={parseInt(currentPage)}
+                      defaultPageSize={parseInt(limit)}
+                      total={getListObj.numberOfTeachers}
+                      onChange={handleChangePage}
+                    />
+                  </Row>
+                </>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   )
 }

@@ -13,7 +13,7 @@ import NotificationItem from './components/NotificationItem/NotificationItem.com
 
 const NotificationPage = ({
   history,
-  match,
+  currentUser,
   getListObj,
   onClearNotificationState,
   getNotificationList,
@@ -25,19 +25,15 @@ const NotificationPage = ({
   const limit = ITEMS_PER_PAGE
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [currentUserId, setCurrentUserId] = useState('')
 
   useEffect(() => {
     onClearNotificationState()
-    const {
-      params: { userId },
-    } = match
-    if (userId && page && limit) {
+    if (currentUser && page && limit) {
+      const userId = currentUser._id
       setCurrentPage(page)
-      setCurrentUserId(userId)
       getNotificationList({ userId, currentPage: page, currentLimit: limit })
     }
-  }, [match, page, limit, onClearNotificationState, getNotificationList])
+  }, [currentUser, page, limit, onClearNotificationState, getNotificationList])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-notification-list', JSON.stringify(filterConditions))
@@ -48,7 +44,7 @@ const NotificationPage = ({
     console.log('handleChangePage = ', pageNumber)
     setCurrentPage(pageNumber)
     const filterConditions = {
-      userId: currentUserId,
+      userId: currentUser._id,
       currentPage: pageNumber,
       currentLimit: limit,
     }
@@ -57,7 +53,7 @@ const NotificationPage = ({
 
   const onDeleteNotification = (e, notification) => {
     const filterConditions = {
-      userId: currentUserId,
+      userId: currentUser._id,
       currentPage,
       currentLimit: limit,
     }
@@ -90,36 +86,35 @@ const NotificationPage = ({
           <Spin indicator={<Icon type="loading" spin />} />
         </div>
       )}
-      {!getListObj.isLoading && getListObj.isSuccess === true && (
-        <div className="notification-list-page__wrapper">
-          <Row>
-            <Col span={24}>
-              <Row gutter={16}>
-                {getListObj.notificationList.map(notification => {
-                  return (
-                    <Col key={notification._id} span={24}>
-                      <NotificationItem
-                        notification={notification}
-                        onDeleteNotification={onDeleteNotification}
-                        onReadNotification={onReadNotification}
-                      />
-                    </Col>
-                  )
-                })}
-              </Row>
-              <Row>
-                <Pagination
-                  simple
-                  defaultCurrent={parseInt(currentPage)}
-                  defaultPageSize={parseInt(limit)}
-                  total={getListObj.numberOfNotifications}
-                  onChange={handleChangePage}
-                />
-              </Row>
-            </Col>
-          </Row>
-        </div>
-      )}
+
+      <div className="notification-list-page__wrapper">
+        {!getListObj.isLoading && getListObj.isSuccess === true && (
+          <>
+            <Row gutter={16}>
+              {getListObj.notificationList.map(notification => {
+                return (
+                  <Col key={notification._id} span={24}>
+                    <NotificationItem
+                      notification={notification}
+                      onDeleteNotification={onDeleteNotification}
+                      onReadNotification={onReadNotification}
+                    />
+                  </Col>
+                )
+              })}
+            </Row>
+            <Row>
+              <Pagination
+                simple
+                defaultCurrent={parseInt(currentPage)}
+                defaultPageSize={parseInt(limit)}
+                total={getListObj.numberOfNotifications}
+                onChange={handleChangePage}
+              />
+            </Row>
+          </>
+        )}
+      </div>
     </div>
   )
 }

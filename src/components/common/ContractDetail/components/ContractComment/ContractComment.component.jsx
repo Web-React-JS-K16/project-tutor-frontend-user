@@ -32,14 +32,18 @@ const ContractCommentComponnet = ({
             <Tag color="green">Học sinh</Tag>
           </div>
           <div className="time">
-            {comment.date ? moment(comment.date).format('DD/MM/YYYY HH:mm') : ''}
+            {comment && comment.date ? (
+              moment(comment.date).format('DD/MM/YYYY HH:mm')
+            ) : (
+              <i>(Trống)</i>
+            )}
           </div>
         </div>
       </div>
       <div className="contract-comment__rating">
         <Rate
           allowHalf
-          defaultValue={comment.ratings || 5}
+          defaultValue={(comment && comment.ratings) || 0}
           onChange={value => setRatingValue(value)}
         />
       </div>
@@ -50,7 +54,7 @@ const ContractCommentComponnet = ({
         defaultValue={
           status === CONTRACT_TYPES.IS_VALID
             ? 'Bạn sẽ được đánh giá khi kết thúc hợp đồng'
-            : comment.content || ''
+            : (comment && comment.content) || ''
         }
       />
       <div className="contract-comment__btn">

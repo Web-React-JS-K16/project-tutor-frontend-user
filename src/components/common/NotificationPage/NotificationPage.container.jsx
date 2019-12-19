@@ -7,6 +7,7 @@ import NotificationPage from './NotificationPage.component'
 
 const mapStateToProps = state => ({
   getListObj: state.notification.getList,
+  currentUser: state.user.currentUser,
 })
 
 const mapDispatchToProps = dispatch => ({

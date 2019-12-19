@@ -8,7 +8,7 @@ import ContractService from '../../services/contract.service'
 function* getList({ payload: filterConditions }) {
   try {
     const contractList = yield ContractService.getContractList(filterConditions)
-    const numberOfContracts = yield ContractService.countContracts(filterConditions.userId)
+    const numberOfContracts = yield ContractService.countContracts(filterConditions)
     if (!isNaN(numberOfContracts)) {
       yield put(getContractListSuccess(contractList, numberOfContracts))
     } else {

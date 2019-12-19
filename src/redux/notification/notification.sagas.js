@@ -38,20 +38,8 @@ export function* getNotificationListSaga() {
   yield takeLatest(NotificationTypes.GET_NOTIFICATION_LIST, getList)
 }
 
-// update is deleted of notification
-function* updateIsDeletedNotification({ payload: id }) {
-  try {
-    yield NotificationService.updateIsDeletedNotification(id)
-  } catch (err) {
-    yield put(getNotificationListFailure(err.message))
-  }
-}
-export function* deleteNotificationSaga() {
-  yield takeLatest(NotificationTypes.DELETE_NOTIFICATION, updateIsDeletedNotification)
-}
-
 // =================================
 
 export function* notificationSaga() {
-  yield all([call(getNotificationListSaga), call(deleteNotificationSaga)])
+  yield all([call(getNotificationListSaga)])
 }

@@ -1,10 +1,15 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react'
-import { Input } from 'antd'
+import { Input, Icon } from 'antd'
+import { STUDENT } from 'utils/constant'
+import * as moment from 'moment'
+import RoomateChatCardItemComponent from '../RoomateChatCardItem/RoomateChatCardItem.component'
 import './ChatRoom.style.scss'
 
-const ChatRoomComponent = ({ roomInfo, sendMessage }) => {
+const ChatRoomComponent = ({ roomInfo, currentUser, sendMessage }) => {
   console.log('4.1 room info: ', roomInfo)
-  const { room, idRoomate, message } = roomInfo
+  const { room, message } = roomInfo
   const [newMessage, setNewMessage] = useState('')
 
   const scrollChatMessages = () => {
@@ -29,21 +34,28 @@ const ChatRoomComponent = ({ roomInfo, sendMessage }) => {
     setNewMessage(value)
   }
 
+  const getRoomateInfo = () => {
+    return currentUser.typeID === STUDENT ? roomInfo.teacher : roomInfo.student
+  }
+
   if (roomInfo) {
-    console.log('3.1 chat room: ', roomInfo)
+    const roomateInfo = getRoomateInfo()
+    // console.log('3.1 chat room: ', roomInfo)
     return (
       <div className="chat-room">
-        <div className="chat-room__title">{room}</div>
+        <div className="chat-room__title">
+          <RoomateChatCardItemComponent {...roomateInfo} onSetCurrentRoom={() => null} />
+        </div>
         <div className="chat-room__message">
           {message.map(item => (
             <div
               key={item.time}
-              className={`chat-room__message--${
-                item.from === idRoomate ? 'from-roomate' : 'from-me'
+              className={`chat-room__message--item ${
+                item.from === roomateInfo._id ? 'from-roomate' : 'from-me'
               }`}
             >
               <div className="content">{item.content}</div>
-              <div className="time">{item.time}</div>
+              <div className="time">{moment(item.time).format('DD/MM/YYYY HH:MM')}</div>
             </div>
           ))}
         </div>
@@ -51,10 +63,20 @@ const ChatRoomComponent = ({ roomInfo, sendMessage }) => {
           <Input.Search
             value={newMessage}
             onChange={e => onMessageChange(e)}
-            placeholder="input search loading with enterButton"
+            placeholder="Nhập tin nhắn ..."
             onSearch={handleSendMessage}
             enterButton
             allowClear
+            // onKeyPress={event =>
+            //   event.key === 'Enter' ? handleSendMessage(event) : null
+            // }
+            suffix={
+              <Icon
+                onClick={handleSendMessage}
+                type="info-circle"
+                style={{ color: 'rgba(0,0,0,.45)' }}
+              />
+            }
           />
         </div>
       </div>

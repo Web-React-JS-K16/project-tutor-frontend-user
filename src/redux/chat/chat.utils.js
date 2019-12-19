@@ -2,9 +2,9 @@
 /* eslint-disable import/prefer-default-export */
 import { TYPE_MESSAGE, STUDENT, SYSTEM } from 'utils/constant'
 
-// const getIdRoomate = (idUser, room) => {
-//     return room.replace(idUser, '');
-// }
+export const getIdRoomate = (idUser, room) => {
+  return room.replace(idUser, '')
+}
 
 // update room after receive new message
 export const updateRoomsAfterReveiceMessage = (room, newMessage, currentRooms) => {

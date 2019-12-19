@@ -16,6 +16,7 @@ import {
   Button,
 } from 'antd'
 import './TeacherInfoPage.style.scss'
+import { Link } from 'react-router-dom'
 import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.component'
 import TeacherService from '../../../services/teacher.service'
 import { STUDENT } from '../../../utils/constant'
@@ -87,14 +88,26 @@ const TeacherInfoPage = ({ currentUser, teacher, getTeacherInfo, createContract 
                     </div>
                   )}
                   {currentUser.typeID === STUDENT && (
-                    <Button
-                      style={{ marginTop: 15 }}
-                      size="small"
-                      type="primary"
-                      onClick={() => setVisible(true)}
-                    >
-                      Đăng kí học
-                    </Button>
+                    <div className="info-left__btn">
+                      <Button
+                        style={{ marginTop: 15 }}
+                        size="small"
+                        type="primary"
+                        onClick={() => setVisible(true)}
+                      >
+                        Đăng kí học
+                      </Button>
+                      <Link to={`/chat/${currentUser._id}${userId}`}>
+                        <Button
+                          style={{ marginTop: 15 }}
+                          size="small"
+                          type="primary"
+                          typeHtml="button"
+                        >
+                          Nhắn tin
+                        </Button>
+                      </Link>
+                    </div>
                   )}
                   <ModalForm
                     ref={saveFormRef}

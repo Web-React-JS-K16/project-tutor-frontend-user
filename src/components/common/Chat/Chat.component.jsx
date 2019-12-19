@@ -3,7 +3,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
 import io from 'socket.io-client'
-import './Chat.style.scss'
 import apiUrl from 'services/api-url'
 import {
   CLIENT_EMIT_SEND_MESSAGE,
@@ -15,8 +14,11 @@ import {
   CLIENT_ON_ROOMATE_OFF,
   TYPE_MESSAGE,
 } from 'utils/constant'
+import MainLayout from 'components/MainLayout'
 import ChatService from 'services/chat.service'
 import ChatRoomComponent from './components/ChatRoom/ChatRoom.component'
+import ListRoomChatContainer from './components/ListRoomChat/ListRoomChat.container'
+import './Chat.style.scss'
 
 // let socket;
 let socket
@@ -31,7 +33,7 @@ class ChatComponent extends Component {
 
   onCreateRoomChatFinish = (isSuccess, roomInfo, errorMessage) => {
     if (isSuccess) {
-      console.log('create room finish: ', roomInfo)
+      // console.log('create room finish: ', roomInfo)
       const { onAddRoomChat } = this.props
       // update room in redux
       onAddRoomChat(roomInfo)
@@ -51,9 +53,9 @@ class ChatComponent extends Component {
 
   // eslint-disable-next-line react/sort-comp
   onReceiveMessage = () => {
-    console.log('on regis listen message')
+    // console.log('on regis listen message')
     socket.on(CLIENT_ON_RECIEVE_MESSAGE, payload => {
-      console.log('on listen 2.2: ', payload)
+      // console.log('on listen 2.2: ', payload)
       const { message, room, from, time } = payload
       const { onReceiveNewMessage } = this.props
       onReceiveNewMessage({ room, newMessage: { content: message, time, from } })
@@ -63,7 +65,7 @@ class ChatComponent extends Component {
   // teacher listen new room
   onlistenNewRoom = () => {
     socket.on(CLIENT_ON_OPEN_ROOM, async payload => {
-      console.log('2.3 on listen create room from student')
+      // console.log('2.3 on listen create room from student')
       const { room } = payload
       // get room info
       const {
@@ -97,7 +99,7 @@ class ChatComponent extends Component {
   }
 
   setupListenFromSocket = () => {
-    console.log('on setup listent')
+    // console.log('on setup listent')
     this.onlistenNewRoom()
     this.onlistenRoomateOff()
     this.onReceiveMessage()
@@ -115,13 +117,17 @@ class ChatComponent extends Component {
       onSetUpRoomSuccess(rooms)
       /* Get id room on params */
       const currentRoomChat = this.getIdRoomFromParam()
-      // console.log("1.1 curr room: ", currentRoomChat)
+      console.log('rom param: ', currentRoomChat)
       if (!currentRoomChat) {
         onSetCurrentRoom(rooms[0].room || null)
       } else {
         // Find room to show detail
-        const index = rooms.findIndex(item => item.room === currentRoomChat)
-        if (index === -1) {
+        const isExist =
+          rooms.filter(item => item.room.toString() === currentRoomChat.toString()).length > 0
+        console.log('rom param isExist: ', isExist)
+        console.log('rooms: ', rooms)
+
+        if (!isExist) {
           // room not exist
           // If (room is not exit  && typeID === STUDENT) then create a new chat room
           if (currentUser.typeID === STUDENT) {
@@ -165,19 +171,16 @@ class ChatComponent extends Component {
       currentUser: { token },
     } = this.props
     // get data all room chat
-    console.log('2.1 did mount setup')
     onSetUpRoom(token, this.onGetAllRoomComplete)
 
     socket = io(apiUrl)
     const {
       currentUser: { _id, typeID },
     } = this.props
-    socket.emit('join', { userId: _id, typeID }, ({ error, rooms }) => {
+    socket.emit('join', { userId: _id, typeID }, ({ error }) => {
       if (error) {
         // eslint-disable-next-line no-alert
         alert(error)
-      } else if (rooms) {
-        // console.log('my rooms: ', rooms)
       }
     })
   }
@@ -195,7 +198,6 @@ class ChatComponent extends Component {
     const {
       currentUser: { _id },
     } = this.props
-    console.log('3.11 on send message to: ', room)
     socket.emit(CLIENT_EMIT_SEND_MESSAGE, {
       message: value,
       from: _id,
@@ -204,40 +206,48 @@ class ChatComponent extends Component {
     })
   }
 
-  getCurrentRoomChat = () => {
-    const { currentRoomId, rooms } = this.props
-    // console.log("1.3 rooms in state: ", rooms)
-    if (rooms.length > 0) {
-      const index = rooms.findIndex(item => item.room === currentRoomId)
-      if (index !== -1) {
-        // console.log("1.4 ", rooms[index])
-        return <ChatRoomComponent roomInfo={rooms[index]} sendMessage={this.sendMessage} />
-      }
-      return <div>Trống</div>
+  // getCurrentRoomChat = () => {
+  //   const { currentRoomId, rooms } = this.props
+  //     const index = rooms.findIndex(item => item.room === currentRoomId)
+  //     if (index !== -1) {
+  //     }
+  //   }
+  // }
+  getCurrrentRoomInfo = () => {
+    const { rooms, currentRoomId } = this.props
+    const index = rooms.findIndex(item => item.room === currentRoomId)
+    if (index !== -1) {
+      return rooms[index]
     }
-    return <div>Đang tải</div>
+    return null
   }
 
   render() {
-    const { rooms } = this.props
+    const currentRoomInfor = this.getCurrrentRoomInfo()
     const { isLoading, errorMessage } = this.state
-    // console.log('my room: ', rooms)
+    const { currentUser } = this.props
 
     return (
-      <div className="chat-component">
-        <div>Chat</div>
-        {!isLoading && !errorMessage && (
-          <div>
-            {rooms.map(item => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div>{item.room}</div>
-            ))}
-
-            <div>Phòng chat hiện tại</div>
-            {this.getCurrentRoomChat()}
-          </div>
-        )}
-      </div>
+      <MainLayout>
+        <div className="chat-component">
+          {!isLoading && !errorMessage && (
+            <>
+              <div className="chat-component__list-room">
+                <ListRoomChatContainer />
+              </div>
+              <div className="chat-component__chat-room">
+                {currentRoomInfor && (
+                  <ChatRoomComponent
+                    roomInfo={currentRoomInfor}
+                    currentUser={currentUser}
+                    sendMessage={this.sendMessage}
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </MainLayout>
     )
   }
 }

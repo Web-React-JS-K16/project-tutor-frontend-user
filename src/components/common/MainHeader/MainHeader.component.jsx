@@ -153,7 +153,7 @@ const MainHeader = ({
       </div>
       {currentUser && (
         <div className="main-header__notifications">
-          <Badge count={getNotificationListObj.numberOfNotifications}>
+          <Badge count={getNotificationListObj.numberOfUnreadNotifications}>
             <Dropdown
               overlay={NotificationMenu}
               placement="bottomRight"

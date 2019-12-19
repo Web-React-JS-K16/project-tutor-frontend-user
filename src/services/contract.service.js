@@ -1,12 +1,37 @@
 import apiUrl from './api-url'
 
 export default class ContractService {
+  static parameterizeObject = (obj, prefix) => {
+    if (!obj) return ''
+    const str = []
+    Object.keys(obj).forEach(key => {
+      if (obj[key]) {
+        const formarKey = prefix ? `${prefix}[${key}]` : key
+        const value = obj[key]
+        str.push(
+          value !== null && typeof value === 'object'
+            ? this.parameterizeObject(value, formarKey)
+            : `${encodeURIComponent(formarKey)}=${encodeURIComponent(value)}`
+        )
+      }
+    })
+    if (str.length === 0) return ''
+    return `${str.join('&')}`
+  }
+
   static getContractList = filterConditions => {
     const { userId } = filterConditions
     const page = filterConditions.currentPage
     const limit = filterConditions.currentLimit
+    const contractType = filterConditions.currentStatus
 
-    const api = `${apiUrl}/contract?userId=${userId}&page=${page}&limit=${limit}`
+    const query = `&${this.parameterizeObject({
+      status: contractType,
+    })}`
+
+    const api = `${apiUrl}/contract?userId=${encodeURIComponent(
+      userId
+    )}&page=${page}&limit=${limit}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
@@ -30,8 +55,14 @@ export default class ContractService {
       })
   }
 
-  static countContracts = userId => {
-    const api = `${apiUrl}/contract/quantity?userId=${encodeURIComponent(userId)}`
+  static countContracts = filterConditions => {
+    const { userId } = filterConditions
+    const contractType = filterConditions.currentStatus
+
+    const query = `&${this.parameterizeObject({
+      status: contractType,
+    })}`
+    const api = `${apiUrl}/contract/quantity?userId=${encodeURIComponent(userId)}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {

@@ -23,20 +23,36 @@ const CardInfoComponent = ({
         cover={
           <Card title={`${isStudent ? 'Học sinh' : 'Giáo viên'}`} style={{ width: 300 }}>
             <Timeline>
-              <CustomTimeLine label="Tên" content={displayName}>
+              <CustomTimeLine label="Tên" content={displayName || <i>(Chưa cập nhật)</i>}>
+                {displayName || <i>(Chưa cập nhật)</i>}
+              </CustomTimeLine>
+              <CustomTimeLine label="Số điện thoại" content={phone || <i>(Chưa cập nhật)</i>}>
                 {displayName}
               </CustomTimeLine>
-              <CustomTimeLine label="Số điện thoại" content={phone}>
-                {displayName}
+              <CustomTimeLine
+                label="Ngày sinh"
+                content={
+                  birthdate ? moment(birthdate).format('DD/MM/YYYY') : <i>(Chưa cập nhật)</i>
+                }
+              >
+                {displayName || <i>(Chưa cập nhật)</i>}
               </CustomTimeLine>
-              <CustomTimeLine label="Ngày sinh" content={moment(birthdate).format('DD/MM/YYYY')}>
-                {displayName}
+              <CustomTimeLine label="Email" content={email || <i>(Chưa cập nhật)</i>}>
+                {displayName || <i>(Chưa cập nhật)</i>}
               </CustomTimeLine>
-              <CustomTimeLine label="Email" content={email}>
-                {displayName}
-              </CustomTimeLine>
-              <CustomTimeLine label="Địa chỉ" content={`${district.name}, ${city.name}`}>
-                {displayName}
+              <CustomTimeLine
+                label="Địa chỉ"
+                content={
+                  !district && !city ? (
+                    <i>(Chưa cập nhật)</i>
+                  ) : (
+                    `${district ? district.name : <i>(Chưa cập nhật quận/ huyện)</i>}, ${
+                      city ? city.name : <i>(Chưa cập nhật tỉnh/ thành phố)</i>
+                    }`
+                  )
+                }
+              >
+                {displayName || <i>(Chưa cập nhật)</i>}
               </CustomTimeLine>
             </Timeline>
           </Card>
@@ -49,8 +65,8 @@ const CardInfoComponent = ({
       >
         <Card.Meta
           avatar={<Avatar src={avatar} />}
-          title={displayName}
-          description={about ? `${about.concat(0, 20)}...` : ''}
+          title={displayName || <i>(Chưa cập nhật)</i>}
+          description={about ? `${about.concat(0, 20)}...` : <i>(Chưa cập nhật)</i>}
         />
       </Card>
     </div>

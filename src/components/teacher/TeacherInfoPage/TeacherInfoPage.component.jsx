@@ -22,7 +22,6 @@ import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
 
 const TeacherInfoPage = ({
-  match,
   currentUser,
   getInfoObj,
   onClearTeacherState,
@@ -31,13 +30,10 @@ const TeacherInfoPage = ({
 }) => {
   useEffect(() => {
     onClearTeacherState()
-    const {
-      params: { userId },
-    } = match
-    if (userId) {
-      teacherGetInfo(userId)
+    if (currentUser) {
+      teacherGetInfo(currentUser._id)
     }
-  }, [match, onClearTeacherState, teacherGetInfo])
+  }, [currentUser, onClearTeacherState, teacherGetInfo])
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)

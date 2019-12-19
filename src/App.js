@@ -50,7 +50,7 @@ const RouteTeacher = ({ currentUser }) => {
 
       <Route
         exact
-        path={`${teacherPath}/info/:userId`}
+        path={`${teacherPath}/info`}
         render={props => (
           <MainLayout>
             <TeacherInfoPageContainer {...props} />
@@ -144,7 +144,7 @@ const App = ({ currentUser }) => {
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
             <Route
-              path="/contract-list/:userId"
+              path="/contract-list"
               render={props => (
                 <MainLayout>
                   <ContractListPageContainer {...props} />
@@ -152,7 +152,7 @@ const App = ({ currentUser }) => {
               )}
             />
             <Route
-              path="/notification-list/:userId"
+              path="/notification-list"
               render={props => (
                 <MainLayout>
                   <NotificationPageContainer {...props} />

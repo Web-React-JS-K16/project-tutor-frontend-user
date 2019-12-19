@@ -105,7 +105,7 @@ const MainHeader = ({
       <Menu.Divider />
       <Menu.Item>
         {currentUser && (
-          <Link to={`/notification-list/${currentUser._id}`}>
+          <Link to="/notification-list">
             <div>Xem tất cả</div>
           </Link>
         )}
@@ -122,14 +122,12 @@ const MainHeader = ({
       <Menu.Item>
         {currentUser &&
           (currentUser.typeID === TEACHER ? (
-            <Link to={`/teacher/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+            <Link to="/teacher/info">Trang cá nhân</Link>
           ) : (
-            <Link to={`/student/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+            <Link to="/student/info">Trang cá nhân</Link>
           ))}
       </Menu.Item>
-      <Menu.Item>
-        {currentUser && <Link to={`/contract-list/${currentUser._id}`}>Hợp đồng</Link>}
-      </Menu.Item>
+      <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>

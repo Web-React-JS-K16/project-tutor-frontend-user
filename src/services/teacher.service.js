@@ -33,7 +33,7 @@ export default class TeacherService {
   }
 
   static getTeacherInfo = id => {
-    const api = `${apiUrl}/user/info/${id}`
+    const api = `${apiUrl}/user/info/${encodeURIComponent(id)}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {

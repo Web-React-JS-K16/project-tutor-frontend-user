@@ -13,7 +13,7 @@ import ChatTypes from './chat.types'
 function* setupRoomChat({ payload: { token, onGetAllRoomComplete } }) {
   try {
     // get old message from db
-    console.log('on set up room chat saga: ', onGetAllRoomComplete)
+    // console.log('on set up room chat saga: ', onGetAllRoomComplete)
     const rooms = yield ChatService.getAllChatRoom(token)
     // yield put(onGetAllRoomComplete(true, rooms))
     yield onGetAllRoomComplete(true, rooms)
@@ -23,20 +23,20 @@ function* setupRoomChat({ payload: { token, onGetAllRoomComplete } }) {
 }
 
 function* onSetupRoomChat() {
-  console.log('on set up room chat')
+  // console.log('on set up room chat')
   yield takeLatest(ChatTypes.SET_UP_ROOM, setupRoomChat)
 }
 // ==================
 function* createRoomChat({ payload: { token, roomInfo, onCreateRoomChatFinish } }) {
   try {
-    console.log('saga, before create room: ', roomInfo)
+    // console.log('saga, before create room: ', roomInfo)
     // get old message from db
     const newRoom = yield ChatService.createChatRoom({ roomInfo, token })
-    console.log('saga, new room: ', newRoom)
+    // console.log('saga, new room: ', newRoom)
     yield onCreateRoomChatFinish(true, newRoom)
     // yield put(onCreateRoomChatSuccess(roomInfo))
   } catch (err) {
-    console.log('saga create room err:', err.message)
+    // console.log('saga create room err:', err.message)
     // yield put(onCreateRoomChatFailure(err.message))
     yield onCreateRoomChatFinish(false, roomInfo, err.message)
   }

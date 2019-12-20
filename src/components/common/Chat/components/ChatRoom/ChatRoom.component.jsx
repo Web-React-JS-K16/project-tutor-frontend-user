@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react'
-import { Input, Icon } from 'antd'
 import { STUDENT } from 'utils/constant'
 import * as moment from 'moment'
 import RoomateChatCardItemComponent from '../RoomateChatCardItem/RoomateChatCardItem.component'
@@ -25,12 +24,13 @@ const ChatRoomComponent = ({ roomInfo, currentUser, sendMessage }) => {
     scrollChatMessages()
   }, [message])
 
-  const handleSendMessage = value => {
+  const handleSendMessage = e => {
+    const { value } = e.target
+    console.log('messge send: ', value)
     setNewMessage('')
     sendMessage(value, room)
   }
-  const onMessageChange = e => {
-    const { value } = e.target
+  const onMessageChange = value => {
     setNewMessage(value)
   }
 
@@ -60,24 +60,15 @@ const ChatRoomComponent = ({ roomInfo, currentUser, sendMessage }) => {
           ))}
         </div>
         <div className="chat-room__input">
-          <Input.Search
+          <input
+            type="text"
             value={newMessage}
-            onChange={e => onMessageChange(e)}
-            placeholder="Nhập tin nhắn ..."
-            onSearch={handleSendMessage}
-            enterButton
-            allowClear
-            // onKeyPress={event =>
-            //   event.key === 'Enter' ? handleSendMessage(event) : null
-            // }
-            suffix={
-              <Icon
-                onClick={handleSendMessage}
-                type="info-circle"
-                style={{ color: 'rgba(0,0,0,.45)' }}
-              />
-            }
+            onChange={({ target: { value } }) => onMessageChange(value)}
+            onKeyPress={event => (event.key === 'Enter' ? handleSendMessage(event) : null)}
           />
+          <button type="submit" onClick={e => handleSendMessage(e)}>
+            Gửi
+          </button>
         </div>
       </div>
     )

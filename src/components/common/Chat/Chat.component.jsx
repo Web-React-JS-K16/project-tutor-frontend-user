@@ -16,6 +16,7 @@ import {
 } from 'utils/constant'
 import MainLayout from 'components/MainLayout'
 import ChatService from 'services/chat.service'
+import { Spin, Icon, message } from 'antd'
 import ChatRoomComponent from './components/ChatRoom/ChatRoom.component'
 import ListRoomChatContainer from './components/ListRoomChat/ListRoomChat.container'
 import './Chat.style.scss'
@@ -30,6 +31,14 @@ class ChatComponent extends Component {
       errorMessage: null,
     }
   }
+
+  // redirectWithError = (errorMessage) => {
+  //   const { history } = this.props;
+  //   history.push({
+  //     pathname: '/error-page',
+  //     state: { message: errorMessage },
+  //   })
+  // }
 
   onCreateRoomChatFinish = (isSuccess, roomInfo, errorMessage) => {
     if (isSuccess) {
@@ -48,6 +57,7 @@ class ChatComponent extends Component {
       this.setState({ isLoading: false, errorMessage: null })
     } else {
       this.setState({ isLoading: false, errorMessage })
+      // this.redirectWithError(errorMessage)
     }
   }
 
@@ -56,6 +66,7 @@ class ChatComponent extends Component {
     // console.log('on regis listen message')
     socket.on(CLIENT_ON_RECIEVE_MESSAGE, payload => {
       // console.log('on listen 2.2: ', payload)
+      // eslint-disable-next-line no-shadow
       const { message, room, from, time } = payload
       const { onReceiveNewMessage } = this.props
       onReceiveNewMessage({ room, newMessage: { content: message, time, from } })
@@ -110,6 +121,7 @@ class ChatComponent extends Component {
     return match.params.roomId
   }
 
+  // eslint-disable-next-line no-shadow
   onGetAllRoomComplete = (isSuccess, rooms, message) => {
     // console.log("on get room complete")
     const { currentUser, onSetUpRoomSuccess, onSetCurrentRoom } = this.props
@@ -120,6 +132,7 @@ class ChatComponent extends Component {
       console.log('rom param: ', currentRoomChat)
       if (!currentRoomChat) {
         onSetCurrentRoom(rooms[0].room || null)
+        this.setState({ isLoading: false, errorMessage: null })
       } else {
         // Find room to show detail
         const isExist =
@@ -162,6 +175,7 @@ class ChatComponent extends Component {
     } else {
       // get all rooms error
       this.setState({ isLoading: false, errorMessage: message })
+      // this.redirectWithError(message)
     }
   }
 
@@ -226,12 +240,19 @@ class ChatComponent extends Component {
     const currentRoomInfor = this.getCurrrentRoomInfo()
     const { isLoading, errorMessage } = this.state
     const { currentUser } = this.props
-
+    console.log('is loading', isLoading)
     return (
       <MainLayout>
-        <div className="chat-component">
+        <div className="chat-component-wrap">
+          {isLoading && (
+            <div className="loading">
+              <Spin indicator={<Icon type="loading" spin />} />
+            </div>
+          )}
+
+          {!isLoading && errorMessage && message.error(errorMessage)}
           {!isLoading && !errorMessage && (
-            <>
+            <div className="chat-component">
               <div className="chat-component__list-room">
                 <ListRoomChatContainer />
               </div>
@@ -244,7 +265,7 @@ class ChatComponent extends Component {
                   />
                 )}
               </div>
-            </>
+            </div>
           )}
         </div>
       </MainLayout>

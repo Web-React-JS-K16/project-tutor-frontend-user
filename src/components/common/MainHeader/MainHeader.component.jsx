@@ -92,24 +92,35 @@ const MainHeader = ({
 
   const NotificationMenu = (
     <Menu>
-      {getNotificationListObj.notificationList &&
+      {getNotificationListObj && getNotificationListObj.notificationList.length > 0 ? (
         getNotificationListObj.notificationList.map(notification => {
           return (
             <Menu.Item>
               <Link to={notification.link}>
-                <div>{notification.content}</div>
+                <div>
+                  {notification.content.length > 40
+                    ? `${notification.content.substr(0, 40)}...`
+                    : notification.content}
+                </div>
               </Link>
             </Menu.Item>
           )
-        })}
-      <Menu.Divider />
-      <Menu.Item>
-        {currentUser && (
+        })
+      ) : (
+        <Menu.Item>
+          <div>Bạn không có thông báo mới nào!</div>
+        </Menu.Item>
+      )}
+      {currentUser &&
+        getNotificationListObj &&
+        getNotificationListObj.notificationList.length > 0 && <Menu.Divider />}
+      {currentUser && getNotificationListObj && getNotificationListObj.notificationList.length > 0 && (
+        <Menu.Item>
           <Link to="/notification-list">
             <div>Xem tất cả</div>
           </Link>
-        )}
-      </Menu.Item>
+        </Menu.Item>
+      )}
     </Menu>
   )
 
@@ -122,12 +133,13 @@ const MainHeader = ({
       <Menu.Item>
         {currentUser &&
           (currentUser.typeID === TEACHER ? (
-            <Link to="/teacher/info">Trang cá nhân</Link>
+            <Link to={`/teacher/info/${currentUser._id}`}>Trang cá nhân</Link>
           ) : (
-            <Link to="/student/info">Trang cá nhân</Link>
+            <Link to={`/student/info/${currentUser._id}`}>Trang cá nhân</Link>
           ))}
       </Menu.Item>
       <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
+      <Menu.Item>{currentUser && <Link to="/teacher/statistics">Thống kê</Link>}</Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
@@ -149,7 +161,7 @@ const MainHeader = ({
           />
         </Link>
       </div>
-      {currentUser && (
+      {currentUser && getNotificationListObj && (
         <div className="main-header__notifications">
           <Badge count={getNotificationListObj.numberOfUnreadNotifications}>
             <Dropdown
@@ -157,7 +169,16 @@ const MainHeader = ({
               placement="bottomRight"
               getPopupContainer={trigger => trigger.parentNode}
             >
-              <Icon type="bell" style={{ color: 'rgba(0, 0, 0, 0.45)' }} theme="filled" />
+              <Icon
+                type="bell"
+                style={{
+                  color:
+                    getNotificationListObj.numberOfUnreadNotifications > 0
+                      ? '#faad14'
+                      : 'rgba(0, 0, 0, 0.45)',
+                }}
+                theme="filled"
+              />
             </Dropdown>
           </Badge>
         </div>

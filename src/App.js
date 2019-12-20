@@ -18,6 +18,7 @@ import Home from 'components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from 'components/teacher/TeacherInfoPage/TeacherInfoPage.container'
 import TeacherListPageContainer from 'components/teacher/TeacherListPage/TeacherListPage.container'
 import TeacherLoginComponent from 'components/teacher/TeacherLogin/TeacherLogin.component'
+import TeacherStatisticsPageContainer from 'components/teacher/TeacherStatisticsPage/TeacherStatisticsPage.container'
 import StudentLoginComponent from 'components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from 'components/common/ActiveEmail/ActiveEmail.container'
 import ForgetPasswordContainer from 'components/common/ForgetPassword/ForgetPassword.container'
@@ -72,6 +73,18 @@ const RouteTeacher = ({ currentUser }) => {
             render={() =>
               currentUser.typeID === TEACHER ? (
                 <TeacherUpdateInfoPage />
+              ) : (
+                <ErrorPage message="Bạn không có quyền truy cập trang này." />
+              )
+            }
+          />
+          <Route
+            path={`${teacherPath}/statistics`}
+            render={() =>
+              currentUser.typeID === TEACHER ? (
+                <MainLayout>
+                  <TeacherStatisticsPageContainer />
+                </MainLayout>
               ) : (
                 <ErrorPage message="Bạn không có quyền truy cập trang này." />
               )

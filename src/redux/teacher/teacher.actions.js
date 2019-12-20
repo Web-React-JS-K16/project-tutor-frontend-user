@@ -56,3 +56,17 @@ export const teacherUpdateInfoFailure = message => ({
 export const teacherUpdateInfoClear = () => ({
   type: TeacherTypes.TEACHER_UPDATE_INFO_CLEAR,
 })
+
+//= == get statistical data
+export const getStatisticalData = filterConditions => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS,
+  payload: filterConditions,
+})
+export const getStatisticalDataSuccess = data => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS_SUCCESS,
+  payload: data,
+})
+export const getStatisticalDataFailure = message => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS_FAILURE,
+  payload: message,
+})

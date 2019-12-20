@@ -15,7 +15,6 @@ const { TreeNode } = Tree
 const { Option } = Select
 
 const TeacherListPage = ({
-  // numberOfTeachers,
   getListObj,
   getTeacherList,
   majorList,

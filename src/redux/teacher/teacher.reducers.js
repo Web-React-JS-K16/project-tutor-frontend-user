@@ -20,6 +20,12 @@ const INITIAL_STATE = {
     isSuccess: null,
     message: null,
   },
+  getStatisticalData: {
+    data: [],
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
 }
 
 const teacherReducer = (state = INITIAL_STATE, action) => {
@@ -28,11 +34,6 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
       }
-    // case TeacherTypes.UPDATE_CURRENT_TEACHER:
-    //   return {
-    //     ...state,
-    //     currentTeacher: action.payload,
-    //   }
     case TeacherTypes.GET_TEACHER_LIST:
       return {
         ...state,
@@ -60,11 +61,6 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
           message: action.payload,
         },
       }
-    // case TeacherTypes.UPDATE_NUMBER_OF_TEACHERS:
-    //   return {
-    //     ...state,
-    //     numberOfTeachers: action.payload,
-    //   }
     // GET INFO
     case TeacherTypes.TEACHER_GET_INFO:
       return {
@@ -145,6 +141,33 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
           isLoading: false,
           isSuccess: null,
           message: null,
+        },
+      }
+    // GET STATISTICAL DATA
+    case TeacherTypes.TEACHER_GET_STATISTICS:
+      return {
+        ...state,
+        getStatisticalData: {
+          ...state.getStatisticalData,
+          isLoading: true,
+        },
+      }
+    case TeacherTypes.TEACHER_GET_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        getStatisticalData: {
+          data: action.payload,
+          isLoading: false,
+          isSuccess: true,
+        },
+      }
+    case TeacherTypes.TEACHER_GET_STATISTICS_FAILURE:
+      return {
+        ...state,
+        getStatisticalData: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
         },
       }
     default:

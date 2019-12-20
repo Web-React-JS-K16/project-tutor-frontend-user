@@ -1,0 +1,36 @@
+@import '../../../../../default.style.scss';
+
+.notification-item {
+  border-radius: 5px;
+  background-color: $color-light;
+  padding: 20px 30px;
+  border: 1px solid $color-4;
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    &__left {
+      .date {
+        font-size: 13px;
+        color: $color-grey-1;
+        margin-bottom: 10px;
+      }
+      .content {
+      }
+    }
+    &__right {
+      font-size: 15px;
+      color: $color-grey-1;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      border: none;
+    }
+  }
+
+  .ant-divider {
+    margin: 10px 0px;
+  }
+  .ant-btn {
+  }
+}

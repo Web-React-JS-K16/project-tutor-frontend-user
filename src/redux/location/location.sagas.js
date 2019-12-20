@@ -4,7 +4,7 @@ import LocationTypes from './location.types'
 import { updateLocationList } from './location.actions'
 import LocationService from '../../services/location.service'
 
-export function* getList() {
+function* getList() {
   try {
     const locations = yield LocationService.getLocationList()
     yield put(updateLocationList(locations))

@@ -3,21 +3,18 @@ import {
   onClearNotificationState,
   getNotificationList,
 } from 'redux/notification/notification.actions'
-import MainHeader from './MainHeader.component'
-import { logout, authenticate } from '../../../redux/user/user.actions'
+import NotificationPage from './NotificationPage.component'
 
 const mapStateToProps = state => ({
+  getListObj: state.notification.getList,
   currentUser: state.user.currentUser,
-  getNotificationListObj: state.notification.getList,
 })
 
 const mapDispatchToProps = dispatch => ({
-  handleLogout: () => dispatch(logout()),
-  onAuthenticate: token => dispatch(authenticate(token)),
   getNotificationList: filterConditions => dispatch(getNotificationList(filterConditions)),
   onClearNotificationState: () => dispatch(onClearNotificationState()),
 })
 
-const MainHeaderContainer = connect(mapStateToProps, mapDispatchToProps)(MainHeader)
+const NotificationPageContainer = connect(mapStateToProps, mapDispatchToProps)(NotificationPage)
 
-export default MainHeaderContainer
+export default NotificationPageContainer

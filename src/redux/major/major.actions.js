@@ -1,6 +1,5 @@
 import MajorTypes from './major.types'
 
-// clear isLoading, error msg, user when user start login/ register
 export const onClearMajorState = () => ({
   type: MajorTypes.CLEAR_MAJOR_STATE,
 })

@@ -1,6 +1,6 @@
 @import '../../../default.style.scss';
 
-.contract-list-page {
+.notification-list-page {
   width: 100%;
   font-size: 16px;
   margin: 0px auto;
@@ -11,9 +11,6 @@
     width: 80%;
     margin: 0px auto;
     padding: 70px 0px;
-    .filter-select {
-      text-align: right;
-    }
     .ant-col {
       margin-top: 24px;
       .contract-item {

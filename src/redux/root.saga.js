@@ -6,6 +6,7 @@ import { majorSaga } from './major/major.sagas'
 import { locationSaga } from './location/location.sagas'
 import { contractSaga } from './contract/contract.sagas'
 import { chatSaga } from './chat/chat.sagas'
+import { notificationSaga } from './notification/notification.sagas'
 
 export default function* rootSagas() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSagas() {
     call(locationSaga),
     call(contractSaga),
     call(chatSaga),
+    call(notificationSaga),
   ])
 }

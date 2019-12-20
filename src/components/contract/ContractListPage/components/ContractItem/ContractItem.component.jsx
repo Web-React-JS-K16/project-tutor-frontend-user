@@ -5,10 +5,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Divider, Tag, Button } from 'antd'
 import * as moment from 'moment'
-import { CONTRACT_TYPE } from 'utils/constant'
+import { CUSTOM_CONTRACT_TYPES, TEACHER } from 'utils/constant'
 import './ContractItem.style.scss'
 
-const ContractItem = ({ contract }) => {
+const ContractItem = ({ contract, currentUser }) => {
   return (
     <div className="contract-item">
       <div className="contract-item__basic-info">
@@ -17,15 +17,26 @@ const ContractItem = ({ contract }) => {
             <div className="name">{contract.name}</div>
           </Link>
           <div className="status">
-            <Tag color={CONTRACT_TYPE[contract.status].color}>
-              {CONTRACT_TYPE[contract.status].text}
+            <Tag color={CUSTOM_CONTRACT_TYPES[contract.status].color}>
+              {currentUser.typeID === TEACHER
+                ? CUSTOM_CONTRACT_TYPES[contract.status].textForTeacher
+                : CUSTOM_CONTRACT_TYPES[contract.status].textForStudent}
             </Tag>
           </div>
         </div>
 
         <div className="contract-item__basic-info__date">
-          {moment(contract.startDate).format('DD/MM/YYYY')}&nbsp;-&nbsp;
-          {moment(contract.endDate).format('DD/MM/YYYY')}
+          {contract.startDate ? (
+            moment(contract.startDate).format('DD/MM/YYYY')
+          ) : (
+            <i>(Chưa cập nhật)</i>
+          )}
+          &nbsp;-&nbsp;
+          {contract.endDate ? (
+            moment(contract.endDate).format('DD/MM/YYYY')
+          ) : (
+            <i>(Chưa cập nhật)</i>
+          )}
         </div>
       </div>
       <Divider />

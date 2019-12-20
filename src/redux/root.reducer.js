@@ -8,6 +8,7 @@ import locationReducer from './location/location.reducers'
 import studentReducer from './student/student.reducers'
 import contractReducer from './contract/contract.reducers'
 import chatReducer from './chat/chat.reducers'
+import notificationReducer from './notification/notification.reducers'
 
 const userPersistConfig = {
   key: 'user',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   student: studentReducer,
   contract: contractReducer,
   chat: chatReducer,
+  notification: notificationReducer,
 })
 
 export default rootReducer

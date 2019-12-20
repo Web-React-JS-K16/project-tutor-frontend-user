@@ -6,21 +6,41 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Avatar, Dropdown, Input, Button } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd'
 import Swal from 'sweetalert2'
 import UserService from 'services/user.service'
-import { jwtToken, TEACHER, itemPerPage } from 'utils/constant'
+import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
 const { SubMenu } = Menu
 const { Search } = Input
 
-const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
+const MainHeader = ({
+  currentUser,
+  getNotificationListObj,
+  handleLogout,
+  onAuthenticate,
+  onClearNotificationState,
+  getNotificationList,
+}) => {
   useEffect(() => {
-    const token = UserService.getPreferences(jwtToken)
+    const token = UserService.getPreferences(JWT_TOKEN)
     if (!currentUser && token) onAuthenticate(token)
   }, [currentUser, onAuthenticate])
+
+  useEffect(() => {
+    onClearNotificationState()
+
+    if (currentUser) {
+      const userId = currentUser._id
+      getNotificationList({
+        userId,
+        currentPage: 1,
+        currentLimit: ITEMS_PER_PAGE,
+      })
+    }
+  }, [currentUser, onClearNotificationState, getNotificationList])
 
   const userOptions = {
     viSignin: 'đăng nhập',
@@ -70,6 +90,29 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
     })
   }
 
+  const NotificationMenu = (
+    <Menu>
+      {getNotificationListObj.notificationList &&
+        getNotificationListObj.notificationList.map(notification => {
+          return (
+            <Menu.Item>
+              <Link to={notification.link}>
+                <div>{notification.content}</div>
+              </Link>
+            </Menu.Item>
+          )
+        })}
+      <Menu.Divider />
+      <Menu.Item>
+        {currentUser && (
+          <Link to="/notification-list">
+            <div>Xem tất cả</div>
+          </Link>
+        )}
+      </Menu.Item>
+    </Menu>
+  )
+
   const UserMenu = (
     <Menu>
       <Menu.Item style={{ cursor: 'default' }}>
@@ -79,16 +122,12 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
       <Menu.Item>
         {currentUser &&
           (currentUser.typeID === TEACHER ? (
-            <Link to={`/teacher/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+            <Link to="/teacher/info">Trang cá nhân</Link>
           ) : (
-            <Link to={`/student/info?id=${currentUser._id}`}>Trang cá nhân</Link>
+            <Link to="/student/info">Trang cá nhân</Link>
           ))}
       </Menu.Item>
-      <Menu.Item>
-        {currentUser && (
-          <Link to={`/contract-list/${currentUser._id}?page=1&limit=${itemPerPage}`}>Hợp đồng</Link>
-        )}
-      </Menu.Item>
+      <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
@@ -110,6 +149,19 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           />
         </Link>
       </div>
+      {currentUser && (
+        <div className="main-header__notifications">
+          <Badge count={getNotificationListObj.numberOfUnreadNotifications}>
+            <Dropdown
+              overlay={NotificationMenu}
+              placement="bottomRight"
+              getPopupContainer={trigger => trigger.parentNode}
+            >
+              <Icon type="bell" style={{ color: 'rgba(0, 0, 0, 0.45)' }} theme="filled" />
+            </Dropdown>
+          </Badge>
+        </div>
+      )}
       <div className="main-header__user">
         {currentUser ? (
           <Dropdown
@@ -148,7 +200,7 @@ const MainHeader = ({ currentUser, handleLogout, onAuthenticate }) => {
           <Link to="/">Trang chủ</Link>
         </Menu.Item>
         <Menu.Item key="2">
-          <Link to={`/teacher?page=1&limit=${itemPerPage}`}>Gia sư</Link>
+          <Link to="/teacher">Gia sư</Link>
         </Menu.Item>
         <SubMenu
           key="sub1"

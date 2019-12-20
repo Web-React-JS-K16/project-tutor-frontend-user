@@ -33,7 +33,7 @@ export default class TeacherService {
   }
 
   static getTeacherInfo = id => {
-    const api = `${apiUrl}/user/info?id=${id}`
+    const api = `${apiUrl}/user/info/${encodeURIComponent(id)}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
@@ -150,8 +150,18 @@ export default class TeacherService {
       })
   }
 
-  static countTeachers = () => {
-    const api = `${apiUrl}/user/quantity?type=${TEACHER}`
+  static countTeachers = filterConditions => {
+    const majors = filterConditions.currentMajors
+    const fromSalary = filterConditions.currentFromSalary
+    const toSalary = filterConditions.currentToSalary
+    const locationObject = filterConditions.currentLocations
+
+    const query = `&${this.parameterizeArray('majors', majors)}&${this.parameterizeObject({
+      fromSalary,
+      toSalary,
+    })}&${this.parameterizeObject(locationObject)}`
+
+    const api = `${apiUrl}/user/quantity?type=${TEACHER}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {

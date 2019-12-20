@@ -10,6 +10,8 @@ import {
   teacherGetInfoFailure,
   teacherUpdateInfoSuccess,
   teacherUpdateInfoFailure,
+  getStatisticalDataSuccess,
+  getStatisticalDataFailure,
 } from './teacher.actions'
 import TeacherService from '../../services/teacher.service'
 
@@ -44,6 +46,19 @@ export function* getTeacherListSaga() {
   yield takeLatest(TeacherTypes.GET_TEACHER_LIST, getList)
 }
 
+// get statistical data
+function* getStatisticalData({ payload: filterConditions }) {
+  try {
+    const data = yield TeacherService.getStatisticalData(filterConditions)
+    yield put(getStatisticalDataSuccess(data))
+  } catch (err) {
+    yield put(getStatisticalDataFailure(err.message))
+  }
+}
+export function* getStatisticalDataSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_GET_STATISTICS, getStatisticalData)
+}
+
 // === get teacher info to update
 /**
  *
@@ -66,7 +81,16 @@ function* teacherUpdateInfo({ payload: { info, token } }) {
   try {
     yield TeacherService.updateInfo({ info, token })
     const { displayName, phone, birthdate, gender, city, district } = info
-    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender, city, district }))
+    yield put(
+      updateUserInfoSuccess({
+        displayName,
+        phone,
+        birthdate,
+        gender,
+        city,
+        district,
+      })
+    )
     yield put(teacherUpdateInfoSuccess(info))
   } catch (err) {
     yield put(teacherUpdateInfoFailure(err.message))
@@ -84,5 +108,6 @@ export function* teacherSaga() {
     call(getTeacherListSaga),
     call(teacherUpdateInfoSaga),
     call(teacherGetInfoToUpdateSaga),
+    call(getStatisticalDataSaga),
   ])
 }

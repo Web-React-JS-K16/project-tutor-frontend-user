@@ -2,7 +2,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState, useCallback } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import {
   Icon,
   Rate,
@@ -17,6 +18,7 @@ import {
   Button,
 } from 'antd'
 import './TeacherInfoPage.style.scss'
+
 import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.component'
 import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
@@ -27,13 +29,22 @@ const TeacherInfoPage = ({
   onClearTeacherState,
   teacherGetInfo,
   createContract,
+  match,
 }) => {
+  const [teacherId, setTeacherId] = useState('')
+
   useEffect(() => {
     onClearTeacherState()
-    if (currentUser) {
-      teacherGetInfo(currentUser._id)
-    }
-  }, [currentUser, onClearTeacherState, teacherGetInfo])
+
+    const { idTeacher } = match.params
+    console.log('id teacher: ', idTeacher)
+    teacherGetInfo(idTeacher)
+    setTeacherId(idTeacher)
+
+    // if (currentUser) {
+    // teacherGetInfo(currentUser._id)
+    // }
+  }, [currentUser, onClearTeacherState, teacherGetInfo, match])
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)
@@ -110,14 +121,26 @@ const TeacherInfoPage = ({
                     </div>
                   )}
                   {currentUser.typeID === STUDENT && (
-                    <Button
-                      style={{ marginTop: 15 }}
-                      size="small"
-                      type="primary"
-                      onClick={() => setVisible(true)}
-                    >
-                      Đăng kí học
-                    </Button>
+                    <div className="info-left__btn">
+                      <Button
+                        style={{ marginTop: 15 }}
+                        size="small"
+                        type="primary"
+                        onClick={() => setVisible(true)}
+                      >
+                        Đăng kí học
+                      </Button>
+                      <Link to={`/chat/${currentUser._id}${teacherId}`}>
+                        <Button
+                          style={{ marginTop: 15 }}
+                          size="small"
+                          type="primary"
+                          typeHtml="button"
+                        >
+                          Nhắn tin
+                        </Button>
+                      </Link>
+                    </div>
                   )}
                   <ModalForm
                     ref={saveFormRef}
@@ -208,4 +231,4 @@ const TeacherInfoPage = ({
 
 TeacherInfoPage.propTypes = {}
 
-export default TeacherInfoPage
+export default withRouter(TeacherInfoPage)

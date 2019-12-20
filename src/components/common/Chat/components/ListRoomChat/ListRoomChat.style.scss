@@ -1,0 +1,22 @@
+@import '../../../../../default.style.scss';
+
+.list-room-chat {
+    height: 90vh;
+    overflow-y: auto;
+    box-shadow: 5px 0px 6px rgba(0, 0, 0, 0.14);
+    margin-right: 10px;
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-large;
+        padding: 10px;
+        border-bottom: solid 4px #bfbfbf;
+        font-weight: bold;
+        color: $color-main;
+        span{
+            margin-left: 5px;
+        }
+
+    }
+}

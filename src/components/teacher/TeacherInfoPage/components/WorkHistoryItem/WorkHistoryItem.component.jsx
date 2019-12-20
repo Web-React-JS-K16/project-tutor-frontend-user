@@ -25,7 +25,7 @@ const WorkHistoryItem = ({ contract }) => {
         </div>
       </div>
       <div className="work-history-item__content">
-        <p>{contract.comment.content || 'Chưa có phản hồi'}</p>
+        <p>{contract.comment ? contract.comment.content : 'Chưa có phản hồi'}</p>
       </div>
       <Divider />
     </div>

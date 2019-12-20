@@ -27,6 +27,7 @@ import StudentRegisterComponent from 'components/student/StudentRegister/Student
 import RegisterPageContainer from 'components/common/RegisterPage/RegisterPage.container'
 import StudentUpdateInfoPageComponent from 'components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
 import TeacherUpdateInfoPage from 'components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
+import ChatContainer from 'components/common/Chat/Chat.container'
 import NotificationPageContainer from 'components/common/NotificationPage/NotificationPage.container'
 
 const teacherPath = '/teacher'
@@ -50,7 +51,7 @@ const RouteTeacher = ({ currentUser }) => {
 
       <Route
         exact
-        path={`${teacherPath}/info`}
+        path={`${teacherPath}/info/:idTeacher`}
         render={props => (
           <MainLayout>
             <TeacherInfoPageContainer {...props} />
@@ -141,6 +142,8 @@ const App = ({ currentUser }) => {
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
         {currentUser ? (
           <>
+            <Route exact path="/chat" component={ChatContainer} />
+            <Route exact path="/chat/:roomId" component={ChatContainer} />
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
             <Route

@@ -57,6 +57,9 @@
     .ant-dropdown-menu {
       .ant-dropdown-menu-item {
         font-size: 16px;
+        &:hover {
+          background-color: #fff295 !important;
+        }
       }
     }
     .anticon {

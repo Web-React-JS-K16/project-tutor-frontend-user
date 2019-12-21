@@ -44,7 +44,7 @@ const TeacherListPage = ({
       getMajorList()
       getLocationList()
     }
-  }, [page, limit, onClearTeacherState, getTeacherList, getMajorList, getLocationList])
+  }, [limit, onClearTeacherState, getTeacherList, getMajorList, getLocationList])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-list', JSON.stringify(filterConditions))

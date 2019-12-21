@@ -8,6 +8,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd'
 import Swal from 'sweetalert2'
+import * as moment from 'moment'
 import UserService from 'services/user.service'
 import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
 import './MainHeader.style.scss'
@@ -91,15 +92,29 @@ const MainHeader = ({
   }
 
   const NotificationMenu = (
-    <Menu>
+    <Menu style={{ width: '300px' }}>
       {getNotificationListObj && getNotificationListObj.notificationList.length > 0 ? (
         getNotificationListObj.notificationList.map(notification => {
           return (
-            <Menu.Item>
+            <Menu.Item
+              key={notification._id}
+              style={{
+                'border-bottom': '1px solid #e8e8e8',
+                'white-space': 'normal',
+                'background-color': !notification.isRead ? '#fffbe6' : 'transparent',
+              }}
+            >
               <Link to={notification.link}>
-                <div>
-                  {notification.content.length > 40
-                    ? `${notification.content.substr(0, 40)}...`
+                <div style={{ 'font-size': '13px', color: '#656565' }}>
+                  {moment(notification.createdAt).format('DD/MM/YYYY HH:mm')}
+                </div>
+                <div
+                  style={{
+                    color: !notification.isRead ? '#faad14' : '#001529',
+                  }}
+                >
+                  {notification.content.length > 68
+                    ? `${notification.content.substr(0, 68)}...`
                     : notification.content}
                 </div>
               </Link>
@@ -111,9 +126,6 @@ const MainHeader = ({
           <div>Bạn không có thông báo mới nào!</div>
         </Menu.Item>
       )}
-      {currentUser &&
-        getNotificationListObj &&
-        getNotificationListObj.notificationList.length > 0 && <Menu.Divider />}
       {currentUser && getNotificationListObj && getNotificationListObj.notificationList.length > 0 && (
         <Menu.Item>
           <Link to="/notification-list">

@@ -17,6 +17,7 @@ const NotificationPage = ({
   getListObj,
   onClearNotificationState,
   getNotificationList,
+  updateIsDeleted,
 }) => {
   // const query = TeacherService.useQuery()
   // const page = query.get('page') || 1
@@ -27,13 +28,28 @@ const NotificationPage = ({
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
+    let interval
     onClearNotificationState()
     if (currentUser && page && limit) {
       const userId = currentUser._id
       setCurrentPage(page)
       getNotificationList({ userId, currentPage: page, currentLimit: limit })
+      interval = setInterval(
+        () =>
+          getNotificationList({
+            userId,
+            currentPage: page,
+            currentLimit: limit,
+          }),
+        30000
+      )
     }
-  }, [currentUser, page, limit, onClearNotificationState, getNotificationList])
+
+    // returned function will be called on component unmount
+    return () => {
+      clearTimeout(interval)
+    }
+  }, [onClearNotificationState, currentUser, limit, getNotificationList])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-notification-list', JSON.stringify(filterConditions))
@@ -57,15 +73,13 @@ const NotificationPage = ({
       currentPage,
       currentLimit: limit,
     }
-    NotificationService.updateIsDeletedNotification(notification._id)
-      .then(executeFilter(filterConditions))
-      .catch(err => console.log('ERROR UPDATE IS-DELETED NOTIFICATION ', err.message))
+    updateIsDeleted(notification._id, filterConditions)
   }
 
   const onReadNotification = (e, notification) => {
     NotificationService.updateIsReadNotification(notification._id)
       .then(history.push(notification.link))
-      .catch(err => console.log('ERROR UPDATE IS-DELETED NOTIFICATION ', err.message))
+      .catch(err => console.log('ERROR UPDATE IS-READ NOTIFICATION ', err.message))
   }
 
   if (!getListObj.isLoading && getListObj.isSuccess === false) {

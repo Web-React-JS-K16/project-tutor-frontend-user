@@ -9,6 +9,10 @@ export const getNotificationList = filterConditions => ({
   type: NotificationTypes.GET_NOTIFICATION_LIST,
   payload: filterConditions,
 })
+export const updateIsDeleted = (id, filterConditions) => ({
+  type: NotificationTypes.UPDATE_IS_DELETED,
+  payload: { id, filterConditions },
+})
 export const getNotificationListSuccess = (
   notificationList,
   numberOfNotifications,

@@ -269,4 +269,32 @@ export default class ContractService {
         throw new Error(err.message)
       })
   }
+
+  static onPayment = ({ amount, stripeToken, token }) => {
+    console.log('on payment')
+    const api = `${apiUrl}/contract/charge/`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'POST',
+      body: JSON.stringify({ stripeToken, amount }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err.message)
+      })
+  }
 }

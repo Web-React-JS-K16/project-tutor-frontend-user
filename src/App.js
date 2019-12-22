@@ -30,6 +30,7 @@ import StudentUpdateInfoPageComponent from 'components/student/StudentUpdateInfo
 import TeacherUpdateInfoPage from 'components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
 import ChatContainer from 'components/common/Chat/Chat.container'
 import NotificationPageContainer from 'components/common/NotificationPage/NotificationPage.container'
+import PaymentResultComponent from 'components/student/PaymentResult/PaymentResult.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
@@ -152,6 +153,7 @@ const App = ({ currentUser }) => {
         <Route path={studentPath} render={() => <RouteStudent currentUser={currentUser} />} />
         <Route path="/error-page" component={ErrorPage} />
         <Route path="/404" component={NotFound404} />
+        <Route path="/payment" component={PaymentResultComponent} />
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
         {currentUser ? (
           <>

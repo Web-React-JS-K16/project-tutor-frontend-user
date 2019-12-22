@@ -6,10 +6,11 @@ import * as moment from 'moment'
 import './ContractComment.style.scss'
 
 const ContractCommentComponnet = ({
-  student: { avatar, displayName, typeID },
+  student: { avatar, displayName },
   contract: { comment, status },
   onHandleComment,
   loading,
+  typeID,
 }) => {
   const [ratingValue, setRatingValue] = useState(5)
 
@@ -22,6 +23,8 @@ const ContractCommentComponnet = ({
   }
   return (
     <div className="contract-comment">
+      <div className="contract-comment__title">Đánh giá của học sinh: </div>
+
       <div className="contract-comment__avatar">
         <div className="img">
           <img src={avatar} alt={displayName} />
@@ -60,7 +63,12 @@ const ContractCommentComponnet = ({
       <div className="contract-comment__btn">
         <Button
           htmlType="button"
-          disabled={typeID === TEACHER || status === CONTRACT_TYPES.IS_VALID}
+          disabled={
+            typeID === TEACHER ||
+            status === CONTRACT_TYPES.IS_VALID ||
+            status === CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE ||
+            status === CONTRACT_TYPES.WAIT_FOR_PAYMENT
+          }
           loading={loading}
           onClick={handleSubmit}
           type="primary"

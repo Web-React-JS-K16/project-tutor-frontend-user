@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Timeline, Card, Icon, Avatar } from 'antd'
+import { Timeline, Card, Avatar } from 'antd'
 import * as moment from 'moment'
 import './CardInfo.style.scss'
+import { Link } from 'react-router-dom'
 
 const CustomTimeLine = ({ label, content }) => (
   <div className="my-custome-timeline">
@@ -13,9 +14,10 @@ const CustomTimeLine = ({ label, content }) => (
 )
 
 const CardInfoComponent = ({
-  user: { displayName, avatar, phone, birthdate, email, city, district, about },
+  user: { displayName, avatar, phone, birthdate, email, city, district, about, _id },
   isStudent,
 }) => {
+  // const displayNameLink = isStudent ? { displayName } : <Link to={`/teacher/info/${_id}`}>{displayName}</Link>
   return (
     <div className="card-info">
       <Card
@@ -57,16 +59,19 @@ const CardInfoComponent = ({
             </Timeline>
           </Card>
         }
-        actions={[
-          <Icon type="setting" key="setting" />,
-          <Icon type="edit" key="edit" />,
-          <Icon type="ellipsis" key="ellipsis" />,
-        ]}
+        actions={
+          !isStudent && [
+            <Link to={`/teacher/info/${_id}`}>Xem thêm</Link>,
+            // <Icon type="setting" key="setting" />,
+            // <Icon type="edit" key="edit" />,
+            // <Icon type="ellipsis" key="ellipsis" />,
+          ]
+        }
       >
         <Card.Meta
           avatar={<Avatar src={avatar} />}
           title={displayName || <i>(Chưa cập nhật)</i>}
-          description={about ? `${about.concat(0, 20)}...` : <i>(Chưa cập nhật)</i>}
+          description={about ? `${about.concat(0, 20)}...` : ''}
         />
       </Card>
     </div>

@@ -91,7 +91,7 @@ export default class ContractService {
    * input: {id contract, token}
    */
   static getContract = ({ id, token }) => {
-    const api = `${apiUrl}/contract/${id}`
+    const api = `${apiUrl}/contract/get-detail/${id}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
@@ -270,14 +270,14 @@ export default class ContractService {
       })
   }
 
-  static onPayment = ({ amount, stripeToken, token }) => {
+  static onPayment = ({ contractId, amount, stripeToken, token }) => {
     console.log('on payment')
     const api = `${apiUrl}/contract/charge/`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'POST',
-      body: JSON.stringify({ stripeToken, amount }),
+      body: JSON.stringify({ contractId, stripeToken, amount }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
         Authorization: `Bearer ${token}`,

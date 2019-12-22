@@ -22,18 +22,6 @@ class CheckoutForm extends Component {
         token: 'todo',
       })
       console.log('rs: ', result)
-
-      // let response = await fetch("http://localhost:4500/charge", {
-      //     method: "POST",
-      //     headers: { "Content-Type": "text/plain" },
-      //     body: JSON.stringify({ stripeToken: token.id, amount: 253000})
-      //     // body: token.id
-      // });
-
-      // if (response.ok) console.log("Purchase Complete!")
-      // else {
-      //     alert("err")
-      // }
     }
   }
 
@@ -56,7 +44,7 @@ const PaymentResultComponent = () => {
   return (
     <StripeProvider apiKey="pk_test_zXSU4yRnrOlP3SfCWYgBVUWK00HXrURDga">
       <div className="example">
-        <h1>React Stripe Elements Example</h1>
+        <h1>Thanh toán</h1>
         <Elements>
           <CheckOutFormComponent />
         </Elements>

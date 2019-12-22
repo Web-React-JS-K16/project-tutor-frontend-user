@@ -4,6 +4,11 @@
   padding: 10px;
   max-width: 80%;
   margin: auto;
+  &__title {
+    font-weight: bold;
+    margin: 5px 0px;
+    color: $color-main;
+  }
   &__avatar {
     display: flex;
     align-items: center;

@@ -22,6 +22,13 @@
       &__left {
         display: flex;
         align-items: flex-start;
+        .info-left__btn {
+          display: flex;
+          flex-direction: column;
+          button {
+            width: fit-content;
+          }
+        }
         img {
           width: 90px;
           height: 90px;

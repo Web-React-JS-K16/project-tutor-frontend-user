@@ -3,62 +3,47 @@ import { call, all, takeLatest, put } from 'redux-saga/effects'
 import { updateUserInfoSuccess } from 'redux/user/user.actions'
 import TeacherTypes from './teacher.types'
 import {
-  updateCurrentTeacher,
-  updateTeacherList,
-  updateNumerOfTeachers,
+  getTeacherListSuccess,
+  getTeacherListFailure,
   teacherGetInfoSuccess,
+  teacherGetInfoToUpdateSuccess,
   teacherGetInfoFailure,
   teacherUpdateInfoSuccess,
   teacherUpdateInfoFailure,
 } from './teacher.actions'
 import TeacherService from '../../services/teacher.service'
 
-export function* getInfo({ payload: id }) {
+// get all teacher info
+function* getInfo({ payload: id }) {
   try {
     const teacher = yield TeacherService.getTeacherInfo(id)
-    yield put(updateCurrentTeacher(teacher))
+    yield put(teacherGetInfoSuccess(teacher))
   } catch (err) {
-    console.log('ERR GET TEACHER INFO ', err)
-    yield put(updateCurrentTeacher(null))
+    yield put(teacherGetInfoFailure(err.message))
   }
 }
-
-export function* getList({ payload: filterConditions }) {
-  try {
-    const teachers = yield TeacherService.getTeacherList(filterConditions)
-    yield put(updateTeacherList(teachers))
-  } catch (err) {
-    console.log('ERR GET TEACHER LIST ', err)
-    yield put(updateTeacherList(null))
-  }
+export function* getTeacherInfoSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_GET_INFO, getInfo)
 }
 
-export function* countTeachers() {
+// get teacher list
+function* getList({ payload: filterConditions }) {
   try {
-    const numberOfTeachers = yield TeacherService.countTeachers()
+    const teacherList = yield TeacherService.getTeacherList(filterConditions)
+    const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
     if (!isNaN(numberOfTeachers)) {
-      yield put(updateNumerOfTeachers(numberOfTeachers))
+      yield put(getTeacherListSuccess(teacherList, numberOfTeachers))
     } else {
-      yield put(updateNumerOfTeachers(0))
+      yield put(getTeacherListFailure('Không thể lấy được số lượng gia sư'))
     }
   } catch (err) {
-    console.log('ERR COUNT TEACHERS ', err)
-    yield put(updateNumerOfTeachers(0))
+    yield put(getTeacherListFailure(err.message))
   }
 }
-
-export function* getTeacherInfoSaga() {
-  yield put(updateTeacherList(null))
-  yield takeLatest(TeacherTypes.GET_TEACHER_INFO, getInfo)
-}
-
 export function* getTeacherListSaga() {
   yield takeLatest(TeacherTypes.GET_TEACHER_LIST, getList)
 }
 
-export function* countTeachersSaga() {
-  yield takeLatest(TeacherTypes.COUNT_TEACHERS, countTeachers)
-}
 // === get teacher info to update
 /**
  *
@@ -68,20 +53,20 @@ function* teacherGetInfoToUpdate({ payload }) {
   console.log('on teacher saga')
   try {
     const info = yield TeacherService.getInfoToUpdate(payload)
-    yield put(teacherGetInfoSuccess(info))
+    yield put(teacherGetInfoToUpdateSuccess(info))
   } catch (err) {
     yield put(teacherGetInfoFailure(err.message))
   }
 }
 function* teacherGetInfoToUpdateSaga() {
-  yield takeLatest(TeacherTypes.TEACHER_GET_INFO, teacherGetInfoToUpdate)
+  yield takeLatest(TeacherTypes.TEACHER_GET_INFO_TO_UPDATE, teacherGetInfoToUpdate)
 }
 // ===========
 function* teacherUpdateInfo({ payload: { info, token } }) {
   try {
     yield TeacherService.updateInfo({ info, token })
-    const { displayName, phone, birthdate, gender } = info
-    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender }))
+    const { displayName, phone, birthdate, gender, city, district } = info
+    yield put(updateUserInfoSuccess({ displayName, phone, birthdate, gender, city, district }))
     yield put(teacherUpdateInfoSuccess(info))
   } catch (err) {
     yield put(teacherUpdateInfoFailure(err.message))
@@ -97,7 +82,6 @@ export function* teacherSaga() {
   yield all([
     call(getTeacherInfoSaga),
     call(getTeacherListSaga),
-    call(countTeachersSaga),
     call(teacherUpdateInfoSaga),
     call(teacherGetInfoToUpdateSaga),
   ])

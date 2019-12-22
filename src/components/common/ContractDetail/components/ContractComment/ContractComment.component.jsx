@@ -1,38 +1,82 @@
 import React, { useState } from 'react'
-import { Comment, Avatar, Form, Button, Input } from 'antd'
+import { Button, Input, Rate, Tag } from 'antd'
+import { TEACHER, CONTRACT_TYPES } from 'utils/constant'
+import * as moment from 'moment'
 
-const ContractCommentComponnet = () => {
-  const [value, setValue] = useState(null)
+import './ContractComment.style.scss'
+
+const ContractCommentComponnet = ({
+  student: { avatar, displayName },
+  contract: { comment, status },
+  onHandleComment,
+  loading,
+  typeID,
+}) => {
+  const [ratingValue, setRatingValue] = useState(5)
+
   const handleSubmit = () => {
-    // TODO:
-    // if (!value) {
-    // }
+    // eslint-disable-next-line no-undef
+    const commentValue = document.getElementById('contract-comment').value
+    // console.log('value: ', comment)
+    // console.log('rate: ', rating)
+    onHandleComment({ comment: commentValue, rating: ratingValue })
   }
-  const handleChange = e => {
-    setValue(e.value)
-  }
-
   return (
-    <Comment
-      avatar={
-        <Avatar
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          alt="Han Solo"
-        />
-      }
-      content={
-        <div>
-          <Form.Item>
-            <Input.TextArea rows={4} onChange={handleChange} value={value} />
-          </Form.Item>
-          <Form.Item>
-            <Button htmlType="submit" loading={false} onClick={handleSubmit} type="primary">
-              Add Comment
-            </Button>
-          </Form.Item>
+    <div className="contract-comment">
+      <div className="contract-comment__title">Đánh giá của học sinh: </div>
+
+      <div className="contract-comment__avatar">
+        <div className="img">
+          <img src={avatar} alt={displayName} />
         </div>
-      }
-    />
+        <div className="name-time">
+          <div className="name">
+            <span>{displayName}</span>
+            <Tag color="green">Học sinh</Tag>
+          </div>
+          <div className="time">
+            {comment && comment.date ? (
+              moment(comment.date).format('DD/MM/YYYY HH:mm')
+            ) : (
+              <i>(Trống)</i>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="contract-comment__rating">
+        <Rate
+          allowHalf
+          defaultValue={(comment && comment.ratings) || 0}
+          onChange={value => setRatingValue(value)}
+        />
+      </div>
+      <Input.TextArea
+        id="contract-comment"
+        disabled={typeID === TEACHER}
+        rows={4}
+        defaultValue={
+          status === CONTRACT_TYPES.IS_VALID
+            ? 'Bạn sẽ được đánh giá khi kết thúc hợp đồng'
+            : (comment && comment.content) || ''
+        }
+      />
+      <div className="contract-comment__btn">
+        <Button
+          htmlType="button"
+          disabled={
+            typeID === TEACHER ||
+            status === CONTRACT_TYPES.IS_VALID ||
+            status === CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE ||
+            status === CONTRACT_TYPES.WAIT_FOR_PAYMENT
+          }
+          loading={loading}
+          onClick={handleSubmit}
+          type="primary"
+        >
+          Đánh giá
+        </Button>
+      </div>
+    </div>
   )
 }
 

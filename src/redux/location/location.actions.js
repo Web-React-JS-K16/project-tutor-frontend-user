@@ -1,6 +1,5 @@
 import LocationTypes from './location.types'
 
-// clear isLoading, error msg, user when user start login/ register
 export const onClearLocationState = () => ({
   type: LocationTypes.CLEAR_LOCATION_STATE,
 })

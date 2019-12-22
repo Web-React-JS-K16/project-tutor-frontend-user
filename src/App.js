@@ -9,7 +9,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import ChangePasswordContainer from 'components/common/ChangePassword/ChangePassword.container'
 import { connect } from 'react-redux'
 import { STUDENT, TEACHER } from 'utils/constant'
-import NotFoud404 from 'components/common/NotFoud404/NotFoud404.component'
+import NotFound404 from 'components/common/NotFound404/NotFound404.component'
 import ErrorPage from 'components/common/ErrorPage/ErrorPage.component'
 import ContractDetailContainer from 'components/common/ContractDetail/ContractDetail.container'
 import ContractListPageContainer from 'components/contract/ContractListPage/ContractListPage.container'
@@ -27,12 +27,14 @@ import StudentRegisterComponent from 'components/student/StudentRegister/Student
 import RegisterPageContainer from 'components/common/RegisterPage/RegisterPage.container'
 import StudentUpdateInfoPageComponent from 'components/student/StudentUpdateInfoPage/StudentUpdateInfoPage.component'
 import TeacherUpdateInfoPage from 'components/teacher/TeacherUpdateInfoPage/TeacherUpdateInfoPage.component'
+import ChatContainer from 'components/common/Chat/Chat.container'
+import NotificationPageContainer from 'components/common/NotificationPage/NotificationPage.container'
+import PaymentResultComponent from 'components/student/PaymentResult/PaymentResult.component'
 
 const teacherPath = '/teacher'
 const studentPath = '/student'
 
 const RouteTeacher = ({ currentUser }) => {
-  // const token = UserService.getPreferences(jwtToken)
   console.log('current user: ', currentUser)
 
   return (
@@ -50,10 +52,10 @@ const RouteTeacher = ({ currentUser }) => {
 
       <Route
         exact
-        path={`${teacherPath}/info`}
-        render={() => (
+        path={`${teacherPath}/info/:idTeacher`}
+        render={props => (
           <MainLayout>
-            <TeacherInfoPageContainer />
+            <TeacherInfoPageContainer {...props} />
           </MainLayout>
         )}
       />
@@ -88,8 +90,6 @@ const RouteTeacher = ({ currentUser }) => {
 }
 
 const RouteStudent = ({ currentUser }) => {
-  // const token = UserService.getPreferences(jwtToken)
-
   return (
     <Switch>
       {/* WITHOUT login, user can access those links */}
@@ -139,18 +139,28 @@ const App = ({ currentUser }) => {
         <Route path={teacherPath} render={() => <RouteTeacher currentUser={currentUser} />} />
         <Route path={studentPath} render={() => <RouteStudent currentUser={currentUser} />} />
         <Route path="/error-page" component={ErrorPage} />
-        <Route path="/404" component={NotFoud404} />
+        <Route path="/404" component={NotFound404} />
+        <Route path="/payment" component={PaymentResultComponent} />
         <Route path="/active-email/:token/:email" component={ActiveEmailContainer} />
-
         {currentUser ? (
           <>
+            <Route exact path="/chat" component={ChatContainer} />
+            <Route exact path="/chat/:roomId" component={ChatContainer} />
             <Route path="/change-password" component={ChangePasswordContainer} />
             <Route path="/contract-detail/:contractId" component={ContractDetailContainer} />
             <Route
-              path="/contract-list/:userId"
+              path="/contract-list"
               render={props => (
                 <MainLayout>
                   <ContractListPageContainer {...props} />
+                </MainLayout>
+              )}
+            />
+            <Route
+              path="/notification-list"
+              render={props => (
+                <MainLayout>
+                  <NotificationPageContainer {...props} />
                 </MainLayout>
               )}
             />
@@ -160,8 +170,12 @@ const App = ({ currentUser }) => {
             <Route path="/register" component={RegisterPageContainer} />
             <Route path="/foget-password" component={ForgetPasswordContainer} />
             <Route path="/reset-password/:token/:email" component={ResetPasswordContainer} />
+            <Route path="/contract-detail/:contractId">
+              <Redirect to={`${studentPath}/login`} />
+            </Route>
           </>
         )}
+        <Route path="/*" component={NotFound404} />
       </Switch>
     </div>
   )

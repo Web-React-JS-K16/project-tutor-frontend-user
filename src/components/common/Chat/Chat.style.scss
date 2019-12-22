@@ -1,0 +1,17 @@
+.chat-component-wrap {
+  min-height: 90vh;
+  .loading {
+    * {
+      width: 100%;
+      text-align: center;
+      margin: auto;
+      margin-top: 10vh;
+      min-height: 10vh;
+    }
+  }
+  .chat-component {
+    font-size: 1.6rem;
+    display: grid;
+    grid-template-columns: 20% 80%;
+  }
+}

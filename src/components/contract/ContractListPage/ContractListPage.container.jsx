@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
-import { getContractList, countContracts } from 'redux/contract/contract.actions'
+import { onClearContractState, getContractList } from 'redux/contract/contract.actions'
 import ContractListPage from './ContractListPage.component'
 
 const mapStateToProps = state => ({
-  contractList: state.contract.contractList,
-  numberOfContracts: state.contract.numberOfContracts,
+  getListObj: state.contract.getList,
+  currentUser: state.user.currentUser,
 })
 
 const mapDispatchToProps = dispatch => ({
   getContractList: filterConditions => dispatch(getContractList(filterConditions)),
-  countContracts: userId => dispatch(countContracts(userId)),
+  onClearContractState: () => dispatch(onClearContractState()),
 })
 
 const ContractListPageContainer = connect(mapStateToProps, mapDispatchToProps)(ContractListPage)

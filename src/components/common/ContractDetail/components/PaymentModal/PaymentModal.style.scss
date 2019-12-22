@@ -1,0 +1,44 @@
+@import '../../../../../default.style.scss';
+
+
+.payment-modal {
+    &__footer{ 
+        font-style: italic;
+        color: rgb(107, 107, 107);
+        font-size: 12px;
+    }
+}
+
+ .payment-content {
+        text-align: center;
+        margin-bottom: 10px;
+        &__icon {
+            margin: 5px auto;
+            i {
+                font-size: 30px;
+                margin: 5px;
+            }
+        }
+        &__title {
+            font-weight: bold;
+        }
+        &__sum {
+            font-weight: bold;
+            span{
+                color: $color-main !important;  
+            }
+        }
+        &__checkout {
+            margin-top: 20px;
+            &--instruction {
+                margin-bottom: 45px;
+                color: $color-main;
+            }
+            .StripeElement {
+                margin: 10px 5px;
+            }
+            button {
+                margin-top: 30px;
+            }
+        }
+    }

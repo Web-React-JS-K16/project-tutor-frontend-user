@@ -11,28 +11,29 @@ const TeacherItem = ({ teacher }) => {
     <div className="teacher-item">
       <div className="teacher-item__basic-info">
         <div className="teacher-item__basic-info__left">
-          <Link to={`/teacher/info?id=${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher._id}`}>
             <img src={teacher.avatar} alt="" />
           </Link>
         </div>
         <div className="teacher-item__basic-info__right">
-          <Link to={`/teacher/info?id=${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher._id}`}>
             <div className="name">{teacher.displayName}</div>
           </Link>
 
-          {(teacher.city || teacher.district || teacher.ward) && (
+          {!teacher.city && !teacher.district ? (
             <div className="address">
               <Icon type="environment" />
-              {teacher.district && <span>&nbsp;{teacher.district.name}</span>}
-              {teacher.city && <span>,&nbsp;{teacher.city.name}</span>}
+              <i>&nbsp;Chưa cập nhật địa chỉ</i>
+            </div>
+          ) : (
+            <div className="address">
+              <Icon type="environment" />
+              <span>
+                &nbsp;{teacher.district && teacher.district.name},&nbsp;
+                {teacher.city && teacher.city.name}
+              </span>
             </div>
           )}
-          {/* <div className="address">
-            <Icon type="environment" />
-            <span>&ensp;HCM</span>
-            <span>,&nbsp;Gò Vấp</span>
-            <span>,&nbsp;phường 11</span>
-          </div> */}
           <div className="ratings">
             <Rate disabled defaultValue={teacher.ratings} />
           </div>
@@ -41,7 +42,7 @@ const TeacherItem = ({ teacher }) => {
 
       <div className="teacher-item__sub-info">
         <Row>
-          <Col span={10}>
+          <Col span={14}>
             <div className="cost">
               <b>{teacher.salary}</b> vnđ/h
             </div>
@@ -55,13 +56,17 @@ const TeacherItem = ({ teacher }) => {
       </div>
       <Divider />
       <div className="teacher-item__tags">
-        {teacher.tags.map(tag => {
-          return (
-            <Tag key={tag._id} color="orange">
-              {tag.name}
-            </Tag>
-          )
-        })}
+        {!teacher.tags || teacher.tags.length === 0 ? (
+          <i>Chưa cập nhật kĩ năng</i>
+        ) : (
+          teacher.tags.map(tag => {
+            return (
+              <Tag key={tag._id} color="orange">
+                {tag.name}
+              </Tag>
+            )
+          })
+        )}
         {/* <Tag color="orange">Toán lớp 1</Tag>
         <Tag color="orange">Toán đại số 10</Tag>
         <Tag color="orange">Toán cao cấp</Tag> */}

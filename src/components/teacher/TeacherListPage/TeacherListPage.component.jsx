@@ -3,11 +3,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
 import './TeacherListPage.style.scss'
-import TeacherService from 'services/teacher.service'
 import UserService from 'services/user.service'
-import { itemPerPage } from 'utils/constant'
+import { ITEMS_PER_PAGE } from 'utils/constant'
 import TeacherItem from './components/TeacherItem/TeacherItem.component'
 
 const { Panel } = Collapse
@@ -15,18 +15,20 @@ const { TreeNode } = Tree
 const { Option } = Select
 
 const TeacherListPage = ({
-  numberOfTeachers,
-  teacherList,
+  // numberOfTeachers,
+  getListObj,
   getTeacherList,
-  countTeachers,
   majorList,
   getMajorList,
   locationList,
   getLocationList,
+  onClearTeacherState,
 }) => {
-  const query = TeacherService.useQuery()
-  const page = query.get('page') || 1
-  const limit = query.get('limit') || itemPerPage
+  // const query = TeacherService.useQuery()
+  // const page = query.get('page') || 1
+  // const limit = query.get('limit') || ITEMS_PER_PAGE
+  const page = 1
+  const limit = ITEMS_PER_PAGE
 
   const [currentPage, setCurrentPage] = useState(1)
   const [currentMajors, setCurrentMajors] = useState([])
@@ -36,14 +38,14 @@ const TeacherListPage = ({
   const [currentSort, setCurrentSort] = useState({})
 
   useEffect(() => {
+    onClearTeacherState()
     if (page && limit) {
       setCurrentPage(page)
       getTeacherList({ currentPage: page, currentLimit: limit })
       getMajorList()
       getLocationList()
-      countTeachers()
     }
-  }, [page, limit, getTeacherList, getMajorList, getLocationList, countTeachers])
+  }, [page, limit, onClearTeacherState, getTeacherList, getMajorList, getLocationList])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-list', JSON.stringify(filterConditions))
@@ -139,13 +141,30 @@ const TeacherListPage = ({
     executeFilter(filterConditions)
   }
 
+  if (!getListObj.isLoading && getListObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getListObj.message}` },
+        }}
+      />
+    )
+  }
+
   return (
     <div className="teacher-list-page">
-      {teacherList && majorList && locationList ? (
-        <div className="teacher-list-page__wrapper">
-          <Row>
-            <Col span={4} style={{ paddingRight: 30 }}>
-              <div className="teacher-list-page__wrapper__left">
+      {getListObj.isLoading && (
+        <div className="teacher-list-page__loading">
+          <Spin indicator={<Icon type="loading" spin />} />
+        </div>
+      )}
+
+      <div className="teacher-list-page__wrapper">
+        <Row gutter={16}>
+          <Col span={5}>
+            <div className="teacher-list-page__wrapper__left">
+              {majorList && locationList && (
                 <Collapse bordered={false} defaultActiveKey={[]}>
                   <Panel header="Giá trên giờ" key="1">
                     <Slider
@@ -153,7 +172,7 @@ const TeacherListPage = ({
                       min={0}
                       max={1000}
                       step={10}
-                      defaultValue={[0, 1000]}
+                      defaultValue={[currentFromSalary, currentToSalary]}
                       onAfterChange={handleAfterChangeSalary}
                     />
                   </Panel>
@@ -196,43 +215,45 @@ const TeacherListPage = ({
                     </Tree>
                   </Panel>
                 </Collapse>
-              </div>
-            </Col>
-            <Col span={20}>
-              <div className="teacher-list-page__wrapper__right">
+              )}
+            </div>
+          </Col>
+          <Col span={19}>
+            <div className="teacher-list-page__wrapper__right">
+              <Row>
                 <div className="sort-select">
                   <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>
                     <Option value="ASC">Giá trên giờ tăng dần</Option>
                     <Option value="DSC">Giá trên giờ giảm dần</Option>
                   </Select>
                 </div>
-                <Row gutter={16}>
-                  {teacherList.map(teacher => {
-                    return (
-                      <Col key={teacher._id} span={8}>
-                        <TeacherItem teacher={teacher} />
-                      </Col>
-                    )
-                  })}
-                </Row>
-                <Row>
-                  <Pagination
-                    simple
-                    defaultCurrent={parseInt(currentPage)}
-                    defaultPageSize={parseInt(limit)}
-                    total={numberOfTeachers}
-                    onChange={handleChangePage}
-                  />
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      ) : (
-        <div className="teacher-list-page__loading">
-          <Spin indicator={<Icon type="loading" spin />} />
-        </div>
-      )}
+              </Row>
+              {!getListObj.isLoading && getListObj.isSuccess === true && (
+                <>
+                  <Row gutter={16}>
+                    {getListObj.teacherList.map(teacher => {
+                      return (
+                        <Col key={teacher._id} span={8}>
+                          <TeacherItem teacher={teacher} />
+                        </Col>
+                      )
+                    })}
+                  </Row>
+                  <Row>
+                    <Pagination
+                      simple
+                      defaultCurrent={parseInt(currentPage)}
+                      defaultPageSize={parseInt(limit)}
+                      total={getListObj.numberOfTeachers}
+                      onChange={handleChangePage}
+                    />
+                  </Row>
+                </>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   )
 }

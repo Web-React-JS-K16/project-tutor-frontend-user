@@ -1,0 +1,50 @@
+@import "../../../../../default.style.scss";
+
+.contract-comment {
+  padding: 10px;
+  max-width: 80%;
+  margin: auto;
+  &__title {
+    font-weight: bold;
+    margin: 5px 0px;
+    color: $color-main;
+  }
+  &__avatar {
+    display: flex;
+    align-items: center;
+    .img {
+      width: 30px;
+      height: 30px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+    .name-time {
+      margin-left: 10px;
+      .name {
+        font-weight: bold;
+        span {
+          margin-right: 5px;
+        }
+      }
+      .time {
+        font-size: 10px;
+        color: $color-grey-1;
+      }
+    }
+  }
+  &__rating {
+    font-size: 20px;
+    margin-left: 35px;
+    margin-bottom: 10px;
+    ul li {
+      margin-right: 5px;
+    }
+  }
+  &__btn {
+    text-align: right;
+    margin-top: 20px;
+  }
+}

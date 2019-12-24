@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Modal, Form, Input } from 'antd'
+import { Modal, Form, Input, InputNumber } from 'antd'
 
 const { TextArea } = Input
 
@@ -46,6 +46,12 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, teacher }) => {
           {getFieldDecorator('content', {
             rules: [{ required: true, message: 'Vui lòng nhập nội dung!' }],
           })(<TextArea autoSize={{ minRows: 8, maxRows: 12 }} />)}
+        </Form.Item>
+        <Form.Item hasFeedback label="Tổng số giờ">
+          {getFieldDecorator('workingHour', {
+            initialValue: 24,
+            rules: [{ required: true, message: 'Vui lòng nhập tổng số giờ!' }],
+          })(<InputNumber min={1} />)}
         </Form.Item>
         {/* <Form.Item label="Thời gian hợp đồng có hiệu lực">
           {getFieldDecorator('date', {

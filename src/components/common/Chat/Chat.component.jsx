@@ -69,7 +69,10 @@ class ChatComponent extends Component {
       // eslint-disable-next-line no-shadow
       const { message, room, from, time } = payload
       const { onReceiveNewMessage } = this.props
-      onReceiveNewMessage({ room, newMessage: { content: message, time, from } })
+      onReceiveNewMessage({
+        room,
+        newMessage: { content: message, time, from },
+      })
     })
   }
 
@@ -88,6 +91,7 @@ class ChatComponent extends Component {
         onAddRoomChat(roomInfo)
         socket.emit(CLIENT_EMIT_ACCEPT_NEW_ROOM, { isAccept: true, room })
       } catch (err) {
+        // eslint-disable-next-line no-alert
         alert(err.message)
       }
     })
@@ -103,7 +107,10 @@ class ChatComponent extends Component {
       if (_id !== userLeft) {
         onReceiveNewMessage({
           room,
-          newMessage: { type: TYPE_MESSAGE.ROOMATE_OFF, typeIDCurrentUser: typeID },
+          newMessage: {
+            type: TYPE_MESSAGE.ROOMATE_OFF,
+            typeIDCurrentUser: typeID,
+          },
         })
       }
     })
@@ -239,10 +246,10 @@ class ChatComponent extends Component {
   render() {
     const currentRoomInfor = this.getCurrrentRoomInfo()
     const { isLoading, errorMessage } = this.state
-    const { currentUser } = this.props
+    const { currentUser, history } = this.props
     console.log('is loading', isLoading)
     return (
-      <MainLayout>
+      <MainLayout history={history}>
         <div className="chat-component-wrap">
           {isLoading && (
             <div className="loading">

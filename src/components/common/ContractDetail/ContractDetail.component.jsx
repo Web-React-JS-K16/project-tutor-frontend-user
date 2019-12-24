@@ -103,7 +103,9 @@ class ContractDetailComponent extends React.Component {
   onPaymentSuccess = () => {
     this.onClosePaymentModal()
     const { contract } = this.state
-    this.setState({ contract: { ...contract, status: CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE } })
+    this.setState({
+      contract: { ...contract, status: CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE },
+    })
   }
 
   // report
@@ -257,10 +259,10 @@ class ContractDetailComponent extends React.Component {
       commentContract,
       payment,
     } = this.state
-    const { currentUser } = this.props
+    const { currentUser, history } = this.props
 
     return (
-      <MainLayout>
+      <MainLayout history={history}>
         {isLoading && (
           <div className="contract-detail-component__loading">
             <Spin indicator={<Icon type="loading" spin />} />

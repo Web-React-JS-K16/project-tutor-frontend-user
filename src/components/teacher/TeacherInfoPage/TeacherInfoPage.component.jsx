@@ -56,14 +56,12 @@ const TeacherInfoPage = ({
       }
 
       console.log('Received values of form: ', values)
-      const { name, content, date } = values
+      const { name, content } = values
       const contract = {
         name,
         content,
         teacherId: getInfoObj.teacher._id,
         studentId: currentUser._id,
-        startDate: date[0],
-        endDate: date[1],
         costPerHour: getInfoObj.teacher.salary,
       }
       createContract(contract)

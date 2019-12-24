@@ -19,15 +19,19 @@ import {
   // Facet,
   // Util,
 } from 'bizcharts'
-import { Row, Col, Spin, Icon, Select } from 'antd'
+import { Row, Spin, Icon, Select, DatePicker } from 'antd'
 import './TeacherStatisticsPage.style.scss'
-import UserService from 'services/user.service'
+// import UserService from 'services/user.service'
 
 const { Option } = Select
+const { RangePicker, WeekPicker } = DatePicker
 
 const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisticalData }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [currentStatisticalType, setCurrentStatisticalType] = useState({})
+  const [currentStatisticalType, setCurrentStatisticalType] = useState('date')
+  const [format, setFormat] = useState('DD/MM/YYYY')
+  const [mode, setMode] = useState(['date', 'date'])
+  const [labels, setLabels] = useState(['Ngày bắt đầu', 'Ngày kết thúc'])
+  const [valueRangePicker, setValueRangePicker] = useState([])
 
   useEffect(() => {
     if (currentUser) {
@@ -36,19 +40,51 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
     }
   }, [currentUser, getStatisticalData])
 
-  const executeFilter = filterConditions => {
-    UserService.setPreferences('project-tutor-teacher-statistics', JSON.stringify(filterConditions))
-    getStatisticalData(filterConditions)
+  // const executeFilter = filterConditions => {
+  //   UserService.setPreferences('project-tutor-teacher-statistics', JSON.stringify(filterConditions))
+  //   getStatisticalData(filterConditions)
+  // }
+
+  const onChangeStatisticalType = value => {
+    console.log('onChangeStatisticalType = ', value)
+    setCurrentStatisticalType(value)
+    let selectedFormat = 'DD/MM/YYYY'
+    let selectedMode = ['date', 'date']
+    let selectedLabels = ['Ngày bắt đầu', 'Ngày kết thúc']
+    if (value === 'year') {
+      selectedFormat = 'YYYY'
+      selectedMode = ['year', 'year']
+      selectedLabels = ['Năm bắt đầu', 'Năm kết thúc']
+    } else if (value === 'month') {
+      selectedFormat = 'MM/YYYY'
+      selectedMode = ['month', 'month']
+      selectedLabels = ['Tháng bắt đầu', 'Tháng kết thúc']
+    }
+    setFormat(selectedFormat)
+    setMode(selectedMode)
+    setLabels(selectedLabels)
   }
 
-  const handleChangeStatisticalType = value => {
-    console.log('handleChangeStatisticalType = ', value)
-    setCurrentStatisticalType(value)
-    const filterConditions = {
-      userId: currentUser._id,
-      currentType: value,
-    }
-    executeFilter(filterConditions)
+  const onChangeFromWeekData = value => {
+    console.log('onChangeFromWeekData = ', value)
+  }
+
+  const onChangeToWeekData = value => {
+    console.log('onChangeToWeekData = ', value)
+  }
+
+  const onChangeData = value => {
+    setValueRangePicker(value)
+    console.log('onChangeData ', value)
+  }
+
+  const onPanelChangeData = value => {
+    setValueRangePicker(value)
+    console.log('onPanelChangeData ', value)
+  }
+
+  const onOkData = value => {
+    console.log('ok ', value)
   }
 
   if (!getStatisticalDataObj.isLoading && getStatisticalDataObj.isSuccess === false) {
@@ -77,42 +113,66 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
 
       <div className="teacher-statistics-page__wrapper">
         <Row>
-          <Col span={24}>
-            <div className="teacher-list-page__wrapper__right">
-              <Row>
-                <div className="sort-select">
-                  <Select
-                    defaultValue="month"
-                    style={{ width: 180 }}
-                    onChange={handleChangeStatisticalType}
-                  >
-                    <Option value="week">Theo tuần</Option>
-                    <Option value="month">Theo tháng</Option>
-                    <Option value="year">Theo năm</Option>
-                  </Select>
-                </div>
-              </Row>
-              <Chart
-                height={400}
-                data={getStatisticalDataObj ? getStatisticalDataObj.data : []}
-                scale={cols}
-                forceFit
-              >
-                <Axis name="month" />
-                <Axis name="value" />
-                <Tooltip crosshairs={{ type: 'y' }} />
-                <Geom type="line" position="month*value" size={2} />
-                <Geom
-                  type="point"
-                  position="month*value"
-                  size={4}
-                  shape="circle"
-                  style={{ stroke: '#fff', lineWidth: 1 }}
+          <div className="teacher-statistics-page__wrapper__select-type">
+            <Select
+              defaultValue={currentStatisticalType}
+              style={{ width: 180 }}
+              onChange={onChangeStatisticalType}
+            >
+              <Option value="date">Theo ngày</Option>
+              <Option value="week">Theo tuần</Option>
+              <Option value="month">Theo tháng</Option>
+              <Option value="year">Theo năm</Option>
+            </Select>
+            {currentStatisticalType === 'week' ? (
+              <>
+                <WeekPicker
+                  format="Tuần w YYYY"
+                  onChange={onChangeFromWeekData}
+                  placeholder="Tuần bắt đầu"
                 />
-              </Chart>
-              <Row />
-            </div>
-          </Col>
+                <div>&ensp;đến&ensp;</div>
+                <WeekPicker
+                  format="Tuần w YYYY"
+                  onChange={onChangeToWeekData}
+                  placeholder="Tuần kết thúc"
+                />
+              </>
+            ) : (
+              <RangePicker
+                placeholder={labels}
+                format={format}
+                mode={mode}
+                separator="-"
+                value={valueRangePicker}
+                onChange={onChangeData}
+                onPanelChange={onPanelChangeData}
+                onOk={onOkData}
+              />
+            )}
+          </div>
+        </Row>
+        <Row>
+          <div className="teacher-statistics-page__wrapper__chart">
+            <Chart
+              height={400}
+              data={getStatisticalDataObj ? getStatisticalDataObj.data : []}
+              scale={cols}
+              forceFit
+            >
+              <Axis name="month" />
+              <Axis name="value" />
+              <Tooltip crosshairs={{ type: 'y' }} />
+              <Geom type="line" position="month*value" size={2} />
+              <Geom
+                type="point"
+                position="month*value"
+                size={4}
+                shape="circle"
+                style={{ stroke: '#fff', lineWidth: 1 }}
+              />
+            </Chart>
+          </div>
         </Row>
       </div>
     </div>

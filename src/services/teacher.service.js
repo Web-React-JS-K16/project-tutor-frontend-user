@@ -220,8 +220,21 @@ export default class TeacherService {
   static getStatisticalData = filterConditions => {
     const { userId } = filterConditions
     const type = filterConditions.currentType
+    const fromDate = filterConditions.currentFromDate
+    const toDate = filterConditions.currentToDate
+    const weekObj = filterConditions.currentWeekObj
+    const monthObj = filterConditions.currentMonthObj
+    const fromYear = filterConditions.currentFromYear
+    const toYear = filterConditions.currentToYear
 
-    const api = `${apiUrl}/teacher/statistics/${encodeURIComponent(userId)}?type=${type}`
+    const query = `&${this.parameterizeObject({
+      fromDate,
+      toDate,
+    })}&${this.parameterizeObject(weekObj)}&${this.parameterizeObject(
+      monthObj
+    )}&${this.parameterizeObject({ fromYear, toYear })}`
+
+    const api = `${apiUrl}/teacher/statistics/${encodeURIComponent(userId)}?type=${type}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {

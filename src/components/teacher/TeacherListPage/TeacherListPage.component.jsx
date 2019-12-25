@@ -4,7 +4,19 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Row, Col, Pagination, Collapse, Spin, Icon, Checkbox, Slider, Tree, Select } from 'antd'
+import {
+  Row,
+  Col,
+  Pagination,
+  Collapse,
+  Spin,
+  Icon,
+  Checkbox,
+  Slider,
+  Tree,
+  Select,
+  Empty,
+} from 'antd'
 import './TeacherListPage.style.scss'
 import UserService from 'services/user.service'
 import { ITEMS_PER_PAGE } from 'utils/constant'
@@ -69,8 +81,9 @@ const TeacherListPage = ({
   const handleChangeMajor = checkedValues => {
     console.log('handleChangeMajor = ', checkedValues)
     setCurrentMajors(checkedValues)
+    setCurrentPage(1)
     const filterConditions = {
-      currentPage,
+      currentPage: 1,
       currentLimit: limit,
       currentMajors: checkedValues,
       currentFromSalary,
@@ -85,8 +98,9 @@ const TeacherListPage = ({
     console.log('handleAfterChangeSalary = ', value)
     setCurrentFromSalary(value[0])
     setCurrentToSalary(value[1])
+    setCurrentPage(1)
     const filterConditions = {
-      currentPage,
+      currentPage: 1,
       currentLimit: limit,
       currentMajors,
       currentFromSalary: value[0],
@@ -112,8 +126,9 @@ const TeacherListPage = ({
       tempList[values[0].toString()].districtList.push(values[1])
     })
     setCurrentLocations({ location: tempList })
+    setCurrentPage(1)
     const filterConditions = {
-      currentPage,
+      currentPage: 1,
       currentLimit: limit,
       currentMajors,
       currentFromSalary,
@@ -128,8 +143,9 @@ const TeacherListPage = ({
     console.log('handleChangeSort = ', value)
     const sort = { orderBy: 'salary', orderType: value }
     setCurrentSort(sort)
+    setCurrentPage(1)
     const filterConditions = {
-      currentPage,
+      currentPage: 1,
       currentLimit: limit,
       currentMajors,
       currentFromSalary,
@@ -229,15 +245,20 @@ const TeacherListPage = ({
               </Row>
               {!getListObj.isLoading && getListObj.isSuccess === true && (
                 <>
-                  <Row gutter={16}>
-                    {getListObj.teacherList.map(teacher => {
-                      return (
-                        <Col key={teacher._id} span={8}>
-                          <TeacherItem teacher={teacher} />
-                        </Col>
-                      )
-                    })}
-                  </Row>
+                  {getListObj.teacherList.length === 0 ? (
+                    <Empty />
+                  ) : (
+                    <Row gutter={16}>
+                      {getListObj.teacherList.map(teacher => {
+                        return (
+                          <Col key={teacher._id} span={8}>
+                            <TeacherItem teacher={teacher} />
+                          </Col>
+                        )
+                      })}
+                    </Row>
+                  )}
+
                   <Row>
                     <Pagination
                       simple

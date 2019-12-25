@@ -86,6 +86,64 @@ export default class ContractService {
       })
   }
 
+  static getContractListForTeacherPage = filterConditions => {
+    const { userId } = filterConditions
+    const page = filterConditions.currentPage
+    const limit = filterConditions.currentLimit
+
+    const api = `${apiUrl}/contract/list-for-teacher?userId=${encodeURIComponent(
+      userId
+    )}&page=${page}&limit=${limit}`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result.payload
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
+  static countContractsForTeacherPage = filterConditions => {
+    const { userId } = filterConditions
+
+    const api = `${apiUrl}/contract/quantity-for-teacher?userId=${encodeURIComponent(userId)}`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result.payload
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
   /**
    * get contract detail
    * input: {id contract, token}

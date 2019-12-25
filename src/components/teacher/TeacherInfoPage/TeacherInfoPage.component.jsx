@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
@@ -26,25 +27,40 @@ import ModalForm from './components/ModalForm/ModalForm.component'
 const TeacherInfoPage = ({
   currentUser,
   getInfoObj,
+  getContractListObj,
   onClearTeacherState,
   teacherGetInfo,
+  getContractListForTeacher,
   createContract,
+  onClearContractState,
   match,
 }) => {
+  const page = 1
+  const limit = 4
+
+  const [currentPage, setCurrentPage] = useState(1)
   const [teacherId, setTeacherId] = useState('')
 
   useEffect(() => {
     onClearTeacherState()
-
     const { idTeacher } = match.params
-    console.log('id teacher: ', idTeacher)
-    teacherGetInfo(idTeacher)
-    setTeacherId(idTeacher)
+    if (idTeacher) {
+      teacherGetInfo(idTeacher)
+      setTeacherId(idTeacher)
+    }
+  }, [onClearTeacherState, teacherGetInfo, match])
 
-    // if (currentUser) {
-    // teacherGetInfo(currentUser._id)
-    // }
-  }, [currentUser, onClearTeacherState, teacherGetInfo, match])
+  useEffect(() => {
+    onClearContractState()
+    const { idTeacher } = match.params
+    if (idTeacher) {
+      getContractListForTeacher({
+        userId: idTeacher,
+        currentPage: page,
+        currentLimit: limit,
+      })
+    }
+  }, [onClearContractState, getContractListForTeacher, match, limit])
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)
@@ -89,16 +105,48 @@ const TeacherInfoPage = ({
     )
   }
 
+  const handleChangePage = pageNumber => {
+    console.log('handleChangePage = ', pageNumber)
+    setCurrentPage(pageNumber)
+    const filterConditions = {
+      userId: teacherId,
+      currentPage: pageNumber,
+      currentLimit: limit,
+    }
+    getContractListForTeacher(filterConditions)
+  }
+
+  if (!getInfoObj.isLoading && getInfoObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getInfoObj.message}` },
+        }}
+      />
+    )
+  }
+  if (!getContractListObj.isLoading && getContractListObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getContractListObj.message}` },
+        }}
+      />
+    )
+  }
+
   return (
     <div className="teacher-info-page">
-      {getInfoObj.isLoading && (
-        <div className="teacher-info-page__loading">
-          <Spin indicator={<Icon type="loading" spin />} />
-        </div>
-      )}
-      {!getInfoObj.isLoading && getInfoObj.isSuccess === true && (
-        <>
-          <div className="teacher-info-page__wrapper">
+      <div className="teacher-info-page__wrapper">
+        {getInfoObj.isLoading && (
+          <div className="teacher-info-page__wrapper__loading">
+            <Spin indicator={<Icon type="loading" spin />} />
+          </div>
+        )}
+        {!getInfoObj.isLoading && getInfoObj.isSuccess === true && (
+          <>
             <div className="teacher-info-page__wrapper__basic-info">
               <div className="teacher-info-page__wrapper__basic-info__left">
                 <img src={getInfoObj.teacher.avatar} alt="" />
@@ -185,7 +233,6 @@ const TeacherInfoPage = ({
               </div>
             </div>
             <div className="teacher-info-page__wrapper__description">
-              {/* <h4>Lawyer & Freelance Writer</h4> */}
               {!getInfoObj.teacher.about ? (
                 <p>
                   <i>Chưa cập nhật giới thiệu</i>
@@ -221,24 +268,40 @@ const TeacherInfoPage = ({
                 </Col>
               </Row>
             </div>
-          </div>
-          <div className="teacher-info-page__wrapper">
-            <div className="teacher-info-page__wrapper__work-history">
-              <div className="title">Lịch sử làm việc</div>
-              <div className="content">
-                {!getInfoObj.teacher.contracts || getInfoObj.teacher.contracts.length === 0 ? (
+          </>
+        )}
+      </div>
+      <div className="teacher-info-page__wrapper">
+        <div className="teacher-info-page__wrapper__work-history">
+          <div className="title">Lịch sử làm việc</div>
+          <div className="content">
+            {getContractListObj.isLoading && (
+              <div className="loading">
+                <Spin indicator={<Icon type="loading" spin />} />
+              </div>
+            )}
+            {!getContractListObj.isLoading && getContractListObj.isSuccess === true && (
+              <>
+                {!getContractListObj.contractList ||
+                getContractListObj.contractList.length === 0 ? (
                   <i>Trống</i>
                 ) : (
-                  getInfoObj.teacher.contracts.map(contract => {
-                    return <WorkHistoryItem key={contract.name} contract={contract} />
+                  getContractListObj.contractList.map(contract => {
+                    return <WorkHistoryItem key={contract._id} contract={contract} />
                   })
                 )}
-              </div>
-              <Pagination simple defaultCurrent={1} total={50} />
-            </div>
+                <Pagination
+                  simple
+                  defaultCurrent={parseInt(currentPage)}
+                  defaultPageSize={parseInt(limit)}
+                  total={getContractListObj.numberOfContracts}
+                  onChange={handleChangePage}
+                />
+              </>
+            )}
           </div>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   )
 }

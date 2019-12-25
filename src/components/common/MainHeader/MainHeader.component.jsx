@@ -162,13 +162,11 @@ const MainHeader = ({
           <div>Bạn không có thông báo mới nào!</div>
         </Menu.Item>
       )}
-      {currentUser && getNotificationListObj && getNotificationListObj.notificationList.length > 0 && (
-        <Menu.Item>
-          <Link to="/notification-list">
-            <div>Xem tất cả</div>
-          </Link>
-        </Menu.Item>
-      )}
+      <Menu.Item>
+        <Link to="/notification-list">
+          <div>Xem tất cả</div>
+        </Link>
+      </Menu.Item>
     </Menu>
   )
 

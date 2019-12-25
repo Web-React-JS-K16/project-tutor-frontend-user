@@ -14,6 +14,9 @@
     &__left {
     }
     &__right {
+      .ant-empty {
+        margin: 100px 0px;
+      }
       .sort-select {
         text-align: right;
         .ant-select-selection--single .ant-select-selection__rendered {

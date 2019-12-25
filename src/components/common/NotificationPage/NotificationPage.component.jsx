@@ -4,7 +4,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Row, Col, Pagination, Spin, Icon } from 'antd'
+import { Row, Col, Pagination, Spin, Icon, Empty } from 'antd'
 import './NotificationPage.style.scss'
 import UserService from 'services/user.service'
 import { ITEMS_PER_PAGE } from 'utils/constant'
@@ -104,19 +104,23 @@ const NotificationPage = ({
       <div className="notification-list-page__wrapper">
         {!getListObj.isLoading && getListObj.isSuccess === true && (
           <>
-            <Row gutter={16}>
-              {getListObj.notificationList.map(notification => {
-                return (
-                  <Col key={notification._id} span={24}>
-                    <NotificationItem
-                      notification={notification}
-                      onDeleteNotification={onDeleteNotification}
-                      onReadNotification={onReadNotification}
-                    />
-                  </Col>
-                )
-              })}
-            </Row>
+            {getListObj.notificationList.length === 0 ? (
+              <Empty />
+            ) : (
+              <Row gutter={16}>
+                {getListObj.notificationList.map(notification => {
+                  return (
+                    <Col key={notification._id} span={24}>
+                      <NotificationItem
+                        notification={notification}
+                        onDeleteNotification={onDeleteNotification}
+                        onReadNotification={onReadNotification}
+                      />
+                    </Col>
+                  )
+                })}
+              </Row>
+            )}
             <Row>
               <Pagination
                 simple

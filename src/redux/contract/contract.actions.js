@@ -18,6 +18,20 @@ export const getContractListFailure = message => ({
   payload: message,
 })
 
+//= == get contract list for teacher page
+export const getContractListForTeacher = filterConditions => ({
+  type: ContractTypes.GET_CONTRACT_LIST_FOR_TEACHER,
+  payload: filterConditions,
+})
+export const getContractListForTeacherSuccess = (contractList, numberOfContracts) => ({
+  type: ContractTypes.GET_CONTRACT_LIST_FOR_TEACHER_SUCCESS,
+  payload: { contractList, numberOfContracts },
+})
+export const getContractListForTeacherFailure = message => ({
+  type: ContractTypes.GET_CONTRACT_LIST_FOR_TEACHER_FAILURE,
+  payload: message,
+})
+
 export const createContract = contract => ({
   type: ContractTypes.CREATE_CONTRACT,
   payload: contract,

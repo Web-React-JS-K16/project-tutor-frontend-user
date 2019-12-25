@@ -37,7 +37,7 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
   }
 
   const handleClick = id => {
-    document.window.location.href = `/teacher/info/${id}`
+    window.location.href = `/teacher/info/${id}`
   }
   useEffect(() => {
     getStatisticalDataHome({ getStatisticalDataHomeSuccess, getStatisticalDataHomeFailure })

@@ -35,7 +35,7 @@ class UpdateInfoUser extends React.Component {
       history,
       currentUser: { city, district },
     } = this.props
-    console.log('4.1 district: ', district)
+    // console.log('4.1 district: ', district)
     try {
       if (isTeacher) {
         const tagList = await TagService.getAllTag()
@@ -50,7 +50,7 @@ class UpdateInfoUser extends React.Component {
           initalValueDistrict: district,
         },
         () => {
-          console.log('3.3. on set up valid district')
+          // console.log('3.3. on set up valid district: ', city)
           this.getValidDistrict(city)
           this.setState({ isFetching: false })
         }
@@ -68,7 +68,7 @@ class UpdateInfoUser extends React.Component {
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        // console.log('Received values of form: ', values)
         // console.log()
         const {
           currentUser: { token },

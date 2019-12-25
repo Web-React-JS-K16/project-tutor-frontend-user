@@ -168,42 +168,46 @@ const TeacherInfoPage = ({
                       )}
                     </div>
                   )}
-                  {currentUser.typeID === STUDENT && (
-                    <div className="info-left__btn">
-                      <Button
-                        style={{ marginTop: 15 }}
-                        size="small"
-                        type="primary"
-                        onClick={() => setVisible(true)}
-                      >
-                        Đăng kí học
-                      </Button>
-                      <Link to={`/chat/${currentUser._id}${teacherId}`}>
-                        <Button
-                          style={{ marginTop: 15 }}
-                          size="small"
-                          type="primary"
-                          typeHtml="button"
-                        >
-                          Nhắn tin
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                  {currentUser._id === teacherId && (
-                    <div className="info-left__btn">
-                      <Link to="/teacher/update-info">
-                        <Button
-                          style={{ marginTop: 15 }}
-                          size="small"
-                          type="primary"
-                          typeHtml="button"
-                        >
-                          Chỉnh sửa thông tin
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
+                  {currentUser
+                    ? currentUser.typeID === STUDENT && (
+                        <div className="info-left__btn">
+                          <Button
+                            style={{ marginTop: 15 }}
+                            size="small"
+                            type="primary"
+                            onClick={() => setVisible(true)}
+                          >
+                            Đăng kí học
+                          </Button>
+                          <Link to={`/chat/${currentUser._id}${teacherId}`}>
+                            <Button
+                              style={{ marginTop: 15 }}
+                              size="small"
+                              type="primary"
+                              typeHtml="button"
+                            >
+                              Nhắn tin
+                            </Button>
+                          </Link>
+                        </div>
+                      )
+                    : null}
+                  {currentUser
+                    ? currentUser._id === teacherId && (
+                        <div className="info-left__btn">
+                          <Link to="/teacher/update-info">
+                            <Button
+                              style={{ marginTop: 15 }}
+                              size="small"
+                              type="primary"
+                              typeHtml="button"
+                            >
+                              Chỉnh sửa thông tin
+                            </Button>
+                          </Link>
+                        </div>
+                      )
+                    : null}
                   <ModalForm
                     ref={saveFormRef}
                     visible={visible}

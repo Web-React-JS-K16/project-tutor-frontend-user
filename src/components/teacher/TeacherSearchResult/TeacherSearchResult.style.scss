@@ -1,0 +1,35 @@
+@import '../../../default.style.scss';
+
+.teacher-search-result {
+  min-height: 90vh;
+  margin: 20px;
+  font-size: 1.6rem;
+  &__count-result {
+    display: flex;
+    justify-content: space-between;
+    .count, .key-word {
+      text-align: right;
+      font-style: italic;
+      color: rgb(88, 87, 87);
+      margin: auto 30px;
+      span {
+        color: $color-main;
+      }
+    }
+  }
+  &__data{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-top: 30px;
+    &--item{
+      margin: 20px ;
+      height: 320px !important;
+      
+    }
+  }
+  &__pagination{
+    margin-top: 20px;
+    margin: 20px auto;
+    text-align: center;
+  }
+}

@@ -17,6 +17,7 @@ import MainLayout from 'components/MainLayout'
 import Home from 'components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from 'components/teacher/TeacherInfoPage/TeacherInfoPage.container'
 import TeacherListPageContainer from 'components/teacher/TeacherListPage/TeacherListPage.container'
+import TeacherSearchResultContainer from 'components/teacher/TeacherSearchResult/TeacherSearchResult.container'
 import TeacherLoginComponent from 'components/teacher/TeacherLogin/TeacherLogin.component'
 import TeacherStatisticsPageContainer from 'components/teacher/TeacherStatisticsPage/TeacherStatisticsPage.container'
 import StudentLoginComponent from 'components/student/StudentLogin/StudentLogin.component'
@@ -47,6 +48,15 @@ const RouteTeacher = ({ currentUser }) => {
         render={props => (
           <MainLayout history={props.history}>
             <TeacherListPageContainer />
+          </MainLayout>
+        )}
+      />
+      <Route
+        exact
+        path={`${teacherPath}/search/:key`}
+        render={() => (
+          <MainLayout>
+            <TeacherSearchResultContainer />
           </MainLayout>
         )}
       />

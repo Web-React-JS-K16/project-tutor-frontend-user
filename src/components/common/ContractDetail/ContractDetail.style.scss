@@ -14,14 +14,15 @@
 .contract-detail-component {
   font-size: $font-size;
   margin-top: 20px;
-  &__loading {
-    text-align: center;
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-  }
+  min-height: 90vh;
+  // &__loading {
+  //   text-align: center;
+  //   // min-height: 80vh;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   font-size: 30px;
+  // }
   &__top {
     text-align: center;
     &--title{
@@ -37,7 +38,7 @@
       font-style: italic;
     }
     &--tools{
-          margin: 5px auto;
+          margin: 25px auto;
           margin-bottom: 35px;
     }
     &--detail {

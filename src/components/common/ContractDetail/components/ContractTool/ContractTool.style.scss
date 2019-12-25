@@ -6,3 +6,22 @@
         color: $color-main;
     }
 }
+
+.rating-contract-modal{
+    &__star {
+    // font-size: 20px;
+    // margin-left: 35px;
+    margin-bottom: 10px;
+    // color: rgb(78, 78, 78);
+    ul li {
+      margin-right: 5px;
+    
+    }
+    .ant-rate-star-second{
+        // color: rgb(148, 148, 148);
+    }
+}
+    &__content{
+        margin-top: 20px;
+    }
+}

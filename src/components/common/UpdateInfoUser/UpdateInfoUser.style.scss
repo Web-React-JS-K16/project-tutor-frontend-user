@@ -7,6 +7,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  input {
+    font-size: 1.6rem;
+  }
+  textarea {
+    font-size: 1.6rem;
+  }
   .ant-alert {
     margin-bottom: 15px;
   }
@@ -27,13 +33,22 @@
           margin-top: 20px;
         }
       }
+      &__cost-per-hour{
+        $size: 150px;
+        .ant-input-number {
+          min-width: $size;
+            input: {
+               min-width: $size;
+            }
+        }
+      }
     }
     &__bottom {
       display: flex;
       flex-direction: column;
-      .btn-user-update-info {
-        max-width: 200px;
-        margin: auto;
+      button {
+         max-width: 200px ;
+          margin: 30px auto 10px;
       }
     }
   }

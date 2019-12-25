@@ -12,6 +12,7 @@ import * as moment from 'moment'
 import UserService from 'services/user.service'
 import NotificationService from 'services/notification.service'
 import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
+import { withRouter } from 'react-router'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
@@ -105,6 +106,14 @@ const MainHeader = ({
         window.location.href = `/${userType}/${action}`
         return null
       },
+    })
+  }
+
+  const onSearch = value => {
+    // const {history} = props;
+    // console.log('on search push: ', value)
+    history.push({
+      pathname: `/teacher/search/${value}`,
     })
   }
 
@@ -249,8 +258,9 @@ const MainHeader = ({
       <div className="main-header__search">
         <Search
           placeholder="Tìm kiếm"
-          onSearch={value => console.log(value)}
+          onSearch={value => onSearch(value)}
           style={{ width: 200 }}
+          enterButton
         />
       </div>
       <Menu
@@ -290,6 +300,6 @@ const MainHeader = ({
   )
 }
 
-MainHeader.propTypes = {}
+// MainHeader.propTypes = {}
 
-export default MainHeader
+export default withRouter(MainHeader)

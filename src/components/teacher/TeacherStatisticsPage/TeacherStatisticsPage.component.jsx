@@ -68,7 +68,7 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
         setChartData(data)
       }
     }
-  }, [getStatisticalDataObj])
+  }, [getStatisticalDataObj, currentType])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-statistics', JSON.stringify(filterConditions))

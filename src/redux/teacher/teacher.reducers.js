@@ -26,6 +26,12 @@ const INITIAL_STATE = {
     isSuccess: null,
     message: null,
   },
+  searchTeacher: {
+    data: [],
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
 }
 
 const teacherReducer = (state = INITIAL_STATE, action) => {
@@ -168,6 +174,42 @@ const teacherReducer = (state = INITIAL_STATE, action) => {
           isLoading: false,
           isSuccess: false,
           message: action.payload,
+        },
+      }
+    // search teacher
+    case TeacherTypes.TEACHER_SEARCH:
+      return {
+        ...state,
+        searchTeacher: {
+          isLoading: true,
+        },
+      }
+    case TeacherTypes.TEACHER_SEARCH_SUCCESSS:
+      return {
+        ...state,
+        searchTeacher: {
+          isLoading: false,
+          data: action.payload,
+          isSuccess: true,
+        },
+      }
+    case TeacherTypes.TEACHER_SEARCH_FAILURE:
+      return {
+        ...state,
+        searchTeacher: {
+          isLoading: false,
+          isSuccess: false,
+          message: action.payload,
+        },
+      }
+    case TeacherTypes.TEACHER_SEARCH_CLEAR:
+      return {
+        ...state,
+        searchTeacher: {
+          isLoading: false,
+          isSuccess: null,
+          message: null,
+          data: null,
         },
       }
     default:

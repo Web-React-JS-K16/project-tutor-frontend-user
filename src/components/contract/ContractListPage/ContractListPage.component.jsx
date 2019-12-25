@@ -57,12 +57,12 @@ const ContractListPage = ({ currentUser, getListObj, onClearContractState, getCo
 
   const handleChangeStatus = status => {
     console.log('handleChangeStatus = ', status)
-    setCurrentStatus(status)
+    setCurrentStatus(status.toString())
     const filterConditions = {
       userId: currentUser._id,
       currentPage,
       currentLimit: limit,
-      currentStatus: status,
+      currentStatus: status.toString(),
     }
     executeFilter(filterConditions)
   }

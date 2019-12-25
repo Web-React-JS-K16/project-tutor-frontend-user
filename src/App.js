@@ -45,8 +45,8 @@ const RouteTeacher = ({ currentUser }) => {
       <Route
         exact
         path={`${teacherPath}`}
-        render={() => (
-          <MainLayout>
+        render={props => (
+          <MainLayout history={props.history}>
             <TeacherListPageContainer />
           </MainLayout>
         )}
@@ -65,7 +65,7 @@ const RouteTeacher = ({ currentUser }) => {
         exact
         path={`${teacherPath}/info/:idTeacher`}
         render={props => (
-          <MainLayout>
+          <MainLayout history={props.history}>
             <TeacherInfoPageContainer {...props} />
           </MainLayout>
         )}
@@ -81,9 +81,11 @@ const RouteTeacher = ({ currentUser }) => {
           </Route>
           <Route
             path={`${teacherPath}/update-info`}
-            render={() =>
+            render={props =>
               currentUser.typeID === TEACHER ? (
-                <TeacherUpdateInfoPage />
+                <MainLayout history={props.history}>
+                  <TeacherUpdateInfoPage />
+                </MainLayout>
               ) : (
                 <ErrorPage message="Bạn không có quyền truy cập trang này." />
               )
@@ -91,9 +93,9 @@ const RouteTeacher = ({ currentUser }) => {
           />
           <Route
             path={`${teacherPath}/statistics`}
-            render={() =>
+            render={props =>
               currentUser.typeID === TEACHER ? (
-                <MainLayout>
+                <MainLayout history={props.history}>
                   <TeacherStatisticsPageContainer />
                 </MainLayout>
               ) : (
@@ -127,9 +129,11 @@ const RouteStudent = ({ currentUser }) => {
           </Route>
           <Route
             path={`${studentPath}/update-info`}
-            render={() =>
+            render={props =>
               currentUser.typeID === STUDENT ? (
-                <StudentUpdateInfoPageComponent />
+                <MainLayout history={props.history}>
+                  <StudentUpdateInfoPageComponent />
+                </MainLayout>
               ) : (
                 <ErrorPage message="Bạn không có quyền truy cập trang này." />
               )
@@ -153,8 +157,8 @@ const App = ({ currentUser }) => {
         <Route
           exact
           path="/"
-          render={() => (
-            <MainLayout>
+          render={props => (
+            <MainLayout history={props.history}>
               <Home />
             </MainLayout>
           )}
@@ -174,7 +178,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/contract-list"
               render={props => (
-                <MainLayout>
+                <MainLayout history={props.history}>
                   <ContractListPageContainer {...props} />
                 </MainLayout>
               )}
@@ -182,7 +186,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/notification-list"
               render={props => (
-                <MainLayout>
+                <MainLayout history={props.history}>
                   <NotificationPageContainer {...props} />
                 </MainLayout>
               )}

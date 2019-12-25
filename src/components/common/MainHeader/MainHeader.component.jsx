@@ -10,6 +10,7 @@ import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd
 import Swal from 'sweetalert2'
 import * as moment from 'moment'
 import UserService from 'services/user.service'
+import NotificationService from 'services/notification.service'
 import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
 import { withRouter } from 'react-router'
 import './MainHeader.style.scss'
@@ -19,13 +20,13 @@ const { SubMenu } = Menu
 const { Search } = Input
 
 const MainHeader = ({
+  history,
   currentUser,
   getNotificationListObj,
   handleLogout,
   onAuthenticate,
   onClearNotificationState,
   getNotificationList,
-  history,
 }) => {
   useEffect(() => {
     const token = UserService.getPreferences(JWT_TOKEN)
@@ -33,6 +34,7 @@ const MainHeader = ({
   }, [currentUser, onAuthenticate])
 
   useEffect(() => {
+    let interval
     onClearNotificationState()
 
     if (currentUser) {
@@ -42,6 +44,20 @@ const MainHeader = ({
         currentPage: 1,
         currentLimit: ITEMS_PER_PAGE,
       })
+      interval = setInterval(
+        () =>
+          getNotificationList({
+            userId,
+            currentPage: 1,
+            currentLimit: ITEMS_PER_PAGE,
+          }),
+        30000
+      )
+    }
+
+    // returned function will be called on component unmount
+    return () => {
+      clearTimeout(interval)
     }
   }, [currentUser, onClearNotificationState, getNotificationList])
 
@@ -95,10 +111,16 @@ const MainHeader = ({
 
   const onSearch = value => {
     // const {history} = props;
-    console.log('on search push: ', value)
+    // console.log('on search push: ', value)
     history.push({
       pathname: `/teacher/search/${value}`,
     })
+  }
+
+  const onReadNotification = (e, notification) => {
+    NotificationService.updateIsReadNotification(notification._id)
+      .then(history.push(notification.link))
+      .catch(err => console.log('ERROR UPDATE IS-READ NOTIFICATION ', err.message))
   }
 
   const NotificationMenu = (
@@ -109,25 +131,29 @@ const MainHeader = ({
             <Menu.Item
               key={notification._id}
               style={{
-                'border-bottom': '1px solid #e8e8e8',
-                'white-space': 'normal',
-                'background-color': !notification.isRead ? '#fffbe6' : 'transparent',
+                borderBottom: '1px solid #e8e8e8',
+                whiteSpace: 'normal',
+                backgroundColor: !notification.isRead ? '#fffbe6' : 'transparent',
               }}
             >
-              <Link to={notification.link}>
-                <div style={{ 'font-size': '13px', color: '#656565' }}>
-                  {moment(notification.createdAt).format('DD/MM/YYYY HH:mm')}
-                </div>
-                <div
-                  style={{
-                    color: !notification.isRead ? '#faad14' : '#001529',
-                  }}
-                >
-                  {notification.content.length > 68
-                    ? `${notification.content.substr(0, 68)}...`
-                    : notification.content}
-                </div>
-              </Link>
+              {/* <Link to={notification.link}> */}
+              <div
+                onClick={e => onReadNotification(e, notification)}
+                style={{ fontSize: '13px', color: '#656565' }}
+              >
+                {moment(notification.createdAt).format('DD/MM/YYYY HH:mm')}
+              </div>
+              <div
+                style={{
+                  color: !notification.isRead ? '#faad14' : '#001529',
+                }}
+                onClick={e => onReadNotification(e, notification)}
+              >
+                {notification.content.length > 68
+                  ? `${notification.content.substr(0, 68)}...`
+                  : notification.content}
+              </div>
+              {/* </Link> */}
             </Menu.Item>
           )
         })
@@ -161,7 +187,11 @@ const MainHeader = ({
           ))}
       </Menu.Item>
       <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
-      <Menu.Item>{currentUser && <Link to="/teacher/statistics">Thống kê</Link>}</Menu.Item>
+      {currentUser && currentUser.typeID === TEACHER && (
+        <Menu.Item>
+          <Link to="/teacher/statistics">Thống kê</Link>
+        </Menu.Item>
+      )}
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
@@ -270,6 +300,6 @@ const MainHeader = ({
   )
 }
 
-MainHeader.propTypes = {}
+// MainHeader.propTypes = {}
 
 export default withRouter(MainHeader)

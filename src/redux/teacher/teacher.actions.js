@@ -79,3 +79,19 @@ export const getStatisticalDataHome = ({
   getStatisticalDataHomeSuccess,
   getStatisticalDataHomeFailure,
 })
+//= ==Search teacher
+export const searchTeacher = keyword => ({
+  type: TeacherTypes.TEACHER_SEARCH,
+  payload: keyword,
+})
+export const searchTeacherSuccess = payload => ({
+  type: TeacherTypes.TEACHER_SEARCH_SUCCESSS,
+  payload,
+})
+export const searchTeacherFailure = message => ({
+  type: TeacherTypes.TEACHER_SEARCH_FAILURE,
+  payload: message,
+})
+export const searchTeacherClear = () => ({
+  type: TeacherTypes.TEACHER_SEARCH_CLEAR,
+})

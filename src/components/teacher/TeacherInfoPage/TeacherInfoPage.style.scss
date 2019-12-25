@@ -6,14 +6,27 @@
   font-size: 16px;
   min-height: 80vh;
   &__wrapper {
+    min-height: 400px;
     background-color: #fff;
     padding: 30px;
     border-radius: 5px;
     margin-top: 30px;
+    position: relative;
     -webkit-box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
     box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
     &:nth-child(1) {
       margin-top: 0;
+    }
+    &__loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .ant-spin {
+        i {
+          font-size: 40px;
+        }
+      }
     }
     &__basic-info {
       display: flex;
@@ -101,20 +114,20 @@
       }
       .content {
         padding-top: 40px;
+        .ant-pagination {
+          text-align: center;
+        }
       }
-      .ant-pagination {
-        text-align: center;
-      }
-    }
-  }
-  &__loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .ant-spin {
-      i {
-        font-size: 40px;
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .ant-spin {
+          i {
+            font-size: 40px;
+          }
+        }
       }
     }
   }

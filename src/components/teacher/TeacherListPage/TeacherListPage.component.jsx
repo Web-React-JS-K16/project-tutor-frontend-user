@@ -221,7 +221,7 @@ const TeacherListPage = ({
             <div className="teacher-list-page__wrapper__right">
               <Row>
                 <div className="sort-select">
-                  <Select defaultValue="ASC" style={{ width: 180 }} onChange={handleChangeSort}>
+                  <Select defaultValue="ASC" onChange={handleChangeSort}>
                     <Option value="ASC">Giá trên giờ tăng dần</Option>
                     <Option value="DSC">Giá trên giờ giảm dần</Option>
                   </Select>

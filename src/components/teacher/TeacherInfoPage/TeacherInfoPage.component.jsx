@@ -56,7 +56,7 @@ const TeacherInfoPage = ({
       }
 
       console.log('Received values of form: ', values)
-      const { name, content, workingHour } = values
+      const { name, content, workingHour, tags } = values
       const contract = {
         name,
         content,
@@ -64,6 +64,7 @@ const TeacherInfoPage = ({
         studentId: currentUser._id,
         workingHour,
         costPerHour: getInfoObj.teacher.salary,
+        tags,
       }
       createContract(contract)
       formRef.resetFields()

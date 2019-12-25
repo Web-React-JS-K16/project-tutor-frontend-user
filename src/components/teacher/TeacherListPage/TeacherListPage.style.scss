@@ -16,6 +16,9 @@
     &__right {
       .sort-select {
         text-align: right;
+        .ant-select-selection--single .ant-select-selection__rendered {
+          margin-right: 35px;
+        }
       }
       .ant-col {
         margin-top: 24px;

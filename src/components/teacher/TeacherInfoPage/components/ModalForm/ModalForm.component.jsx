@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Modal, Form, Input, InputNumber } from 'antd'
+import { Modal, Form, Input, InputNumber, Select } from 'antd'
 
 const { TextArea } = Input
+const { Option } = Select
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, form, teacher }) => {
   const { getFieldDecorator } = form
@@ -46,6 +48,22 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, teacher }) => {
           {getFieldDecorator('content', {
             rules: [{ required: true, message: 'Vui lòng nhập nội dung!' }],
           })(<TextArea autoSize={{ minRows: 8, maxRows: 12 }} />)}
+        </Form.Item>
+        <Form.Item hasFeedback label="Kĩ năng">
+          {getFieldDecorator('tags', {
+            initialValue: teacher.tags.map(tag => tag._id),
+            rules: [{ required: true, message: 'Vui lòng chọn kĩ năng!' }],
+          })(
+            <Select mode="multiple" style={{ width: '100%' }} placeholder="Chọn kĩ năng">
+              {teacher.tags.map(tag => {
+                return (
+                  <Option value={tag._id} key={tag._id}>
+                    {tag.name}
+                  </Option>
+                )
+              })}
+            </Select>
+          )}
         </Form.Item>
         <Form.Item hasFeedback label="Tổng số giờ">
           {getFieldDecorator('workingHour', {

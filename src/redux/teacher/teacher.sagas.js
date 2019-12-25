@@ -100,6 +100,18 @@ function* teacherUpdateInfoSaga() {
   yield takeLatest(TeacherTypes.TEACHER_UPDATE_INFO, teacherUpdateInfo)
 }
 
+function* getStatisticalDataHome(action) {
+  try {
+    const data = yield TeacherService.getStatisticalDataHome()
+    action.getStatisticalDataHomeSuccess(data)
+  } catch (err) {
+    action.getStatisticalDataHomeFailure(err.message)
+  }
+}
+
+function* getStatisticalDataHomeSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_GET_STATISTICS_HOME, getStatisticalDataHome)
+}
 // =================================
 
 export function* teacherSaga() {
@@ -109,5 +121,6 @@ export function* teacherSaga() {
     call(teacherUpdateInfoSaga),
     call(teacherGetInfoToUpdateSaga),
     call(getStatisticalDataSaga),
+    call(getStatisticalDataHomeSaga),
   ])
 }

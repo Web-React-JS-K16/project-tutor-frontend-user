@@ -70,3 +70,12 @@ export const getStatisticalDataFailure = message => ({
   type: TeacherTypes.TEACHER_GET_STATISTICS_FAILURE,
   payload: message,
 })
+
+export const getStatisticalDataHome = ({
+  getStatisticalDataHomeSuccess,
+  getStatisticalDataHomeFailure,
+}) => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS_HOME,
+  getStatisticalDataHomeSuccess,
+  getStatisticalDataHomeFailure,
+})

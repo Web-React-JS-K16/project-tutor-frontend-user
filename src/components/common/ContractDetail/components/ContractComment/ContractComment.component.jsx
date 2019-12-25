@@ -1,25 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Input, Rate, Tag } from 'antd'
 import { TEACHER, CONTRACT_TYPES } from 'utils/constant'
 import * as moment from 'moment'
 
 import './ContractComment.style.scss'
 
+// update rating for contract
 const ContractCommentComponnet = ({
   student: { avatar, displayName },
-  contract: { comment, status },
+  contract,
   onHandleComment,
   loading,
   typeID,
 }) => {
-  const [ratingValue, setRatingValue] = useState(5)
+  const { comment, status } = contract
+  const [ratingValue, setRatingValue] = useState(comment && comment.ratings ? comment.ratings : 0)
+  const [content, setContent] = useState(
+    comment && comment.content ? comment.content : 'Chưa có đánh giá'
+  )
+
+  useEffect(() => {
+    // const { comment } = contract
+    if (comment && comment.ratings) {
+      // console.log('1.1 on change rating incommnet')
+
+      setRatingValue(comment.ratings)
+    }
+
+    if (comment && comment.content) {
+      setContent(comment.content)
+    }
+  }, [contract, comment])
 
   const handleSubmit = () => {
     // eslint-disable-next-line no-undef
-    const commentValue = document.getElementById('contract-comment').value
-    // console.log('value: ', comment)
-    // console.log('rate: ', rating)
-    onHandleComment({ comment: commentValue, rating: ratingValue })
+    onHandleComment({ content, ratings: ratingValue })
   }
   return (
     <div className="contract-comment">
@@ -35,30 +50,19 @@ const ContractCommentComponnet = ({
             <Tag color="green">Học sinh</Tag>
           </div>
           <div className="time">
-            {comment && comment.date ? (
-              moment(comment.date).format('DD/MM/YYYY HH:mm')
-            ) : (
-              <i>(Trống)</i>
-            )}
+            {comment && comment.date && moment(comment.date).format('DD/MM/YYYY HH:mm')}
           </div>
         </div>
       </div>
       <div className="contract-comment__rating">
-        <Rate
-          allowHalf
-          defaultValue={(comment && comment.ratings) || 0}
-          onChange={value => setRatingValue(value)}
-        />
+        <Rate allowHalf value={ratingValue} onChange={value => setRatingValue(value)} />
       </div>
       <Input.TextArea
         id="contract-comment"
         disabled={typeID === TEACHER}
         rows={4}
-        defaultValue={
-          status === CONTRACT_TYPES.IS_VALID
-            ? 'Bạn sẽ được đánh giá khi kết thúc hợp đồng'
-            : (comment && comment.content) || ''
-        }
+        value={content}
+        onChange={e => setContent(e.target.value)}
       />
       <div className="contract-comment__btn">
         <Button

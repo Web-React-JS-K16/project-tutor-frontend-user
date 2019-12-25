@@ -17,7 +17,9 @@ import MainLayout from 'components/MainLayout'
 import Home from 'components/common/HomePage/Home.component'
 import TeacherInfoPageContainer from 'components/teacher/TeacherInfoPage/TeacherInfoPage.container'
 import TeacherListPageContainer from 'components/teacher/TeacherListPage/TeacherListPage.container'
+import TeacherSearchResultContainer from 'components/teacher/TeacherSearchResult/TeacherSearchResult.container'
 import TeacherLoginComponent from 'components/teacher/TeacherLogin/TeacherLogin.component'
+import TeacherStatisticsPageContainer from 'components/teacher/TeacherStatisticsPage/TeacherStatisticsPage.container'
 import StudentLoginComponent from 'components/student/StudentLogin/StudentLogin.component'
 import ActiveEmailContainer from 'components/common/ActiveEmail/ActiveEmail.container'
 import ForgetPasswordContainer from 'components/common/ForgetPassword/ForgetPassword.container'
@@ -43,9 +45,18 @@ const RouteTeacher = ({ currentUser }) => {
       <Route
         exact
         path={`${teacherPath}`}
+        render={props => (
+          <MainLayout history={props.history}>
+            <TeacherListPageContainer />
+          </MainLayout>
+        )}
+      />
+      <Route
+        exact
+        path={`${teacherPath}/search/:key`}
         render={() => (
           <MainLayout>
-            <TeacherListPageContainer />
+            <TeacherSearchResultContainer />
           </MainLayout>
         )}
       />
@@ -54,7 +65,7 @@ const RouteTeacher = ({ currentUser }) => {
         exact
         path={`${teacherPath}/info/:idTeacher`}
         render={props => (
-          <MainLayout>
+          <MainLayout history={props.history}>
             <TeacherInfoPageContainer {...props} />
           </MainLayout>
         )}
@@ -70,9 +81,23 @@ const RouteTeacher = ({ currentUser }) => {
           </Route>
           <Route
             path={`${teacherPath}/update-info`}
-            render={() =>
+            render={props =>
               currentUser.typeID === TEACHER ? (
-                <TeacherUpdateInfoPage />
+                <MainLayout history={props.history}>
+                  <TeacherUpdateInfoPage />
+                </MainLayout>
+              ) : (
+                <ErrorPage message="Bạn không có quyền truy cập trang này." />
+              )
+            }
+          />
+          <Route
+            path={`${teacherPath}/statistics`}
+            render={props =>
+              currentUser.typeID === TEACHER ? (
+                <MainLayout history={props.history}>
+                  <TeacherStatisticsPageContainer />
+                </MainLayout>
               ) : (
                 <ErrorPage message="Bạn không có quyền truy cập trang này." />
               )
@@ -104,9 +129,11 @@ const RouteStudent = ({ currentUser }) => {
           </Route>
           <Route
             path={`${studentPath}/update-info`}
-            render={() =>
+            render={props =>
               currentUser.typeID === STUDENT ? (
-                <StudentUpdateInfoPageComponent />
+                <MainLayout history={props.history}>
+                  <StudentUpdateInfoPageComponent />
+                </MainLayout>
               ) : (
                 <ErrorPage message="Bạn không có quyền truy cập trang này." />
               )
@@ -130,8 +157,8 @@ const App = ({ currentUser }) => {
         <Route
           exact
           path="/"
-          render={() => (
-            <MainLayout>
+          render={props => (
+            <MainLayout history={props.history}>
               <Home />
             </MainLayout>
           )}
@@ -151,7 +178,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/contract-list"
               render={props => (
-                <MainLayout>
+                <MainLayout history={props.history}>
                   <ContractListPageContainer {...props} />
                 </MainLayout>
               )}
@@ -159,7 +186,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/notification-list"
               render={props => (
-                <MainLayout>
+                <MainLayout history={props.history}>
                   <NotificationPageContainer {...props} />
                 </MainLayout>
               )}

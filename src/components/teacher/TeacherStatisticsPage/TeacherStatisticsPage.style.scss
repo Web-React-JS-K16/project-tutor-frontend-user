@@ -1,6 +1,6 @@
 @import '../../../default.style.scss';
 
-.notification-list-page {
+.teacher-statistics-page {
   width: 100%;
   font-size: 16px;
   margin: 0px auto;
@@ -8,20 +8,19 @@
   background-color: #fff;
   position: relative;
   &__wrapper {
-    width: 60%;
+    width: 80%;
     margin: 0px auto;
     padding: 70px 0px;
-    .ant-col {
-      margin-top: 24px;
-      .contract-item {
-        .ant-col {
-          margin-top: 0px;
-        }
+    &__select-type {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .ant-select {
+        margin-right: 20px;
       }
-    }
-    .ant-pagination {
-      text-align: center;
-      margin-top: 50px;
+      .ant-btn {
+        margin-left: 20px;
+      }
     }
   }
   &__loading {

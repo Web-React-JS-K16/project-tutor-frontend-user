@@ -8,8 +8,11 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Input, Button, Badge, Icon } from 'antd'
 import Swal from 'sweetalert2'
+import * as moment from 'moment'
 import UserService from 'services/user.service'
+import NotificationService from 'services/notification.service'
 import { JWT_TOKEN, TEACHER, ITEMS_PER_PAGE } from 'utils/constant'
+import { withRouter } from 'react-router'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
@@ -17,6 +20,7 @@ const { SubMenu } = Menu
 const { Search } = Input
 
 const MainHeader = ({
+  history,
   currentUser,
   getNotificationListObj,
   handleLogout,
@@ -30,6 +34,7 @@ const MainHeader = ({
   }, [currentUser, onAuthenticate])
 
   useEffect(() => {
+    let interval
     onClearNotificationState()
 
     if (currentUser) {
@@ -39,6 +44,20 @@ const MainHeader = ({
         currentPage: 1,
         currentLimit: ITEMS_PER_PAGE,
       })
+      interval = setInterval(
+        () =>
+          getNotificationList({
+            userId,
+            currentPage: 1,
+            currentLimit: ITEMS_PER_PAGE,
+          }),
+        30000
+      )
+    }
+
+    // returned function will be called on component unmount
+    return () => {
+      clearTimeout(interval)
     }
   }, [currentUser, onClearNotificationState, getNotificationList])
 
@@ -90,26 +109,66 @@ const MainHeader = ({
     })
   }
 
+  const onSearch = value => {
+    // const {history} = props;
+    // console.log('on search push: ', value)
+    history.push({
+      pathname: `/teacher/search/${value}`,
+    })
+  }
+
+  const onReadNotification = (e, notification) => {
+    NotificationService.updateIsReadNotification(notification._id)
+      .then(history.push(notification.link))
+      .catch(err => console.log('ERROR UPDATE IS-READ NOTIFICATION ', err.message))
+  }
+
   const NotificationMenu = (
-    <Menu>
-      {getNotificationListObj.notificationList &&
+    <Menu style={{ width: '300px' }}>
+      {getNotificationListObj && getNotificationListObj.notificationList.length > 0 ? (
         getNotificationListObj.notificationList.map(notification => {
           return (
-            <Menu.Item>
-              <Link to={notification.link}>
-                <div>{notification.content}</div>
-              </Link>
+            <Menu.Item
+              key={notification._id}
+              style={{
+                borderBottom: '1px solid #e8e8e8',
+                whiteSpace: 'normal',
+                backgroundColor: !notification.isRead ? '#fffbe6' : 'transparent',
+              }}
+            >
+              {/* <Link to={notification.link}> */}
+              <div
+                onClick={e => onReadNotification(e, notification)}
+                style={{ fontSize: '13px', color: '#656565' }}
+              >
+                {moment(notification.createdAt).format('DD/MM/YYYY HH:mm')}
+              </div>
+              <div
+                style={{
+                  color: !notification.isRead ? '#faad14' : '#001529',
+                }}
+                onClick={e => onReadNotification(e, notification)}
+              >
+                {notification.content.length > 68
+                  ? `${notification.content.substr(0, 68)}...`
+                  : notification.content}
+              </div>
+              {/* </Link> */}
             </Menu.Item>
           )
-        })}
-      <Menu.Divider />
-      <Menu.Item>
-        {currentUser && (
+        })
+      ) : (
+        <Menu.Item>
+          <div>Bạn không có thông báo mới nào!</div>
+        </Menu.Item>
+      )}
+      {currentUser && getNotificationListObj && getNotificationListObj.notificationList.length > 0 && (
+        <Menu.Item>
           <Link to="/notification-list">
             <div>Xem tất cả</div>
           </Link>
-        )}
-      </Menu.Item>
+        </Menu.Item>
+      )}
     </Menu>
   )
 
@@ -122,12 +181,17 @@ const MainHeader = ({
       <Menu.Item>
         {currentUser &&
           (currentUser.typeID === TEACHER ? (
-            <Link to="/teacher/info">Trang cá nhân</Link>
+            <Link to={`/teacher/info/${currentUser._id}`}>Trang cá nhân</Link>
           ) : (
-            <Link to="/student/info">Trang cá nhân</Link>
+            <Link to={`/student/info/${currentUser._id}`}>Trang cá nhân</Link>
           ))}
       </Menu.Item>
       <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
+      {currentUser && currentUser.typeID === TEACHER && (
+        <Menu.Item>
+          <Link to="/teacher/statistics">Thống kê</Link>
+        </Menu.Item>
+      )}
       <Menu.Item>
         <Link to="/">Đổi mật khẩu</Link>
       </Menu.Item>
@@ -149,7 +213,7 @@ const MainHeader = ({
           />
         </Link>
       </div>
-      {currentUser && (
+      {currentUser && getNotificationListObj && (
         <div className="main-header__notifications">
           <Badge count={getNotificationListObj.numberOfUnreadNotifications}>
             <Dropdown
@@ -157,7 +221,16 @@ const MainHeader = ({
               placement="bottomRight"
               getPopupContainer={trigger => trigger.parentNode}
             >
-              <Icon type="bell" style={{ color: 'rgba(0, 0, 0, 0.45)' }} theme="filled" />
+              <Icon
+                type="bell"
+                style={{
+                  color:
+                    getNotificationListObj.numberOfUnreadNotifications > 0
+                      ? '#faad14'
+                      : 'rgba(0, 0, 0, 0.45)',
+                }}
+                theme="filled"
+              />
             </Dropdown>
           </Badge>
         </div>
@@ -185,8 +258,9 @@ const MainHeader = ({
       <div className="main-header__search">
         <Search
           placeholder="Tìm kiếm"
-          onSearch={value => console.log(value)}
+          onSearch={value => onSearch(value)}
           style={{ width: 200 }}
+          enterButton
         />
       </div>
       <Menu
@@ -226,6 +300,6 @@ const MainHeader = ({
   )
 }
 
-MainHeader.propTypes = {}
+// MainHeader.propTypes = {}
 
-export default MainHeader
+export default withRouter(MainHeader)

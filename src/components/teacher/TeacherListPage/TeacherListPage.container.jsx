@@ -13,7 +13,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onClearTeacherState: () => dispatch(onClearTeacherState()),
   getTeacherList: filterConditions => dispatch(getTeacherList(filterConditions)),
-  // countTeachers: () => dispatch(countTeachers()),
   getMajorList: () => dispatch(getMajorList()),
   getLocationList: () => dispatch(getLocationList()),
 })

@@ -41,7 +41,7 @@ export const CUSTOM_CONTRACT_TYPES = [
     value: CONTRACT_TYPES.IS_CANCELLED,
   },
   {
-    textForStudent: 'Hoàn thành',
+    textForStudent: 'Chờ hoàn thành',
     textForTeacher: 'Chờ nhận tiền',
     color: 'green',
     value: CONTRACT_TYPES.IS_COMPLETED_BY_STUDENT,

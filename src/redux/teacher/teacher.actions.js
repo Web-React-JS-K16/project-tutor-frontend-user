@@ -56,3 +56,34 @@ export const teacherUpdateInfoFailure = message => ({
 export const teacherUpdateInfoClear = () => ({
   type: TeacherTypes.TEACHER_UPDATE_INFO_CLEAR,
 })
+
+//= == get statistical data
+export const getStatisticalData = filterConditions => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS,
+  payload: filterConditions,
+})
+export const getStatisticalDataSuccess = data => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS_SUCCESS,
+  payload: data,
+})
+export const getStatisticalDataFailure = message => ({
+  type: TeacherTypes.TEACHER_GET_STATISTICS_FAILURE,
+  payload: message,
+})
+
+//= ==Search teacher
+export const searchTeacher = keyword => ({
+  type: TeacherTypes.TEACHER_SEARCH,
+  payload: keyword,
+})
+export const searchTeacherSuccess = payload => ({
+  type: TeacherTypes.TEACHER_SEARCH_SUCCESSS,
+  payload,
+})
+export const searchTeacherFailure = message => ({
+  type: TeacherTypes.TEACHER_SEARCH_FAILURE,
+  payload: message,
+})
+export const searchTeacherClear = () => ({
+  type: TeacherTypes.TEACHER_SEARCH_CLEAR,
+})

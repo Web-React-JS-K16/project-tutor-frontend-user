@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import PropTypes from 'prop-types'
 import { Form, Icon, Input, Button, Alert } from 'antd'
 import { Link, Redirect } from 'react-router-dom'
@@ -11,17 +11,24 @@ import AuthenWithGoogleContainer from '../AuthenWithGoogle/AuthenWithGoogle.cont
 import { STUDENT, TEACHER } from '../../../utils/constant'
 
 const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     onClearUserState()
   }, [onClearUserState])
 
+  useEffect(() => {
+    setIsLoading(false)
+  }, [user])
+
   const handleSubmit = e => {
+    setIsLoading(true)
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
         const { email, password } = values
         login({ email, password, typeID })
+        isLoading(false)
       }
     })
   }
@@ -89,7 +96,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
             type="primary"
             htmlType="submit"
             className="login-form-button btn-login"
-            loading={user.isLoading}
+            loading={isLoading}
           >
             Đăng nhập
           </Button>

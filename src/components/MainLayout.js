@@ -8,11 +8,11 @@ import MainBackTop from './common/MainBackTop/MainBackTop.component'
 
 const { Content } = Layout
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ history, children }) => {
   return (
     <Layout>
       <MainBackTop />
-      <MainHeader />
+      <MainHeader history={history} />
       <Content style={{ marginTop: 64 }}>{children}</Content>
       <MainFooter />
     </Layout>

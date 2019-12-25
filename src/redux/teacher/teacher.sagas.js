@@ -12,6 +12,8 @@ import {
   teacherUpdateInfoFailure,
   getStatisticalDataSuccess,
   getStatisticalDataFailure,
+  searchTeacherFailure,
+  searchTeacherSuccess,
 } from './teacher.actions'
 import TeacherService from '../../services/teacher.service'
 
@@ -101,6 +103,25 @@ function* teacherUpdateInfoSaga() {
 }
 
 // =================================
+// ===========
+/**
+ *
+ * @param {String} payload as keyword
+ */
+function* searchTeacher({ payload }) {
+  try {
+    console.log('teacher search saga: ', payload)
+    const result = yield TeacherService.search(payload)
+    yield put(searchTeacherSuccess(result))
+  } catch (err) {
+    yield put(searchTeacherFailure(err.message))
+  }
+}
+function* searchTeacherSaga() {
+  yield takeLatest(TeacherTypes.TEACHER_SEARCH, searchTeacher)
+}
+
+//= =======
 
 export function* teacherSaga() {
   yield all([
@@ -109,5 +130,6 @@ export function* teacherSaga() {
     call(teacherUpdateInfoSaga),
     call(teacherGetInfoToUpdateSaga),
     call(getStatisticalDataSaga),
+    call(searchTeacherSaga),
   ])
 }

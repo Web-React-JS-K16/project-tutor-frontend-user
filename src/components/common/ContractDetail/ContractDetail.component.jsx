@@ -6,7 +6,7 @@ import './ContractDetail.style.scss'
 import MainLayout from 'components/MainLayout'
 import ContractService from 'services/contract.service'
 import * as moment from 'moment'
-import { Tag, message, Modal, Spin, Icon } from 'antd'
+import { Tag, message, Modal } from 'antd'
 import { CUSTOM_CONTRACT_TYPES, CONTRACT_TYPES, STUDENT, TEACHER } from 'utils/constant'
 import CardInfoComponent from './components/CardInfo/CardInfo.component'
 import PaymentModal from './components/PaymentModal/PaymentModal.component'
@@ -14,7 +14,9 @@ import ContractCommentComponnet from './components/ContractComment/ContractComme
 import {
   ContractToolComponent,
   ContractReportModal,
+  ContractRatingModal,
 } from './components/ContractTool/ContractTool.component'
+import LoadingComponent from '../LoadingComponent/Loading.component'
 
 const { confirm } = Modal
 
@@ -47,6 +49,10 @@ class ContractDetailComponent extends React.Component {
       payment: {
         visibleModal: false,
         // isLoading: false
+      },
+      finishContract: {
+        isLoading: false,
+        visibleModal: false,
       },
     }
   }
@@ -144,6 +150,55 @@ class ContractDetailComponent extends React.Component {
     }
   }
 
+  /**
+   * Finish contract
+   * Student rating contract when finish
+   */
+  onOpenRatingContractModal = () => {
+    this.setState({ finishContract: { visibleModal: true } })
+  }
+
+  onCloseRatingContractModal = () => {
+    console.log('on close rating modal')
+    this.setState({ finishContract: { visibleModal: false, isLoading: false } })
+  }
+
+  onFinishContract = async ({ content, ratings }) => {
+    this.setState({ finishContract: { isLoading: true } }, async () => {
+      // TODO
+      const { contract } = this.state
+      const {
+        currentUser: { token },
+      } = this.props
+      try {
+        const result = await ContractService.finishContract({
+          contractId: contract._id,
+          token,
+          comment: { content, ratings },
+        })
+        this.setState(
+          {
+            contract: {
+              ...contract,
+              status: CONTRACT_TYPES.IS_COMPLETED_BY_STUDENT,
+              comment: { content, ratings },
+            },
+          },
+          () => {
+            console.log('after change contract')
+
+            message.success(result.message)
+            this.setState({ finishContract: { isLoading: false } })
+            this.onCloseRatingContractModal()
+          }
+        )
+      } catch (err) {
+        message.error(err.message)
+        this.setState({ finishContract: { isLoading: false } })
+      }
+    })
+  }
+
   // aprrove contract
   confirmAprroveContract = () => {
     const callback = this.onApproveContract
@@ -181,58 +236,58 @@ class ContractDetailComponent extends React.Component {
     }
   }
 
-  // cancel contract
-  confirmCancelContract = () => {
-    const callback = this.onCancelContract
-    const {
-      currentUser: { typeID },
-    } = this.props
-    Modal.confirm({
-      title: 'Bạn muốn hủy hợp đồng này?',
-      content: `${
-        typeID === TEACHER ? 'Học sinh' : 'Giáo viên'
-      } sẽ nhận được thông báo khi bạn hủy hợp đồng.`,
-      okText: 'Đồng ý hủy',
-      okType: 'danger',
-      cancelText: 'Đóng',
-      async onOk() {
-        console.log('OK')
-        await callback()
-      },
-      onCancel() {
-        console.log('Cancel')
-      },
-    })
-  }
+  // // cancel contract
+  // confirmCancelContract = () => {
+  //   const callback = this.onCancelContract
+  //   const {
+  //     currentUser: { typeID },
+  //   } = this.props
+  //   Modal.confirm({
+  //     title: 'Bạn muốn hủy hợp đồng này?',
+  //     content: `${
+  //       typeID === TEACHER ? 'Học sinh' : 'Giáo viên'
+  //     } sẽ nhận được thông báo khi bạn hủy hợp đồng.`,
+  //     okText: 'Đồng ý hủy',
+  //     okType: 'danger',
+  //     cancelText: 'Đóng',
+  //     async onOk() {
+  //       console.log('OK')
+  //       await callback()
+  //     },
+  //     onCancel() {
+  //       console.log('Cancel')
+  //     },
+  //   })
+  // }
 
-  onCancelContract = async () => {
-    // TODO
-    const { contract } = this.state
-    const {
-      currentUser: { token },
-    } = this.props
-    try {
-      const result = await ContractService.cancelContract({
-        contractId: contract._id,
-        token,
-      })
-      this.setState({ contract: { ...contract, status: CONTRACT_TYPES.IS_CANCELLED } }, () => {
-        message.success(result.message)
-      })
-    } catch (err) {
-      message.error(err.message)
-    }
-  }
+  // onCancelContract = async () => {
+  //   // TODO
+  //   const { contract } = this.state
+  //   const {
+  //     currentUser: { token },
+  //   } = this.props
+  //   try {
+  //     const result = await ContractService.cancelContract({
+  //       contractId: contract._id,
+  //       token,
+  //     })
+  //     this.setState({ contract: { ...contract, status: CONTRACT_TYPES.IS_CANCELLED } }, () => {
+  //       message.success(result.message)
+  //     })
+  //   } catch (err) {
+  //     message.error(err.message)
+  //   }
+  // }
 
   // commnet
-  onHandleCommentContract = async ({ comment, rating }) => {
+  onHandleCommentContract = async ({ content, ratings }) => {
     const { currentUser } = this.props
     const { contract, commentContract } = this.state
     this.setState({ commentContract: { ...commentContract, isLoading: true } }, async () => {
       try {
-        const result = await ContractService.ratingContract({
-          comment,
-          rating,
+        const result = await ContractService.updateRatingContract({
+          content,
+          ratings,
           id: contract._id,
           token: currentUser.token,
         })
@@ -256,16 +311,13 @@ class ContractDetailComponent extends React.Component {
       reportContract,
       commentContract,
       payment,
+      finishContract,
     } = this.state
     const { currentUser } = this.props
-
+    console.log('contract: ', contract)
     return (
       <MainLayout>
-        {isLoading && (
-          <div className="contract-detail-component__loading">
-            <Spin indicator={<Icon type="loading" spin />} />
-          </div>
-        )}
+        {isLoading && <LoadingComponent />}
         {!isLoading && (
           <div className="contract-detail-component">
             <div className="contract-detail-component__top">
@@ -289,11 +341,33 @@ class ContractDetailComponent extends React.Component {
                     </>
                   )}
                 {currentUser.typeID === STUDENT && contract.status === CONTRACT_TYPES.IS_VALID && (
-                  <ContractToolComponent
-                    content="Tố cáo/ Hủy hợp đồng"
-                    icon="waring"
-                    onClick={() => this.onOpenReportModal()}
-                  />
+                  <div>
+                    <ContractToolComponent
+                      content="Tố cáo/ Hủy hợp đồng"
+                      icon="waring"
+                      onClick={() => this.onOpenReportModal()}
+                    />
+                    {/* modal */}
+                    <ContractReportModal
+                      visible={reportContract.visibleModal}
+                      onClose={this.onCloseReportModal}
+                      onSubmit={this.onReportContract}
+                      loading={reportContract.loading}
+                    />
+
+                    <ContractToolComponent
+                      content="Kết thúc hợp đồng"
+                      icon="waring"
+                      onClick={() => this.onOpenRatingContractModal()}
+                    />
+                    {/* modal */}
+                    <ContractRatingModal
+                      visible={finishContract.visibleModal}
+                      onClose={this.onCloseRatingContractModal}
+                      onSubmit={this.onFinishContract}
+                      loading={finishContract.isLoading}
+                    />
+                  </div>
                 )}
                 {currentUser.typeID === TEACHER &&
                   contract.status === CONTRACT_TYPES.WAIT_FOR_ACCEPTANCE && (
@@ -343,6 +417,7 @@ class ContractDetailComponent extends React.Component {
               <div className="contract-detail-component__info--block" />
               <CardInfoComponent user={student} isStudent />
             </div>
+
             <div className="contract-detail-component__comment">
               <ContractCommentComponnet
                 typeID={currentUser.typeID}
@@ -354,13 +429,6 @@ class ContractDetailComponent extends React.Component {
             </div>
           </div>
         )}
-        {/* modal */}
-        <ContractReportModal
-          visible={reportContract.visibleModal}
-          onClose={this.onCloseReportModal}
-          onSubmit={this.onReportContract}
-          loading={reportContract.loading}
-        />
       </MainLayout>
     )
   }

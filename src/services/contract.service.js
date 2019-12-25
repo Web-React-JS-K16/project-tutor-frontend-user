@@ -206,15 +206,20 @@ export default class ContractService {
   }
 
   /**
-   * Teacher or student cancel contract
-   * input: {contractId, token as token of teacher}
+   * Teacher or student finish contract
+   * input: {contractId, token as token of teacher, comment: {content, rating}}
    */
-  static cancelContract = ({ contractId, token }) => {
-    const api = `${apiUrl}/contract/cancel/${contractId}`
+  static finishContract = ({ contractId, token, comment }) => {
+    console.log('comment: ', comment)
+    const api = `${apiUrl}/contract/finish`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'PUT',
+      body: JSON.stringify({
+        contractId,
+        comment,
+      }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
         Authorization: `Bearer ${token}`,
@@ -237,17 +242,17 @@ export default class ContractService {
 
   /**
    * Student comment and rate contract
-   * input: {comment, rating, id as contractId, token as token of student}
+   * input: {content, ratings, id as contractId, token as token of student}
    */
-  static ratingContract = ({ comment, rating, id, token }) => {
-    const api = `${apiUrl}/contract/rating/`
+  static updateRatingContract = ({ content, ratings, id, token }) => {
+    const api = `${apiUrl}/contract/update-rating/`
     let status = 400
     // eslint-disable-next-line no-undef
     return fetch(api, {
       method: 'PUT',
       body: JSON.stringify({
-        comment,
-        rating,
+        content,
+        ratings,
         id,
       }),
       headers: {

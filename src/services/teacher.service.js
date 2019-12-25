@@ -244,4 +244,35 @@ export default class TeacherService {
         throw new Error(err)
       })
   }
+
+  /**
+   * @param {String} payload: as keyword
+   */
+  static search = keyword => {
+    const api = `${apiUrl}/teacher/search/${keyword}`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      // body: JSON.stringify({
+      //   ...info,
+      // }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
 }

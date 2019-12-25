@@ -2,12 +2,25 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Form, Icon, Input, Button, Alert, Radio, DatePicker, Select, message, Spin } from 'antd'
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
+  Alert,
+  Radio,
+  DatePicker,
+  Select,
+  message,
+  Spin,
+  InputNumber,
+} from 'antd'
 import { withRouter } from 'react-router'
 import moment from 'moment'
 import TagService from 'services/tag.service'
 import DistrictService from 'services/district.service'
 import CityService from 'services/city.service'
+import LoadingComponent from '../LoadingComponent/Loading.component'
 import './UpdateInfoUser.style.scss'
 
 class UpdateInfoUser extends React.Component {
@@ -110,6 +123,14 @@ class UpdateInfoUser extends React.Component {
     callback()
   }
 
+  checkIsNumber = (rule, value, callback) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(value)) {
+      callback('Vui lòng nhập mức lương hợp lệ')
+    }
+    callback()
+  }
+
   getMessage = content => {
     const { onUpdateInfoClear, updateInfo } = this.props
     if (updateInfo.isSuccess) {
@@ -150,11 +171,7 @@ class UpdateInfoUser extends React.Component {
     } = this.props
     const { isFetching, tagList, validDistrictList, cityList, initalValueDistrict } = this.state
     if (isFetching) {
-      return (
-        <div className="user-update-info-loading">
-          <Spin indicator={<Icon type="loading" spin />} />
-        </div>
-      )
+      return <LoadingComponent />
     }
     if (getInfo.isSuccess === false) {
       return (
@@ -174,6 +191,7 @@ class UpdateInfoUser extends React.Component {
         district,
         about,
         tags,
+        salary,
       } = currentUserUpdate
       const initalValueTag = tags ? tags.map(item => item._id._id) : []
       console.log('city: ', city)
@@ -266,7 +284,7 @@ class UpdateInfoUser extends React.Component {
                       </Select>
                     )}
                   </Form.Item>
-                  <Form.Item hasFeedback label="Quận/ huyện">
+                  <Form.Item hasFeedback label="Quận/ huyện/ thị xã">
                     {getFieldDecorator('district', {
                       initialValue: initalValueDistrict,
                     })(
@@ -282,6 +300,44 @@ class UpdateInfoUser extends React.Component {
               </div>
               {isTeacher && (
                 <>
+                  <div className="content-form__about">
+                    <div className="user-update-form__title">Giới thiệu: </div>
+                    <Form.Item>
+                      {getFieldDecorator('about', {
+                        initialValue: about || '',
+                        rules: [
+                          { min: 10, message: 'Tên phải từ 10 ký tự trở lên' },
+                          { max: 300, message: 'Tối đa 300 ký tự' },
+                        ],
+                      })(
+                        <Input.TextArea
+                          className="about-input"
+                          placeholder="Giới thiệu về bản thân"
+                        />
+                      )}
+                    </Form.Item>
+                  </div>
+                  <div className="content-form__cost-per-hour">
+                    <div className="user-update-form__title">Giá 1 giờ học: (000 đ/giờ) </div>
+                    <Form.Item>
+                      {getFieldDecorator('salary', {
+                        initialValue: salary.$numberDecimal || '',
+                        rules: [
+                          { required: true, message: 'Vui lòng nhập giá trên 1 giờ hoc' },
+                          {
+                            validator: this.checkIsNumber,
+                          },
+                        ],
+                      })(
+                        <InputNumber
+                          min={50}
+                          max={999}
+                          formatter={value => `${value}.000đ`}
+                          parser={value => value.replace('.000đ', '')}
+                        />
+                      )}
+                    </Form.Item>
+                  </div>
                   <div className="content-form__tag">
                     <div className="user-update-form__title">Kỹ năng: </div>
                     {tagList !== null ? (
@@ -299,24 +355,6 @@ class UpdateInfoUser extends React.Component {
                     ) : (
                       <Spin indicator={<Icon type="loading" spin />} />
                     )}
-                  </div>
-
-                  <div className="content-form__about">
-                    <div className="user-update-form__title">Giới thiệu: </div>
-                    <Form.Item>
-                      {getFieldDecorator('about', {
-                        initialValue: about || '',
-                        rules: [
-                          { min: 10, message: 'Tên phải từ 10 ký tự trở lên' },
-                          { max: 300, message: 'Tối đa 300 ký tự' },
-                        ],
-                      })(
-                        <Input.TextArea
-                          className="about-input"
-                          placeholder="Giới thiệu về bản thân"
-                        />
-                      )}
-                    </Form.Item>
                   </div>
                 </>
               )}

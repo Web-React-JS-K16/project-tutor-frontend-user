@@ -142,6 +142,20 @@ const TeacherInfoPage = ({
                       </Link>
                     </div>
                   )}
+                  {currentUser._id === teacherId && (
+                    <div className="info-left__btn">
+                      <Link to="/teacher/update-info">
+                        <Button
+                          style={{ marginTop: 15 }}
+                          size="small"
+                          type="primary"
+                          typeHtml="button"
+                        >
+                          Chỉnh sửa thông tin
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                   <ModalForm
                     ref={saveFormRef}
                     visible={visible}
@@ -165,7 +179,7 @@ const TeacherInfoPage = ({
                   />
                 </div>
                 <div className="ratings">
-                  <Rate disabled defaultValue={getInfoObj.teacher.ratings} />
+                  <Rate disabled allowHalf defaultValue={getInfoObj.teacher.ratings} />
                   <div>Tỉ lệ đánh giá</div>
                 </div>
               </div>

@@ -13,9 +13,9 @@
   }
   &__message {
     margin-bottom: 20px;
-    max-height: 70vh;
+    max-height: 65vh;
     overflow-y: auto;
-    width: 100%;
+    width: 96%;
     &--item {
       border-radius: 5px;
       width: fit-content;
@@ -61,6 +61,7 @@
         justify-content: center;
 
     input {
+      padding: 15px;
       // width: 260px;
         min-width: 90%;
         min-height: 40px;

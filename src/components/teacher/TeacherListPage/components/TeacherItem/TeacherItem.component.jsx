@@ -59,7 +59,7 @@ const TeacherItem = ({ teacher }) => {
         {!teacher.tags || teacher.tags.length === 0 ? (
           <i>Chưa cập nhật kĩ năng</i>
         ) : (
-          teacher.tags.map(tag => {
+          teacher.tags.slice(0, 5).map(tag => {
             return (
               <Tag key={tag._id} color="orange">
                 {tag.name}

@@ -16,6 +16,10 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
     onClearUserState()
   }, [onClearUserState])
 
+  useEffect(() => {
+    setIsLoading(false)
+  }, [user])
+
   const handleSubmit = e => {
     setIsLoading(true)
     e.preventDefault()

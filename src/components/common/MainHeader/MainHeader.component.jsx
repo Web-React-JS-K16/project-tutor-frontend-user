@@ -29,7 +29,13 @@ const MainHeader = ({
   onClearNotificationState,
   getNotificationList,
 }) => {
-  const selectedKey = location.pathname === '/' ? '1' : '2'
+  let selectedKey = ''
+  if (location.pathname === '/') {
+    selectedKey = '1'
+  } else if (location.pathname === '/teacher') {
+    selectedKey = '2'
+  }
+
   useEffect(() => {
     const token = UserService.getPreferences(JWT_TOKEN)
     if (!currentUser && token) onAuthenticate(token)
@@ -38,7 +44,6 @@ const MainHeader = ({
   useEffect(() => {
     let interval
     onClearNotificationState()
-    console.log('alo', location.pathname)
     if (currentUser) {
       const userId = currentUser._id
       getNotificationList({

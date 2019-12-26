@@ -7,16 +7,17 @@ import { Icon, Divider, Tag, Rate, Button, Row, Col } from 'antd'
 import './TeacherItem.style.scss'
 
 const TeacherItem = ({ teacher }) => {
+  console.log('teacher: ', teacher)
   return (
     <div className="teacher-item">
       <div className="teacher-item__basic-info">
         <div className="teacher-item__basic-info__left">
-          <Link to={`/teacher/info/${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher.userId}`}>
             <img src={teacher.avatar} alt="" />
           </Link>
         </div>
         <div className="teacher-item__basic-info__right">
-          <Link to={`/teacher/info/${teacher._id}`}>
+          <Link to={`/teacher/info/${teacher.userId}`}>
             <div className="name">{teacher.displayName}</div>
           </Link>
 
@@ -71,7 +72,7 @@ const TeacherItem = ({ teacher }) => {
         <Tag color="orange">Toán đại số 10</Tag>
         <Tag color="orange">Toán cao cấp</Tag> */}
       </div>
-      <Link to={`/teacher/info?id=${teacher._id}`}>
+      <Link to={`/teacher/info/${teacher.userId}`}>
         <Button type="primary">Xem chi tiết</Button>
       </Link>
     </div>

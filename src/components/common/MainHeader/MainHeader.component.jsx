@@ -186,6 +186,9 @@ const MainHeader = ({
             <Link to="/student/update-info">Chỉnh sửa thông tin</Link>
           ))}
       </Menu.Item>
+      <Menu.Item>
+        <Link to="/chat">Tin nhắn</Link>
+      </Menu.Item>
       <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
       {currentUser && currentUser.typeID === TEACHER && (
         <Menu.Item>

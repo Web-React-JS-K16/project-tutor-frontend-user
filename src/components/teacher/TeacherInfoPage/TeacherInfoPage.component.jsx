@@ -23,6 +23,7 @@ import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.compon
 import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
 
+const defaultItemPerPageContract = 5
 const TeacherInfoPage = ({
   currentUser,
   getInfoObj,
@@ -48,6 +49,7 @@ const TeacherInfoPage = ({
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)
+  const [minValuePaging, setMinValuePaging] = useState(1)
 
   const handleCreate = () => {
     formRef.validateFields((err, values) => {
@@ -70,6 +72,12 @@ const TeacherInfoPage = ({
       formRef.resetFields()
       setVisible(false)
     })
+  }
+
+  const handleChangePageContract = page => {
+    console.log('paging: ', page)
+    console.log('paging: ', (page - 1) * defaultItemPerPageContract)
+    setMinValuePaging((page - 1) * defaultItemPerPageContract)
   }
 
   const saveFormRef = useCallback(node => {
@@ -211,7 +219,7 @@ const TeacherInfoPage = ({
             <div className="teacher-info-page__wrapper__statistics">
               <Row>
                 <Col span={4}>
-                  <Statistic title="Mức lương (vnđ/h)" value={getInfoObj.teacher.formatSalary} />
+                  <Statistic title="Mức lương (vnđ/h)" value={getInfoObj.teacher.salary} />
                 </Col>
                 <Col span={4}>
                   <Statistic title="Công việc đã làm" value={getInfoObj.teacher.jobs} />
@@ -229,12 +237,20 @@ const TeacherInfoPage = ({
                 {!getInfoObj.teacher.contracts || getInfoObj.teacher.contracts.length === 0 ? (
                   <i>Trống</i>
                 ) : (
-                  getInfoObj.teacher.contracts.map(contract => {
-                    return <WorkHistoryItem key={contract.name} contract={contract} />
-                  })
+                  getInfoObj.teacher.contracts
+                    .slice(minValuePaging, minValuePaging + 5)
+                    .map(contract => {
+                      return <WorkHistoryItem key={contract.name} contract={contract} />
+                    })
                 )}
               </div>
-              <Pagination simple defaultCurrent={1} total={50} />
+              <Pagination
+                simple
+                defaultCurrent={1}
+                defaultPageSize={defaultItemPerPageContract}
+                onChange={handleChangePageContract}
+                total={getInfoObj.teacher.contracts.length}
+              />
             </div>
           </div>
         </>

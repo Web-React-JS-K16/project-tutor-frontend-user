@@ -17,6 +17,7 @@ import {
   Pagination,
   Spin,
   Button,
+  message,
 } from 'antd'
 import './TeacherInfoPage.style.scss'
 
@@ -76,13 +77,16 @@ const TeacherInfoPage = ({
       const contract = {
         name,
         content,
-        teacherId: getInfoObj.teacher._id,
+        teacherId: getInfoObj.teacher.userId,
         studentId: currentUser._id,
         workingHour,
-        costPerHour: getInfoObj.teacher.salary,
+        costPerHour: +getInfoObj.teacher.salary.replace(',000', ''),
         tags,
       }
+      console.log('contract: ', contract)
+
       createContract(contract)
+      message.success('Tạo hợp đồng thành công')
       formRef.resetFields()
       setVisible(false)
     })

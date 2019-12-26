@@ -51,7 +51,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, teacher }) => {
         </Form.Item>
         <Form.Item hasFeedback label="Kĩ năng">
           {getFieldDecorator('tags', {
-            initialValue: teacher.tags.map(tag => tag._id),
+            initialValue: teacher.tags.slice(0, 1).map(tag => tag._id),
             rules: [{ required: true, message: 'Vui lòng chọn kĩ năng!' }],
           })(
             <Select mode="multiple" style={{ width: '100%' }} placeholder="Chọn kĩ năng">
@@ -87,7 +87,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, teacher }) => {
         </Form.Item> */}
         <div>
           Giá trên giờ&ensp;
-          <span style={{ fontWeight: 'bold' }}>{teacher.formatSalary} vnđ</span>
+          <span style={{ fontWeight: 'bold' }}>{teacher.salary} vnđ</span>
         </div>
       </Form>
     </Modal>

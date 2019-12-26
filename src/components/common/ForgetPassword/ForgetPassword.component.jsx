@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React, { useEffect } from 'react'
 import { Form, Icon, Input, Button } from 'antd'
+import { Link } from 'react-router-dom'
 import './ForgetPassword.style.scss'
 
 const ForgetPasswordComponent = ({
@@ -63,6 +64,13 @@ const ForgetPasswordComponent = ({
           Mã xác nhận đã được gửi qua email.
           <br />
           Vui lòng kiểm tra email với người gửi là web.reactjs.group@gmail.com
+          <div>
+            <Link to="/" className="btn-back-home">
+              <Button type="primary" typeHtml="button">
+                Về trang chủ
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
     </div>

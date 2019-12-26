@@ -79,7 +79,7 @@ const LoginPage = ({ user, form, login, onClearUserState, typeID, title }) => {
               },
             ],
           })(
-            <Input
+            <Input.Password
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
               type="password"
               placeholder="Mật khẩu"

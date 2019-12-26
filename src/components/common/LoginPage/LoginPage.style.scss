@@ -1,7 +1,7 @@
 @import '../../../default.style.scss';
 
 .login-page {
-  font-size: 16px;
+  font-size: 1.6rem;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -43,6 +43,7 @@
       .btn-login {
         width: fit-content;
         margin: auto;
+        margin-top: 10px;
       }
       .register {
         text-align: center;

@@ -67,6 +67,7 @@ const TeacherSearchResultComponent = ({
             ...teacherInfo,
             salary: `${teacherInfo.salary.$numberDecimal},000 `,
             tags,
+            userId: userId._id,
           }
           console.log('item teacher: ', teacher)
           return (

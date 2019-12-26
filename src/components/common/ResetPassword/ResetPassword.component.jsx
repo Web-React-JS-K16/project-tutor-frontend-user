@@ -52,6 +52,13 @@ const ResetPasswordComponent = ({
       <div className="reset-password-page">
         <h1 className="reset-password-page__title">Lấy lại mật khẩu</h1>
         <div className="message--error">Link xác nhận đã hết hạn hoặc không hợp lệ</div>
+        <div>
+          <Link to="/" className="btn-back-home">
+            <Button type="primary" typeHtml="button">
+              Về trang chủ
+            </Button>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -61,6 +68,13 @@ const ResetPasswordComponent = ({
         <h1 className="reset-password-page__title">Lấy lại mật khẩu</h1>
         <div className="message--success">
           Lấy lại mật khẩu thành công. Vui lòng đăng nhập lại với mật khẩu mới.
+          <div>
+            <Link to="/" className="btn-back-home">
+              <Button type="primary" typeHtml="button">
+                Về trang chủ
+              </Button>
+            </Link>
+          </div>
         </div>
         <div className="reset-password-page__btns">
           <div>
@@ -94,7 +108,7 @@ const ResetPasswordComponent = ({
               },
             ],
           })(
-            <Input
+            <Input.Password
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
               type="password"
               placeholder="Mật khẩu"
@@ -113,7 +127,7 @@ const ResetPasswordComponent = ({
               },
             ],
           })(
-            <Input
+            <Input.Password
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
               type="password"
               placeholder="Nhập lại mật khẩu"

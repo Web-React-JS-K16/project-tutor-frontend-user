@@ -262,7 +262,7 @@ const TeacherInfoPage = ({
             <div className="teacher-info-page__wrapper__statistics">
               <Row>
                 <Col span={4}>
-                  <Statistic title="Mức lương (vnđ/h)" value={getInfoObj.teacher.formatSalary} />
+                  <Statistic title="Mức lương (vnđ/h)" value={getInfoObj.teacher.salary} />
                 </Col>
                 <Col span={4}>
                   <Statistic title="Công việc đã làm" value={getInfoObj.teacher.jobs} />

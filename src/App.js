@@ -46,7 +46,7 @@ const RouteTeacher = ({ currentUser }) => {
         exact
         path={`${teacherPath}`}
         render={props => (
-          <MainLayout history={props.history}>
+          <MainLayout history={props.history} location={props.location}>
             <TeacherListPageContainer />
           </MainLayout>
         )}
@@ -54,8 +54,8 @@ const RouteTeacher = ({ currentUser }) => {
       <Route
         exact
         path={`${teacherPath}/search/:key`}
-        render={() => (
-          <MainLayout>
+        render={props => (
+          <MainLayout history={props.history} location={props.location}>
             <TeacherSearchResultContainer />
           </MainLayout>
         )}
@@ -65,7 +65,7 @@ const RouteTeacher = ({ currentUser }) => {
         exact
         path={`${teacherPath}/info/:idTeacher`}
         render={props => (
-          <MainLayout history={props.history}>
+          <MainLayout history={props.history} location={props.location}>
             <TeacherInfoPageContainer {...props} />
           </MainLayout>
         )}
@@ -83,7 +83,7 @@ const RouteTeacher = ({ currentUser }) => {
             path={`${teacherPath}/update-info`}
             render={props =>
               currentUser.typeID === TEACHER ? (
-                <MainLayout history={props.history}>
+                <MainLayout history={props.history} location={props.location}>
                   <TeacherUpdateInfoPage />
                 </MainLayout>
               ) : (
@@ -95,7 +95,7 @@ const RouteTeacher = ({ currentUser }) => {
             path={`${teacherPath}/statistics`}
             render={props =>
               currentUser.typeID === TEACHER ? (
-                <MainLayout history={props.history}>
+                <MainLayout history={props.history} location={props.location}>
                   <TeacherStatisticsPageContainer />
                 </MainLayout>
               ) : (
@@ -131,7 +131,7 @@ const RouteStudent = ({ currentUser }) => {
             path={`${studentPath}/update-info`}
             render={props =>
               currentUser.typeID === STUDENT ? (
-                <MainLayout history={props.history}>
+                <MainLayout history={props.history} location={props.location}>
                   <StudentUpdateInfoPageComponent />
                 </MainLayout>
               ) : (
@@ -158,7 +158,7 @@ const App = ({ currentUser }) => {
           exact
           path="/"
           render={props => (
-            <MainLayout history={props.history}>
+            <MainLayout history={props.history} location={props.location}>
               <Home />
             </MainLayout>
           )}
@@ -178,7 +178,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/contract-list"
               render={props => (
-                <MainLayout history={props.history}>
+                <MainLayout history={props.history} location={props.location}>
                   <ContractListPageContainer {...props} />
                 </MainLayout>
               )}
@@ -186,7 +186,7 @@ const App = ({ currentUser }) => {
             <Route
               path="/notification-list"
               render={props => (
-                <MainLayout history={props.history}>
+                <MainLayout history={props.history} location={props.location}>
                   <NotificationPageContainer {...props} />
                 </MainLayout>
               )}

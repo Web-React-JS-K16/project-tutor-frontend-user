@@ -144,7 +144,7 @@ export default class TeacherService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        return result
+        return result.payload
       })
       .catch(err => {
         throw new Error(err)
@@ -179,7 +179,7 @@ export default class TeacherService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        return result.user
+        return result.payload
       })
       .catch(err => {
         throw new Error(err)

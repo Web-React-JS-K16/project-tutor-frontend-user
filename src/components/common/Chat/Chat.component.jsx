@@ -246,10 +246,10 @@ class ChatComponent extends Component {
   render() {
     const currentRoomInfor = this.getCurrrentRoomInfo()
     const { isLoading, errorMessage } = this.state
-    const { currentUser, history } = this.props
+    const { currentUser, history, location } = this.props
     console.log('is loading', isLoading)
     return (
-      <MainLayout history={history}>
+      <MainLayout history={history} location={location}>
         <div className="chat-component-wrap">
           {isLoading && (
             <div className="loading">

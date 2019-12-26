@@ -200,9 +200,9 @@ const App = ({ currentUser }) => {
             <Route path="/contract-detail/:contractId">
               <Redirect to={`${studentPath}/login`} />
             </Route>
+            <Route path="*" component={NotFound404} />
           </>
         )}
-        <Route path="/*" component={NotFound404} />
       </Switch>
     </div>
   )

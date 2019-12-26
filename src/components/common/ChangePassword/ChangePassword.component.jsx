@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Form, Icon, Input, Button, Alert } from 'antd'
+import { Link } from 'react-router-dom'
 import './ChangePassword.style.scss'
 
 const ChangePasswordForm = ({
@@ -142,6 +143,12 @@ const ChangePasswordForm = ({
           >
             Đổi mật khẩu
           </Button>
+
+          <Link to="/">
+            <Button type="primary" htmlType="button">
+              Về trang chủ
+            </Button>
+          </Link>
         </div>
       </Form>
     </div>

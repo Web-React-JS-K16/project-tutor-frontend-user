@@ -321,7 +321,7 @@ class UpdateInfoUser extends React.Component {
                     <div className="user-update-form__title">Giá 1 giờ học: (000 đ/giờ) </div>
                     <Form.Item>
                       {getFieldDecorator('salary', {
-                        initialValue: salary.$numberDecimal || '',
+                        initialValue: salary || '',
                         rules: [
                           { required: true, message: 'Vui lòng nhập giá trên 1 giờ hoc' },
                           {

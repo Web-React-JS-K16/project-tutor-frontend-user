@@ -30,6 +30,7 @@ const responsive = {
 const FeatureTeacher = ({ getStatisticalDataHome }) => {
   const [teacher, setTeacher] = useState(null)
   const getStatisticalDataHomeSuccess = ({ data }) => {
+    console.log(data)
     setTeacher(data)
   }
   const getStatisticalDataHomeFailure = _message => {
@@ -55,7 +56,7 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
               <div className="info-teacher__content">
                 <h4>{item.user[0].displayName}</h4>
                 <span className="rate">
-                  <Rate disabled defaultValue={item.teacher[0].successRate * 0.05} />
+                  <Rate disabled defaultValue={item.teacher[0].ratings} />
                 </span>
                 <hr />
                 <p>
@@ -69,7 +70,7 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
                 </p>
                 <hr />
                 <p>
-                  <Icon type="pay-circle" /> {item.teacher[0].salary.$numberDecimal}VND/h
+                  <Icon type="pay-circle" /> {item.teacher[0].salary.$numberDecimal},000VND/h
                 </p>
                 <p>
                   <Icon type="phone" /> {item.user[0].phone}

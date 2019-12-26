@@ -18,6 +18,7 @@ import {
   Spin,
   Button,
   message,
+  Empty,
 } from 'antd'
 import './TeacherInfoPage.style.scss'
 
@@ -281,10 +282,10 @@ const TeacherInfoPage = ({
       </div>
       <div className="teacher-info-page__wrapper">
         <div className="teacher-info-page__wrapper__work-history">
-          <div className="title">Lịch sử làm việc</div>
-          <div className="content">
+          <div className="teacher-info-page__wrapper__work-history__title">Lịch sử làm việc</div>
+          <div className="teacher-info-page__wrapper__work-history__content">
             {getContractListObj.isLoading && (
-              <div className="loading">
+              <div className="teacher-info-page__wrapper__work-history__content__loading">
                 <Spin indicator={<Icon type="loading" spin />} />
               </div>
             )}
@@ -292,7 +293,7 @@ const TeacherInfoPage = ({
               <>
                 {!getContractListObj.contractList ||
                 getContractListObj.contractList.length === 0 ? (
-                  <i>Trống</i>
+                  <Empty />
                 ) : (
                   getContractListObj.contractList.map(contract => {
                     return <WorkHistoryItem key={contract._id} contract={contract} />

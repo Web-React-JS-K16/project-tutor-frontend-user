@@ -22,6 +22,11 @@
         margin-left: 20px;
       }
     }
+    &__chart {
+      .ant-empty {
+        margin: 130px 0px;
+      }
+    }
   }
   &__loading {
     position: absolute;

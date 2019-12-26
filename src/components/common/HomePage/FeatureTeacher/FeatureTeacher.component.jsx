@@ -42,7 +42,10 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
     window.location.href = `/teacher/info/${id}`
   }
   useEffect(() => {
-    getStatisticalDataHome({ getStatisticalDataHomeSuccess, getStatisticalDataHomeFailure })
+    getStatisticalDataHome({
+      getStatisticalDataHomeSuccess,
+      getStatisticalDataHomeFailure,
+    })
   }, [getStatisticalDataHome])
   return (
     <div className="feature-teacher">
@@ -71,7 +74,9 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
                 </p>
                 <hr />
                 <p>
-                  <Icon type="pay-circle" /> {item.teacher[0].salary.$numberDecimal},000VND/h
+                  <Icon type="pay-circle" />{' '}
+                  {item.teacher[0].salary.$numberDecimal || item.teacher[0].salary}
+                  ,000 vnđ/h
                 </p>
                 <p>
                   <Icon type="phone" /> {item.user[0].phone}

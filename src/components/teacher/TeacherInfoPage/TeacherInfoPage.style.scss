@@ -109,23 +109,26 @@
       }
     }
     &__work-history {
-      .title {
+      &__title {
         font-size: 24px;
       }
-      .content {
+      &__content {
         padding-top: 40px;
+        .ant-empty {
+          margin: 30px 0px 70px;
+        }
         .ant-pagination {
           text-align: center;
         }
-      }
-      .loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        .ant-spin {
-          i {
-            font-size: 40px;
+        &__loading {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          .ant-spin {
+            i {
+              font-size: 40px;
+            }
           }
         }
       }

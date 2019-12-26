@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts'
-import { Row, Spin, Icon, Select, DatePicker, Button } from 'antd'
+import { Row, Spin, Icon, Select, DatePicker, Button, Empty } from 'antd'
 import * as moment from 'moment'
 import './TeacherStatisticsPage.style.scss'
 import UserService from 'services/user.service'
@@ -68,7 +68,7 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
         setChartData(data)
       }
     }
-  }, [getStatisticalDataObj, currentType])
+  }, [getStatisticalDataObj])
 
   const executeFilter = filterConditions => {
     UserService.setPreferences('project-tutor-teacher-statistics', JSON.stringify(filterConditions))
@@ -121,11 +121,11 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
       }
     } else if (currentType === 'week') {
       if (type === 'start' && toWeek.date) {
-        const startWeek = parseInt(value.format('w'))
+        const startWeek = parseInt(value.week)
         const endWeek = parseInt(toWeek.week)
         if (startWeek >= endWeek) {
           setIsDisabled(true)
-        } else if (new Date(value).getFullYear() !== parseInt(toWeek.year)) {
+        } else if (parseInt(value.year) !== parseInt(toWeek.year)) {
           setIsDisabled(true)
         } else if (endWeek - startWeek + 1 > 10) {
           setIsDisabled(true)
@@ -134,10 +134,10 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
         }
       } else if (type === 'end' && fromWeek.date) {
         const startWeek = parseInt(fromWeek.week)
-        const endWeek = parseInt(value.format('w'))
+        const endWeek = parseInt(value.week)
         if (startWeek >= endWeek) {
           setIsDisabled(true)
-        } else if (new Date(value).getFullYear() !== parseInt(fromWeek.year)) {
+        } else if (parseInt(value.year) !== parseInt(fromWeek.year)) {
           setIsDisabled(true)
         } else if (endWeek - startWeek + 1 > 10) {
           setIsDisabled(true)
@@ -179,7 +179,7 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
       date: value,
     }
     setFromWeek(fromWeekObj)
-    checkDisabledBtn(value, 'start')
+    checkDisabledBtn(fromWeekObj, 'start')
   }
 
   const onChangeToWeekData = value => {
@@ -190,7 +190,7 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
       date: value,
     }
     setToWeek(toWeekObj)
-    checkDisabledBtn(value, 'end')
+    checkDisabledBtn(toWeekObj, 'end')
   }
 
   const onChangeData = value => {
@@ -324,23 +324,26 @@ const TeacherStatisticsPage = ({ currentUser, getStatisticalDataObj, getStatisti
           </div>
         </Row>
         <Row>
-          <div className="teacher-statistics-page__wrapper__chart">
-            {chartData.length > 0 && (
-              <Chart height={400} data={chartData} scale={cols} forceFit>
-                <Axis name="time" />
-                <Axis name="value" label={{ formatter: val => `${val}đ` }} />
-                <Tooltip crosshairs={{ type: 'y' }} />
-                <Geom type="line" position="time*value" size={2} shape="smooth" />
-                <Geom
-                  type="point"
-                  position="time*value"
-                  size={4}
-                  shape="circle"
-                  style={{ stroke: '#fff', lineWidth: 1 }}
-                />
-              </Chart>
-            )}
-          </div>
+          {!getStatisticalDataObj.isLoading && getStatisticalDataObj.isSuccess === true && (
+            <div className="teacher-statistics-page__wrapper__chart">
+              {chartData.length === 0 && <Empty />}
+              {chartData.length > 0 && (
+                <Chart height={400} data={chartData} scale={cols} forceFit>
+                  <Axis name="time" />
+                  <Axis name="value" label={{ formatter: val => `${val}đ` }} />
+                  <Tooltip crosshairs={{ type: 'y' }} />
+                  <Geom type="line" position="time*value" size={2} shape="smooth" />
+                  <Geom
+                    type="point"
+                    position="time*value"
+                    size={4}
+                    shape="circle"
+                    style={{ stroke: '#fff', lineWidth: 1 }}
+                  />
+                </Chart>
+              )}
+            </div>
+          )}
         </Row>
       </div>
     </div>

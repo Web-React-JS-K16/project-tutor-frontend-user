@@ -31,6 +31,7 @@ const FeatureTeacher = ({ getStatisticalDataHome }) => {
   const [teacher, setTeacher] = useState(null)
   const getStatisticalDataHomeSuccess = ({ data }) => {
     console.log(data)
+    console.log('data get teacher: ', data)
     setTeacher(data)
   }
   const getStatisticalDataHomeFailure = _message => {

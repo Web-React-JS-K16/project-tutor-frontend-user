@@ -259,6 +259,30 @@ export default class TeacherService {
       })
   }
 
+  static getStatisticalDataHome = () => {
+    const api = `${apiUrl}/teacher/statistics-home`
+    let status = 400
+    // eslint-disable-next-line no-undef
+    return fetch(api, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(result => {
+        if (status !== 200) {
+          throw new Error(result.message)
+        }
+        return result
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
   /**
    * @param {String} payload: as keyword
    */

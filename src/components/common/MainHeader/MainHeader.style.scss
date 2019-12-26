@@ -56,10 +56,14 @@
   &__notifications {
     float: right;
     .ant-dropdown-menu {
+      padding: 10px;
+      max-height: 500px;
+      overflow: auto;
+      background-color: $color-1;
       .ant-dropdown-menu-item {
         font-size: 16px;
         &:hover {
-          background-color: #fff295 !important;
+          background-color: $color-background !important;
         }
       }
     }

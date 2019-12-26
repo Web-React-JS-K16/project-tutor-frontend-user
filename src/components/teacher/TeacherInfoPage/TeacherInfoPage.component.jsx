@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
@@ -23,33 +24,46 @@ import WorkHistoryItem from './components/WorkHistoryItem/WorkHistoryItem.compon
 import { STUDENT } from '../../../utils/constant'
 import ModalForm from './components/ModalForm/ModalForm.component'
 
-const defaultItemPerPageContract = 5
 const TeacherInfoPage = ({
   currentUser,
   getInfoObj,
+  getContractListObj,
   onClearTeacherState,
   teacherGetInfo,
+  getContractListForTeacher,
   createContract,
+  onClearContractState,
   match,
 }) => {
+  const page = 1
+  const limit = 4
+
+  const [currentPage, setCurrentPage] = useState(1)
   const [teacherId, setTeacherId] = useState('')
 
   useEffect(() => {
     onClearTeacherState()
-
     const { idTeacher } = match.params
-    console.log('id teacher: ', idTeacher)
-    teacherGetInfo(idTeacher)
-    setTeacherId(idTeacher)
+    if (idTeacher) {
+      teacherGetInfo(idTeacher)
+      setTeacherId(idTeacher)
+    }
+  }, [onClearTeacherState, teacherGetInfo, match])
 
-    // if (currentUser) {
-    // teacherGetInfo(currentUser._id)
-    // }
-  }, [currentUser, onClearTeacherState, teacherGetInfo, match])
+  useEffect(() => {
+    onClearContractState()
+    const { idTeacher } = match.params
+    if (idTeacher) {
+      getContractListForTeacher({
+        userId: idTeacher,
+        currentPage: page,
+        currentLimit: limit,
+      })
+    }
+  }, [onClearContractState, getContractListForTeacher, match, limit])
 
   const [visible, setVisible] = useState(false)
   const [formRef, setFormRef] = useState(null)
-  const [minValuePaging, setMinValuePaging] = useState(1)
 
   const handleCreate = () => {
     formRef.validateFields((err, values) => {
@@ -74,12 +88,6 @@ const TeacherInfoPage = ({
     })
   }
 
-  const handleChangePageContract = page => {
-    console.log('paging: ', page)
-    console.log('paging: ', (page - 1) * defaultItemPerPageContract)
-    setMinValuePaging((page - 1) * defaultItemPerPageContract)
-  }
-
   const saveFormRef = useCallback(node => {
     if (node !== null) {
       setFormRef(node)
@@ -97,16 +105,48 @@ const TeacherInfoPage = ({
     )
   }
 
+  const handleChangePage = pageNumber => {
+    console.log('handleChangePage = ', pageNumber)
+    setCurrentPage(pageNumber)
+    const filterConditions = {
+      userId: teacherId,
+      currentPage: pageNumber,
+      currentLimit: limit,
+    }
+    getContractListForTeacher(filterConditions)
+  }
+
+  if (!getInfoObj.isLoading && getInfoObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getInfoObj.message}` },
+        }}
+      />
+    )
+  }
+  if (!getContractListObj.isLoading && getContractListObj.isSuccess === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/error-page',
+          state: { message: `${getContractListObj.message}` },
+        }}
+      />
+    )
+  }
+
   return (
     <div className="teacher-info-page">
-      {getInfoObj.isLoading && (
-        <div className="teacher-info-page__loading">
-          <Spin indicator={<Icon type="loading" spin />} />
-        </div>
-      )}
-      {!getInfoObj.isLoading && getInfoObj.isSuccess === true && (
-        <>
-          <div className="teacher-info-page__wrapper">
+      <div className="teacher-info-page__wrapper">
+        {getInfoObj.isLoading && (
+          <div className="teacher-info-page__wrapper__loading">
+            <Spin indicator={<Icon type="loading" spin />} />
+          </div>
+        )}
+        {!getInfoObj.isLoading && getInfoObj.isSuccess === true && (
+          <>
             <div className="teacher-info-page__wrapper__basic-info">
               <div className="teacher-info-page__wrapper__basic-info__left">
                 <img src={getInfoObj.teacher.avatar} alt="" />
@@ -128,42 +168,46 @@ const TeacherInfoPage = ({
                       )}
                     </div>
                   )}
-                  {currentUser.typeID === STUDENT && (
-                    <div className="info-left__btn">
-                      <Button
-                        style={{ marginTop: 15 }}
-                        size="small"
-                        type="primary"
-                        onClick={() => setVisible(true)}
-                      >
-                        Đăng kí học
-                      </Button>
-                      <Link to={`/chat/${currentUser._id}${teacherId}`}>
-                        <Button
-                          style={{ marginTop: 15 }}
-                          size="small"
-                          type="primary"
-                          typeHtml="button"
-                        >
-                          Nhắn tin
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                  {currentUser._id === teacherId && (
-                    <div className="info-left__btn">
-                      <Link to="/teacher/update-info">
-                        <Button
-                          style={{ marginTop: 15 }}
-                          size="small"
-                          type="primary"
-                          typeHtml="button"
-                        >
-                          Chỉnh sửa thông tin
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
+                  {currentUser
+                    ? currentUser.typeID === STUDENT && (
+                        <div className="info-left__btn">
+                          <Button
+                            style={{ marginTop: 15 }}
+                            size="small"
+                            type="primary"
+                            onClick={() => setVisible(true)}
+                          >
+                            Đăng kí học
+                          </Button>
+                          <Link to={`/chat/${currentUser._id}${teacherId}`}>
+                            <Button
+                              style={{ marginTop: 15 }}
+                              size="small"
+                              type="primary"
+                              typeHtml="button"
+                            >
+                              Nhắn tin
+                            </Button>
+                          </Link>
+                        </div>
+                      )
+                    : null}
+                  {currentUser
+                    ? currentUser._id === teacherId && (
+                        <div className="info-left__btn">
+                          <Link to="/teacher/update-info">
+                            <Button
+                              style={{ marginTop: 15 }}
+                              size="small"
+                              type="primary"
+                              typeHtml="button"
+                            >
+                              Chỉnh sửa thông tin
+                            </Button>
+                          </Link>
+                        </div>
+                      )
+                    : null}
                   <ModalForm
                     ref={saveFormRef}
                     visible={visible}
@@ -193,7 +237,6 @@ const TeacherInfoPage = ({
               </div>
             </div>
             <div className="teacher-info-page__wrapper__description">
-              {/* <h4>Lawyer & Freelance Writer</h4> */}
               {!getInfoObj.teacher.about ? (
                 <p>
                   <i>Chưa cập nhật giới thiệu</i>
@@ -229,32 +272,40 @@ const TeacherInfoPage = ({
                 </Col>
               </Row>
             </div>
-          </div>
-          <div className="teacher-info-page__wrapper">
-            <div className="teacher-info-page__wrapper__work-history">
-              <div className="title">Lịch sử làm việc</div>
-              <div className="content">
-                {!getInfoObj.teacher.contracts || getInfoObj.teacher.contracts.length === 0 ? (
+          </>
+        )}
+      </div>
+      <div className="teacher-info-page__wrapper">
+        <div className="teacher-info-page__wrapper__work-history">
+          <div className="title">Lịch sử làm việc</div>
+          <div className="content">
+            {getContractListObj.isLoading && (
+              <div className="loading">
+                <Spin indicator={<Icon type="loading" spin />} />
+              </div>
+            )}
+            {!getContractListObj.isLoading && getContractListObj.isSuccess === true && (
+              <>
+                {!getContractListObj.contractList ||
+                getContractListObj.contractList.length === 0 ? (
                   <i>Trống</i>
                 ) : (
-                  getInfoObj.teacher.contracts
-                    .slice(minValuePaging, minValuePaging + 5)
-                    .map(contract => {
-                      return <WorkHistoryItem key={contract.name} contract={contract} />
-                    })
+                  getContractListObj.contractList.map(contract => {
+                    return <WorkHistoryItem key={contract._id} contract={contract} />
+                  })
                 )}
-              </div>
-              <Pagination
-                simple
-                defaultCurrent={1}
-                defaultPageSize={defaultItemPerPageContract}
-                onChange={handleChangePageContract}
-                total={getInfoObj.teacher.contracts.length}
-              />
-            </div>
+                <Pagination
+                  simple
+                  defaultCurrent={parseInt(currentPage)}
+                  defaultPageSize={parseInt(limit)}
+                  total={getContractListObj.numberOfContracts}
+                  onChange={handleChangePage}
+                />
+              </>
+            )}
           </div>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,73 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-underscore-dangle */
 import './FeatureTeacher.scss'
 import 'react-multi-carousel/lib/styles.css'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from 'react-multi-carousel'
-import { Button, Tag, Icon } from 'antd'
-import ava from '../../../../assets/images/avatar_mau.jpg'
-
-const data = [
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-  {
-    avatar: ava,
-    displayName: 'Hồ Hoàng Yến',
-    salary: '220.000',
-    qualification: 'Giảng viên đại học',
-    tags: ['Toán', 'Lý', 'Hóa'],
-    phone: '0129948934',
-    ward: 'Quận 12',
-    City: 'Hồ Chí Minh',
-  },
-]
+import { Button, Tag, Icon, Rate, message } from 'antd'
 
 const responsive = {
   superLargeDesktop: {
@@ -89,43 +27,70 @@ const responsive = {
   },
 }
 
-const FeatureTeacher = () => (
-  <div className="feature-teacher">
-    <h3 className="heading-primary">Giáo viên nổi bật</h3>
-    <Carousel responsive={responsive} className="info-teacher">
-      {data.map(item => (
-        <div className="gutter-box">
-          <figure className="info-teacher__avatar">
-            <img src={item.avatar} alt="" />
-          </figure>
-          <div className="info-teacher__content">
-            <h4>{item.displayName}</h4>
-            <hr />
-            <p>
-              {' '}
-              <Icon type="tags" />{' '}
-              {item.tags.map(tag => (
-                <Tag color="orange">{tag}</Tag>
-              ))}{' '}
-            </p>
-            <hr />
-            <p>
-              <Icon type="pay-circle" /> {item.salary}VND/h
-            </p>
-            <p>
-              <Icon type="phone" /> {item.phone}
-            </p>
-            <p>
-              <Icon type="environment" /> {item.ward}, {item.City}
-            </p>
-            <hr />
+const FeatureTeacher = ({ getStatisticalDataHome }) => {
+  const [teacher, setTeacher] = useState(null)
+  const getStatisticalDataHomeSuccess = ({ data }) => {
+    console.log(data)
+    setTeacher(data)
+  }
+  const getStatisticalDataHomeFailure = _message => {
+    message.error(_message)
+  }
 
-            <Button>Xem chi tiết</Button>
-          </div>
-        </div>
-      ))}
-    </Carousel>
-  </div>
-)
+  const handleClick = id => {
+    window.location.href = `/teacher/info/${id}`
+  }
+  useEffect(() => {
+    getStatisticalDataHome({ getStatisticalDataHomeSuccess, getStatisticalDataHomeFailure })
+  }, [getStatisticalDataHome])
+  return (
+    <div className="feature-teacher">
+      <h3 className="heading-primary">Giáo viên nổi bật</h3>
+      {teacher ? (
+        <Carousel responsive={responsive} className="info-teacher">
+          {teacher.map(item => (
+            <div className="gutter-box">
+              <figure className="info-teacher__avatar">
+                <img src={item.user[0].avatar} alt="" />
+              </figure>
+              <div className="info-teacher__content">
+                <h4>{item.user[0].displayName}</h4>
+                <span className="rate">
+                  <Rate disabled defaultValue={item.teacher[0].ratings} />
+                </span>
+                <hr />
+                <p>
+                  {' '}
+                  <Icon type="tags" />{' '}
+                  {item.tag.length > 0 ? (
+                    item.tag.slice(0, 2).map(tag => <Tag color="orange">{tag.name}</Tag>)
+                  ) : (
+                    <Tag color="red">Chưa cập nhât</Tag>
+                  )}
+                </p>
+                <hr />
+                <p>
+                  <Icon type="pay-circle" /> {item.teacher[0].salary.$numberDecimal},000VND/h
+                </p>
+                <p>
+                  <Icon type="phone" /> {item.user[0].phone}
+                </p>
+                <p>
+                  <Icon type="environment" />
+                  {item.district[0] ? `${item.district[0].name}, ` : ''}
+                  {item.city[0] ? `${item.city[0].name}` : ''}
+                  {!item.district[0] && !item.city[0] ? ' Chưa cập nhật địa chỉ' : ''}
+                </p>
+                <hr />
+
+                <Button onClick={() => handleClick(item._id)}>Xem chi tiết</Button>
+              </div>
+            </div>
+          ))}
+        </Carousel>
+      ) : null}
+    </div>
+  )
+}
 
 export default FeatureTeacher

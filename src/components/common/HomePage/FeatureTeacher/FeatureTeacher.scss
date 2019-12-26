@@ -9,8 +9,7 @@
   animation-duration: 3s;
 
   .info-teacher {
-    margin: 5rem 0 !important;
-    // overflow-x: auto;
+
 
     li {
       width: 250px !important;
@@ -21,8 +20,8 @@
       border-radius: 4px;
       box-shadow: 0 1rem 0.5rem rgba(#000, 0.15);
       transition: 0.3s;
-      padding: 3rem 4rem;
-      margin: 3rem 3rem;
+      padding: 3rem 1rem;
+      margin: 13rem 2rem;
       width: 250px;
 
       &:hover {
@@ -37,7 +36,9 @@
       clip-path: circle(50% at 50% 50%);
       -webkit-shape-outside: circle(50% at 50% 50%);
       shape-outside: circle(50% at 50% 50%);
-
+      margin-left: 50%;
+      transform: translateX(-50%);
+      margin-top: -50%;
       img {
         object-fit: cover;
         width: 100%;
@@ -48,6 +49,19 @@
     &__content {
       padding-top: 10px;
       color: #fff !important;
+
+      .ant-rate {
+        display: flex;
+        justify-content: center;
+        
+        li {
+          margin: 0 !important;
+        }
+
+        .ant-rate-star {
+          width: 20px !important;
+        }
+      }
 
       h4 {
         color: #fff;
@@ -71,7 +85,7 @@
       .ant-btn {
         transition: .3s;
         margin-top: .5rem;
-
+        background-color: #faad14;
         span {
           color: #fff;
         }

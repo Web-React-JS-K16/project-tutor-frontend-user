@@ -4,7 +4,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Row, Col, Pagination, Spin, Icon, Select } from 'antd'
+import { Row, Col, Pagination, Spin, Icon, Select, Empty } from 'antd'
 import './ContractListPage.style.scss'
 import UserService from 'services/user.service'
 import {
@@ -33,7 +33,6 @@ const ContractListPage = ({ currentUser, getListObj, onClearContractState, getCo
     onClearContractState()
     if (currentUser && page && limit) {
       const userId = currentUser._id
-      setCurrentPage(page)
       getContractList({ userId, currentPage: page, currentLimit: limit })
     }
   }, [currentUser, page, limit, onClearContractState, getContractList])
@@ -58,9 +57,10 @@ const ContractListPage = ({ currentUser, getListObj, onClearContractState, getCo
   const handleChangeStatus = status => {
     console.log('handleChangeStatus = ', status)
     setCurrentStatus(status.toString())
+    setCurrentPage(1)
     const filterConditions = {
       userId: currentUser._id,
-      currentPage,
+      currentPage: 1,
       currentLimit: limit,
       currentStatus: status.toString(),
     }
@@ -114,15 +114,19 @@ const ContractListPage = ({ currentUser, getListObj, onClearContractState, getCo
         </Row>
         {!getListObj.isLoading && getListObj.isSuccess === true && (
           <>
-            <Row gutter={16}>
-              {getListObj.contractList.map(contract => {
-                return (
-                  <Col key={contract._id} span={12}>
-                    <ContractItem contract={contract} currentUser={currentUser} />
-                  </Col>
-                )
-              })}
-            </Row>
+            {getListObj.contractList.length === 0 ? (
+              <Empty />
+            ) : (
+              <Row gutter={16}>
+                {getListObj.contractList.map(contract => {
+                  return (
+                    <Col key={contract._id} span={12}>
+                      <ContractItem contract={contract} currentUser={currentUser} />
+                    </Col>
+                  )
+                })}
+              </Row>
+            )}
 
             <Row>
               <Pagination

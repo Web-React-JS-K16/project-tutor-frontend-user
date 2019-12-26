@@ -76,15 +76,20 @@ const TeacherSearchResultComponent = ({
           )
         })}
       </div>
-      <div className="teacher-search-result__pagination">
-        <Pagination
-          simple
-          defaultCurrent={parseInt(1)}
-          defaultPageSize={parseInt(defaultPageSize)}
-          total={data.count}
-          onChange={handleChangePage}
-        />
-      </div>
+      {data.payload.length === 0 && (
+        <div className="teacher-search-result__empty">(Không có kết quả)</div>
+      )}
+      {data.payload.length > 0 && (
+        <div className="teacher-search-result__pagination">
+          <Pagination
+            simple
+            defaultCurrent={parseInt(1)}
+            defaultPageSize={parseInt(defaultPageSize)}
+            total={data.count}
+            onChange={handleChangePage}
+          />
+        </div>
+      )}
     </div>
   )
 }

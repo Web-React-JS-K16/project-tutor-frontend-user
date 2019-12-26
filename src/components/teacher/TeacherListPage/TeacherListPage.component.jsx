@@ -169,7 +169,7 @@ const TeacherListPage = ({
 
   return (
     <div className="teacher-list-page">
-      {getListObj.isLoading && (
+      {(1 || getListObj.isLoading) && (
         <div className="teacher-list-page__loading">
           <Spin indicator={<Icon type="loading" spin />} />
         </div>

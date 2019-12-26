@@ -6,7 +6,7 @@ import './ContractDetail.style.scss'
 import MainLayout from 'components/MainLayout'
 import ContractService from 'services/contract.service'
 import * as moment from 'moment'
-import { Tag, message, Modal, Spin, Icon } from 'antd'
+import { Tag, message, Modal } from 'antd'
 import { CUSTOM_CONTRACT_TYPES, CONTRACT_TYPES, STUDENT, TEACHER } from 'utils/constant'
 import CardInfoComponent from './components/CardInfo/CardInfo.component'
 import PaymentModal from './components/PaymentModal/PaymentModal.component'
@@ -16,7 +16,7 @@ import {
   ContractReportModal,
   ContractRatingModal,
 } from './components/ContractTool/ContractTool.component'
-// import LoadingComponent from '../LoadingComponent/Loading.component'
+import LoadingComponent from '../LoadingComponent/Loading.component'
 
 const { confirm } = Modal
 
@@ -322,7 +322,7 @@ class ContractDetailComponent extends React.Component {
       <MainLayout history={history}>
         {isLoading && (
           <div className="contract-detail-component__loading">
-            <Spin indicator={<Icon type="loading" spin />} />
+            <LoadingComponent />
           </div>
         )}
         {!isLoading && (

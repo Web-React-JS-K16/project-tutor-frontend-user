@@ -126,6 +126,7 @@ export default class TeacherService {
       toSalary,
     })}&${this.parameterizeObject(locationObject)}`
 
+    // console.log(`query link: ${apiUrl}/user?type=${TEACHER}&page=${page}&limit=${limit}${query}`)
     const api = `${apiUrl}/user?type=${TEACHER}&page=${page}&limit=${limit}${query}`
     let status = 400
     // eslint-disable-next-line no-undef
@@ -143,7 +144,7 @@ export default class TeacherService {
         if (status !== 200) {
           throw new Error(result.message)
         }
-        return result.user
+        return result
       })
       .catch(err => {
         throw new Error(err)

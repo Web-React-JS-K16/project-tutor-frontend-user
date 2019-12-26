@@ -183,7 +183,7 @@ const MainHeader = ({
           (currentUser.typeID === TEACHER ? (
             <Link to={`/teacher/info/${currentUser._id}`}>Trang cá nhân</Link>
           ) : (
-            <Link to={`/student/info/${currentUser._id}`}>Trang cá nhân</Link>
+            <Link to="/student/update-info">Chỉnh sửa thông tin</Link>
           ))}
       </Menu.Item>
       <Menu.Item>{currentUser && <Link to="/contract-list">Hợp đồng</Link>}</Menu.Item>
@@ -193,7 +193,7 @@ const MainHeader = ({
         </Menu.Item>
       )}
       <Menu.Item>
-        <Link to="/">Đổi mật khẩu</Link>
+        <Link to="/change-password">Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item>
         <Link to="/">

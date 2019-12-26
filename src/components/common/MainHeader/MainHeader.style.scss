@@ -68,4 +68,7 @@
       vertical-align: middle;
     }
   }
+  .swal2-confirm, .swal2-styled{
+    background-color: $color-main !important;
+  }
 }

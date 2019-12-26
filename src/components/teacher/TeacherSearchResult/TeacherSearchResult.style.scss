@@ -27,6 +27,12 @@
       
     }
   }
+  &__empty {
+    margin: 10vh auto;
+   text-align: center;
+   color: rgb(133, 130, 130); 
+   font-style: italic;
+  }
   &__pagination{
     margin-top: 20px;
     margin: 20px auto;

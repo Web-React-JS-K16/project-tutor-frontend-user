@@ -33,13 +33,17 @@ export function* getTeacherInfoSaga() {
 // get teacher list
 function* getList({ payload: filterConditions }) {
   try {
-    const teacherList = yield TeacherService.getTeacherList(filterConditions)
-    const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
-    if (!isNaN(numberOfTeachers)) {
-      yield put(getTeacherListSuccess(teacherList, numberOfTeachers))
-    } else {
-      yield put(getTeacherListFailure('Không thể lấy được số lượng gia sư'))
-    }
+    const { teacherList, numberOfTeachers } = yield TeacherService.getTeacherList(filterConditions)
+    // const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
+    yield put(getTeacherListSuccess(teacherList, numberOfTeachers))
+
+    // const teacherList = yield TeacherService.getTeacherList(filterConditions)
+    // const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
+    // if (!isNaN(numberOfTeachers)) {
+    //   yield put(getTeacherListSuccess(teacherList, numberOfTeachers))
+    // } else {
+    //   yield put(getTeacherListFailure('Không thể lấy được số lượng gia sư'))
+    // }
   } catch (err) {
     yield put(getTeacherListFailure(err.message))
   }

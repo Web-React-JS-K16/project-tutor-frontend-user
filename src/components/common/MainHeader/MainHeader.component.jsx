@@ -16,10 +16,11 @@ import { withRouter } from 'react-router'
 import './MainHeader.style.scss'
 
 const { Header } = Layout
-const { SubMenu } = Menu
+// const { SubMenu } = Menu
 const { Search } = Input
 
 const MainHeader = ({
+  location,
   history,
   currentUser,
   getNotificationListObj,
@@ -28,6 +29,7 @@ const MainHeader = ({
   onClearNotificationState,
   getNotificationList,
 }) => {
+  const selectedKey = location.pathname === '/' ? '1' : '2'
   useEffect(() => {
     const token = UserService.getPreferences(JWT_TOKEN)
     if (!currentUser && token) onAuthenticate(token)
@@ -36,7 +38,7 @@ const MainHeader = ({
   useEffect(() => {
     let interval
     onClearNotificationState()
-
+    console.log('alo', location.pathname)
     if (currentUser) {
       const userId = currentUser._id
       getNotificationList({
@@ -268,7 +270,7 @@ const MainHeader = ({
         getPopupContainer={node => node.parentNode}
         theme="light"
         mode="horizontal"
-        defaultSelectedKeys={['2']}
+        defaultSelectedKeys={[selectedKey]}
         style={{ lineHeight: '64px' }}
       >
         <Menu.Item key="1">
@@ -277,7 +279,7 @@ const MainHeader = ({
         <Menu.Item key="2">
           <Link to="/teacher">Gia sư</Link>
         </Menu.Item>
-        <SubMenu
+        {/* <SubMenu
           key="sub1"
           title={
             <span>
@@ -295,7 +297,7 @@ const MainHeader = ({
             <Menu.Item key="7">Vi tích phân</Menu.Item>
           </SubMenu>
           <Menu.Item key="8">Hóa học</Menu.Item>
-        </SubMenu>
+        </SubMenu> */}
       </Menu>
     </Header>
   )

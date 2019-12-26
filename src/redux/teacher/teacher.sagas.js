@@ -33,8 +33,8 @@ export function* getTeacherInfoSaga() {
 // get teacher list
 function* getList({ payload: filterConditions }) {
   try {
-    const { teacherList, numberOfTeachers } = yield TeacherService.getTeacherList(filterConditions)
-    // const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
+    const teacherList = yield TeacherService.getTeacherList(filterConditions)
+    const numberOfTeachers = yield TeacherService.countTeachers(filterConditions)
     yield put(getTeacherListSuccess(teacherList, numberOfTeachers))
 
     // const teacherList = yield TeacherService.getTeacherList(filterConditions)

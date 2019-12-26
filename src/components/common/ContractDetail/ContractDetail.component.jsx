@@ -316,10 +316,10 @@ class ContractDetailComponent extends React.Component {
       finishContract,
     } = this.state
 
-    const { currentUser, history } = this.props
+    const { currentUser, history, location } = this.props
 
     return (
-      <MainLayout history={history}>
+      <MainLayout history={history} location={location}>
         {isLoading && (
           <div className="contract-detail-component__loading">
             <LoadingComponent />
